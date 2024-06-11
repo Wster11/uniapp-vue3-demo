@@ -1,0 +1,37 @@
+.login-wrap {
+  width: 100%;
+  padding: 0 40rpx;
+}
+
+.login-header {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  margin-top: 40rpx;
+}
+
+.login-title {
+  width: 100%;
+  text-align: center;
+  font-family: Noto Sans SC;
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #009eff;
+}
+
+.login-form-warp {
+  margin-top: 40rpx;
+}
+
+.input-wrap {
+  width: 100%;
+  margin-bottom: 20rpx;
+}
+
+.input-wrap input {
+  border: 2rpx solid #ccc;
+  border-radius: 8rpx;
+  outline: none;
+  height: 80rpx;
+  padding: 0 0 0 28rpx;
+}
