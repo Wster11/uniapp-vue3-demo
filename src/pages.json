@@ -5,6 +5,12 @@
 			"style": {
 				"navigationBarTitleText": "Easemob Uniapp"
 			}
+		},
+		{
+			"path": "pages/ConversationList/index",
+			"style": {
+				"navigationBarTitleText": "Chat"
+			}
 		}
 	],
 	"globalStyle": {

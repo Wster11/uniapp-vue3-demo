@@ -3,6 +3,20 @@ page {
   line-height: 1.8;
   background: #FFF;
 }
+
+.input-wrap {
+  width: 100%;
+  margin-bottom: 20rpx;
+}
+
+.input-wrap input {
+  border: 2rpx solid #ccc;
+  border-radius: 8rpx;
+  outline: none;
+  height: 80rpx;
+  padding: 0 0 0 28rpx;
+}
+
 * {
   box-sizing: border-box;
 }

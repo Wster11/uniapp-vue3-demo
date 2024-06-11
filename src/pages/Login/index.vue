@@ -50,6 +50,12 @@ const loginIM = () => {
     pwd: password.value // 密码登录
     // accessToken: "" // token登录
   })
+    .then(() => {
+      // 跳转会话列表页面
+      uni.redirectTo({
+        url: "../ConversationList/index"
+      });
+    })
     .catch((e) => {
       console.log(e, "e");
       uni.showToast({
@@ -62,6 +68,6 @@ const loginIM = () => {
     });
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import url("./style.scss");
 </style>
