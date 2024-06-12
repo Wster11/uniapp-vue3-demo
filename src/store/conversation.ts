@@ -13,7 +13,7 @@ export const useConversationStore = defineStore("conversation", () => {
   >[0];
 
   const conversationParams = ref<GetConversationsParams>({
-    pageSize: 20,
+    pageSize: 50,
     cursor: ""
   });
 

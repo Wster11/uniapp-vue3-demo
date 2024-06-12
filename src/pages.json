@@ -9,10 +9,36 @@
 		{
 			"path": "pages/ConversationList/index",
 			"style": {
-				"navigationBarTitleText": "Chat"
+				"navigationBarTitleText": "Easemob Uniapp"
 			}
 		}
 	],
+	"tabBar": {
+		"backgroundColor": "#F6F8FA",
+		"color": "#999999",
+		"selectedColor": "#00a4fd",
+		"height": "60px",
+		"list": [
+			{
+				"text": "消息",
+				"iconPath": "static/images/conversation.png",
+				"selectedIconPath": "static/images/conversation_active.png",
+				"pagePath": "pages/ConversationList/index"
+			},
+			{
+				"text": "通讯录",
+				"iconPath": "static/images/conversation.png",
+				"selectedIconPath": "static/images/conversation_active.png",
+				"pagePath": "pages/ConversationList/index"
+			},
+			{
+				"text": "个人中心",
+				"iconPath": "static/images/conversation.png",
+				"selectedIconPath": "static/images/conversation_active.png",
+				"pagePath": "pages/ConversationList/index"
+			}
+		]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

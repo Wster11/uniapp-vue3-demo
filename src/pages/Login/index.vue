@@ -26,6 +26,7 @@
 import { ref } from "vue";
 import { useChatStore } from "@/store/chat";
 import { useI18n } from "vue-i18n";
+import { CHAT_STORE } from "@/const/index";
 
 const { login } = useChatStore();
 const { t } = useI18n();
@@ -50,9 +51,16 @@ const loginIM = () => {
     pwd: password.value // 密码登录
     // accessToken: "" // token登录
   })
-    .then(() => {
+    .then((res) => {
+      uni.setStorage({
+        key: CHAT_STORE,
+        data: {
+          userId: userId.value,
+          token: res.accessToken
+        }
+      });
       // 跳转会话列表页面
-      uni.redirectTo({
+      uni.switchTab({
         url: "../ConversationList/index"
       });
     })

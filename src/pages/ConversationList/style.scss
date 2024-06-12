@@ -1,4 +1,5 @@
 .conversation-list-wrap {
+  position: relative;
   padding: 20rpx;
 }
 
@@ -9,4 +10,12 @@
 .conversation-empty {
   text-align: center;
   margin-top: 200rpx;
+}
+
+.conversation-item-wrap {
+  margin-bottom: 10rpx;
+}
+
+.conversation-item-wrap-selected {
+  background: #f3f3f3;
 }
