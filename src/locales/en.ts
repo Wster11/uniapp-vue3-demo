@@ -14,4 +14,7 @@ export default {
   combine: "合并消息",
   conversationSearchPlaceholder: "搜索会话",
   conversationEmptyTip: "暂无会话，快去聊天吧～",
+  deleteConv: "删除会话",
+  pinConv: "置顶会话",
+  muteConv: "消息免打扰",
 };

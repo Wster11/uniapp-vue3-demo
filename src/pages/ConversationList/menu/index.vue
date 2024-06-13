@@ -15,6 +15,12 @@
 <script setup lang="ts">
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+import { useConversationStore } from "@/store/conversation";
+
+const { deleteConversation } = useConversationStore();
+
+const { t } = useI18n();
 
 const CONV_OPERATION_TYPE = {
   DELETE: "DELETE",
@@ -31,21 +37,31 @@ const props = defineProps<Props>();
 const { popStyle, conversation } = props;
 const popButton = ref([
   {
-    name: "删除会话",
+    name: t("deleteConv"),
     type: CONV_OPERATION_TYPE.DELETE
   },
   {
-    name: "置顶会话",
+    name: t("pinConv"),
     type: CONV_OPERATION_TYPE.PIN
   },
   {
-    name: "消息免打扰",
+    name: t("muteConv"),
     type: CONV_OPERATION_TYPE.MUTE
   }
 ]);
 
 const handleClick = (params: { type: string }) => {
-  console.log(params);
+  switch (params.type) {
+    case CONV_OPERATION_TYPE.DELETE:
+      deleteConversation(conversation);
+      break;
+    case CONV_OPERATION_TYPE.PIN:
+      console.log("置顶会话");
+      break;
+    case CONV_OPERATION_TYPE.MUTE:
+      console.log("静音会话");
+      break;
+  }
   emits("onMenuClose");
 };
 </script>

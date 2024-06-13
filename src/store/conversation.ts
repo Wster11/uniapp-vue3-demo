@@ -49,10 +49,69 @@ export const useConversationStore = defineStore("conversation", () => {
     });
   };
 
+  const deleteStoreConversation = (
+    conversation: EasemobChat.ConversationItem
+  ) => {
+    const idx = conversationList.value.findIndex((cvs) => {
+      return (
+        cvs.conversationType == conversation.conversationType &&
+        cvs.conversationId == conversation.conversationId
+      );
+    });
+    if (idx > -1) {
+      conversationList.value.splice(idx, 1);
+    }
+  };
+
+  /** 删除会话*/
+  const deleteConversation = async (
+    conversation: EasemobChat.ConversationItem,
+    deleteMessage?: boolean
+  ) => {
+    if (typeof conversation != "object") {
+      return console.error("Invalid parameter: conversation");
+    }
+    await conn.deleteConversation({
+      channel: conversation.conversationId,
+      chatType: conversation.conversationType,
+      deleteRoam: deleteMessage || false
+    });
+    deleteStoreConversation(conversation);
+  };
+
+  /** 根据会话ID和会话类型获取会话 */
+  const getConversationById = (
+    conversationId: string
+  ): EasemobChat.ConversationItem | undefined => {
+    const conv = conversationList.value.find((item) => {
+      return item.conversationId === conversationId;
+    });
+    if (conv) {
+      return conv;
+    }
+    return undefined;
+  };
+
+  /** 获取消息时间 */
+  const getConversationLastMessageTime = (
+    message: EasemobChat.ConversationItem["lastMessage"]
+  ) => {
+    if (!message) {
+      return "";
+    }
+    //@ts-ignore
+    const time = new Date(message.time);
+    const lastMessageTime = `${time.toLocaleTimeString()} `;
+    return lastMessageTime;
+  };
+
   return {
     conversationList,
     conversationParams,
     setConversationParams,
-    getConversationList
+    getConversationList,
+    deleteConversation,
+    getConversationById,
+    getConversationLastMessageTime
   };
 });

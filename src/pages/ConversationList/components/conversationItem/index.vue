@@ -3,9 +3,17 @@
     <view>
       <Avatar src="" :placeholder="getAvatarPlaceholder()" />
     </view>
-    <view class="user-info-wrap">
-      <view>{{ conversation.conversationId }}</view>
-      <view>{{ formatLastMessage(conversation) }}</view>
+    <view class="content-wrap">
+      <view class="user-info-wrap">
+        <view class="user-nick-name">{{ conversation.conversationId }}</view>
+        <view class="last-msg">{{ formatLastMessage(conversation) }}</view>
+      </view>
+      <view v-if="conversation.unReadCount > 0" class="unreadCount">
+        {{ conversation.unReadCount > 99 ? "99+" : conversation.unReadCount }}
+      </view>
+      <view class="time">{{
+        getConversationLastMessageTime(conversation.lastMessage)
+      }}</view>
     </view>
   </view>
 </template>
@@ -16,6 +24,7 @@ import Avatar from "@/components/avatar/index.vue";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import defaultGroupAvatar from "@/static/images/defaultGroupAvatar.png";
 import { useI18n } from "vue-i18n";
+import { useConversationStore } from "@/store/conversation";
 
 const { t } = useI18n();
 
@@ -23,6 +32,8 @@ interface Props {
   conversation: EasemobChat.ConversationItem;
 }
 const props = defineProps<Props>();
+
+const { getConversationLastMessageTime } = useConversationStore();
 
 const getAvatarPlaceholder = () => {
   return props.conversation.conversationType === "groupChat"
