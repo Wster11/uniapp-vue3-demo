@@ -9,4 +9,7 @@ const conn = new (websdk as EasemobChatStatic).connection({
   apiUrl: "https://a1.easemob.com"
 });
 
+const SDK = websdk as EasemobChatStatic;
+
+export { SDK };
 export default conn;

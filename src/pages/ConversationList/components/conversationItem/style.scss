@@ -10,13 +10,25 @@
   width: 100%;
 }
 
-.unreadCount {
+.avatar-wrap{
+  position: relative;
+}
+
+.unread-count {
+  position: absolute;
+  display: inline-block;
+  width: fit-content;
+  padding: 0 5rpx;
+  height: 30rpx;
+  min-width: 30rpx;
+  font-size: 20rpx;
+  text-align: center;
+  line-height: 30rpx;
+  border-radius: 15rpx;
   font-size: 24rpx;
-  line-height: 40rpx;
-  color: red;
-  align-self: center;
-  font-weight: bold;
-  flex-shrink: 0;
+  background: red;
+  color: #fff;
+  right: -5px;
 }
 
 .user-info-wrap {
@@ -33,6 +45,6 @@
   color: gray;
 }
 
-.time{
+.time {
   margin-left: 30rpx;
 }

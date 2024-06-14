@@ -3,7 +3,7 @@ import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
 import { useConnStore } from "@/store/conn";
 import { useChatStore } from "@/store/chat";
 import { CHAT_STORE } from "@/const/index";
-import conn from "./initIM";
+import conn, { SDK } from "./initIM";
 
 const autoLogin = async () => {
   let res = await uni.getStorage({
@@ -29,6 +29,8 @@ onLaunch(() => {
   console.log("App Launch");
   // set Connection
   useConnStore().setChatConn(conn);
+  // set SDK
+  useConnStore().setChatSDK(SDK);
   autoLogin();
 });
 

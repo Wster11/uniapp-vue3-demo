@@ -17,4 +17,5 @@ export default {
   deleteConv: "删除会话",
   pinConv: "置顶会话",
   muteConv: "消息免打扰",
+  markRead: "标记已读"
 };

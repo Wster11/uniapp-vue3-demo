@@ -4,9 +4,11 @@ import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { ref } from "vue";
 
 export const useConversationStore = defineStore("conversation", () => {
-  const { getChatConn } = useConnStore();
+  const { getChatConn, getChatSDK } = useConnStore();
 
   const conn = getChatConn();
+
+  const SDK = getChatSDK();
 
   type GetConversationsParams = Parameters<
     typeof conn.getServerConversations
@@ -92,19 +94,54 @@ export const useConversationStore = defineStore("conversation", () => {
     return undefined;
   };
 
-  /** 获取消息时间 */
-  const getConversationLastMessageTime = (
+  /** 获取会话时间 */
+  const getConversationTime = (
     message: EasemobChat.ConversationItem["lastMessage"]
   ) => {
     if (!message) {
       return "";
     }
     //@ts-ignore
-    const time = new Date(message.time);
-    const lastMessageTime = `${time.toLocaleTimeString()} `;
-    return lastMessageTime;
+    const time = message.time;
+    if (!time) return "";
+    const localTimeList = new Date().toString().split(" ");
+    const MsgTimeList = new Date(time).toString().split(" ");
+    if (localTimeList[3] === MsgTimeList[3]) {
+      if (localTimeList[1] === MsgTimeList[1]) {
+        if (localTimeList[0] === MsgTimeList[0]) {
+          if (localTimeList[2] === MsgTimeList[2]) {
+            return MsgTimeList[4].substr(0, 5);
+          }
+        } else {
+          if (Number(localTimeList[0]) - Number(MsgTimeList[0]) === 1) {
+            return "Yday";
+          } else {
+            return MsgTimeList[0];
+          }
+        }
+      } else {
+        return MsgTimeList[1];
+      }
+    } else {
+      return MsgTimeList[1];
+    }
   };
 
+  /** 标记会话已读 */
+  const markConversationRead = async (
+    conversation: EasemobChat.ConversationItem
+  ) => {
+    const msg = SDK.message.create({
+      type: "channel",
+      chatType: conversation.conversationType,
+      to: conversation.conversationId
+    });
+    await conn.send(msg);
+    const conv = getConversationById(conversation.conversationId);
+    if (conv) {
+      conv.unReadCount = 0;
+    }
+  };
   return {
     conversationList,
     conversationParams,
@@ -112,6 +149,7 @@ export const useConversationStore = defineStore("conversation", () => {
     getConversationList,
     deleteConversation,
     getConversationById,
-    getConversationLastMessageTime
+    getConversationTime,
+    markConversationRead
   };
 });

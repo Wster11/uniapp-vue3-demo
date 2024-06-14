@@ -7,7 +7,8 @@ import ppp from "@/store/pinia"
 let i18nConfig = {
   legacy: false,
   locale: uni.getLocale() || "en", // 获取已设置的语言
-  messages
+  messages,
+  globalInjection: true
 };
 
 const i18n = createI18n(i18nConfig);

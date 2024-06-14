@@ -18,14 +18,15 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useConversationStore } from "@/store/conversation";
 
-const { deleteConversation } = useConversationStore();
+const { deleteConversation, markConversationRead } = useConversationStore();
 
 const { t } = useI18n();
 
 const CONV_OPERATION_TYPE = {
   DELETE: "DELETE",
   PIN: "PIN",
-  MUTE: "MUTE"
+  MUTE: "MUTE",
+  MARK_READ: "MARK_READ"
 };
 
 interface Props {
@@ -37,21 +38,28 @@ const props = defineProps<Props>();
 const { popStyle, conversation } = props;
 const popButton = ref([
   {
+    name: t("markRead"),
+    type: CONV_OPERATION_TYPE.MARK_READ
+  },
+  {
     name: t("deleteConv"),
     type: CONV_OPERATION_TYPE.DELETE
-  },
-  {
-    name: t("pinConv"),
-    type: CONV_OPERATION_TYPE.PIN
-  },
-  {
-    name: t("muteConv"),
-    type: CONV_OPERATION_TYPE.MUTE
   }
+  // {
+  //   name: t("pinConv"),
+  //   type: CONV_OPERATION_TYPE.PIN
+  // },
+  // {
+  //   name: t("muteConv"),
+  //   type: CONV_OPERATION_TYPE.MUTE
+  // }
 ]);
 
 const handleClick = (params: { type: string }) => {
   switch (params.type) {
+    case CONV_OPERATION_TYPE.MARK_READ:
+      markConversationRead(conversation);
+      break;
     case CONV_OPERATION_TYPE.DELETE:
       deleteConversation(conversation);
       break;

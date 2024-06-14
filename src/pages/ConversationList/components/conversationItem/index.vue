@@ -1,18 +1,18 @@
 <template>
   <view class="conversation-item-wrap">
-    <view>
+    <view class="avatar-wrap">
       <Avatar src="" :placeholder="getAvatarPlaceholder()" />
+      <view v-if="conversation.unReadCount > 0" class="unread-count">
+        {{ conversation.unReadCount > 99 ? "99+" : conversation.unReadCount }}
+      </view>
     </view>
     <view class="content-wrap">
       <view class="user-info-wrap">
         <view class="user-nick-name">{{ conversation.conversationId }}</view>
         <view class="last-msg">{{ formatLastMessage(conversation) }}</view>
       </view>
-      <view v-if="conversation.unReadCount > 0" class="unreadCount">
-        {{ conversation.unReadCount > 99 ? "99+" : conversation.unReadCount }}
-      </view>
       <view class="time">{{
-        getConversationLastMessageTime(conversation.lastMessage)
+        getConversationTime(conversation.lastMessage)
       }}</view>
     </view>
   </view>
@@ -33,7 +33,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const { getConversationLastMessageTime } = useConversationStore();
+const { getConversationTime } = useConversationStore();
 
 const getAvatarPlaceholder = () => {
   return props.conversation.conversationType === "groupChat"
