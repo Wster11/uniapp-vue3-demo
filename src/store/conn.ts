@@ -3,10 +3,12 @@ import type {
   EasemobChat,
   EasemobChatStatic
 } from "easemob-websdk/Easemob-chat";
+//@ts-ignore
+import websdk from "easemob-websdk/uniApp/Easemob-chat";
 
 export const useConnStore = defineStore("conn", () => {
   let conn = null as unknown as EasemobChat.Connection;
-  let sdk = null as unknown as EasemobChatStatic;
+  let sdk = websdk as EasemobChatStatic;
   /** 设置conn实例 */
   const setChatConn = (connection: EasemobChat.Connection) => {
     conn = connection;
@@ -20,24 +22,18 @@ export const useConnStore = defineStore("conn", () => {
     throw "conn is not initialized";
   };
 
-  /** 设置 websdk */
-  const setChatSDK = (websdk: EasemobChatStatic) => {
-    sdk = websdk;
-  };
-
   /** 获取 websdk */
   const getChatSDK = (): EasemobChatStatic => {
     if (sdk) {
       return sdk;
     }
-    throw "conn is not initialized";
+    throw "SDK is not found";
   };
 
   return {
     conn,
     setChatConn,
     getChatConn,
-    setChatSDK,
     getChatSDK
   };
 });

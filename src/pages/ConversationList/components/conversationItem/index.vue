@@ -1,5 +1,5 @@
 <template>
-  <view class="conversation-item-wrap">
+  <view class="conversation-item-wrap" @tap="toChatPage">
     <view class="avatar-wrap">
       <Avatar src="" :placeholder="getAvatarPlaceholder()" />
       <view v-if="conversation.unReadCount > 0" class="unread-count">
@@ -39,6 +39,12 @@ const getAvatarPlaceholder = () => {
   return props.conversation.conversationType === "groupChat"
     ? defaultGroupAvatar
     : defaultAvatar;
+};
+
+const toChatPage = () => {
+  uni.navigateTo({
+    url: "../../pages/Chat/index"
+  });
 };
 
 const formatLastMessage = (conversation: EasemobChat.ConversationItem) => {

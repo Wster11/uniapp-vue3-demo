@@ -1,0 +1,62 @@
+<template>
+  <view
+    class="msg-item-wrap"
+    :style="{ flexDirection: isSelf ? 'row-reverse' : 'row' }"
+  >
+    <view class="avatar-wrap">
+      <Avatar :src="defaultAvatar" />
+    </view>
+    <view class="msg-content">
+      <view v-if="!isSelf"> {{ msg.from }}</view>
+      <view class="msg-bubble">
+        <view v-if="msg.type === 'txt'">
+          <TextMessage :msg="msg" />
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import type { EasemobChat } from "easemob-websdk/Easemob-chat";
+import Avatar from "@/components/avatar/index.vue";
+import TextMessage from "./messageTxt.vue";
+import defaultAvatar from "@/static/images/defaultAvatar.png";
+import { useConnStore } from "@/store/conn";
+
+interface Props {
+  msg: EasemobChat.ExcludeAckMessageBody;
+}
+const props = defineProps<Props>();
+
+const { msg } = props;
+
+const isSelf = useConnStore().getChatConn().user === msg.from;
+</script>
+
+<style lang="scss" scoped>
+.msg-item-wrap {
+  width: 100%;
+  display: flex;
+  margin-bottom: 30rpx;
+
+  .msg-bubble {
+    font-size: 28rpx;
+    display: inline-block;
+    word-break: break-all;
+    background: #f5f5f5;
+    border-radius: 20rpx;
+    padding: 14rpx;
+    max-width: calc(100vw - 200rpx);
+    min-width: 30rpx;
+  }
+
+  .msg-content {
+    margin: 0 20rpx;
+  }
+
+  .avatar-wrap {
+    align-self: self-end;
+  }
+}
+</style>

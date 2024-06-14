@@ -1,6 +1,11 @@
 import type { EasemobChatStatic } from "easemob-websdk/Easemob-chat";
 //@ts-ignore
-import websdk from "easemob-websdk/uniApp/Easemob-chat.js";
+import { useConnStore } from "@/store/conn";
+import pinia from "@/store/pinia";
+
+const { getChatSDK } = useConnStore(pinia);
+
+const websdk = getChatSDK();
 
 const conn = new (websdk as EasemobChatStatic).connection({
   appKey: "easemob-demo#support",
@@ -9,7 +14,4 @@ const conn = new (websdk as EasemobChatStatic).connection({
   apiUrl: "https://a1.easemob.com"
 });
 
-const SDK = websdk as EasemobChatStatic;
-
-export { SDK };
 export default conn;

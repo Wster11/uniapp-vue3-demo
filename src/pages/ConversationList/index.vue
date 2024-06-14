@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import ConversationItem from "./components/conversationItem/index.vue";
-import PopMenu from "./menu/index.vue";
+import PopMenu from "./components/menu/index.vue";
 import { useConversationStore } from "@/store/conversation";
 import { ref, onMounted, computed, watch, nextTick } from "vue";
 import type { EasemobChat } from "easemob-websdk";

@@ -65,7 +65,6 @@ const loginIM = () => {
       });
     })
     .catch((e) => {
-      console.log(e, "e");
       uni.showToast({
         title: e?.data?.data?.error_description,
         icon: "none"

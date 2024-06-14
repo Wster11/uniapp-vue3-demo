@@ -11,6 +11,12 @@
 			"style": {
 				"navigationBarTitleText": "Easemob Uniapp"
 			}
+		},
+		{
+			"path": "pages/Chat/index",
+			"style": {
+				"navigationBarTitleText": "Easemob Uniapp"
+			}
 		}
 	],
 	"tabBar": {
