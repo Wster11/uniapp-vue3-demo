@@ -1,11 +1,14 @@
 import { defineStore } from "pinia";
 import { useConnStore } from "./conn";
 import { useConversationStore } from "./conversation";
+import { useMessageStore } from "./message";
+import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { ref } from "vue";
 
 export const useChatStore = defineStore("chat", () => {
   const { getChatConn } = useConnStore();
   const { getConversationById, deleteConversation } = useConversationStore();
+  const { insertMessage } = useMessageStore();
   const conn = getChatConn();
   const isInitEvent = ref(false);
 
@@ -27,6 +30,12 @@ export const useChatStore = defineStore("chat", () => {
             deleteConversation(conv);
           }
         }
+      }
+    });
+
+    conn.addEventHandler("STORE_MESSAGE", {
+      onTextMessage: (msg) => {
+        insertMessage(msg);
       }
     });
   };

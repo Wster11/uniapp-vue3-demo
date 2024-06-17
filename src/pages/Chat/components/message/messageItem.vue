@@ -15,6 +15,15 @@
         <view v-else-if="msg.type === 'img'">
           <ImageMessage :msg="msg" />
         </view>
+        <view v-else-if="msg.type === 'video'">
+          <view>[video]</view>
+        </view>
+        <view v-else-if="msg.type === 'audio'">
+          <view>[Audio]</view>
+        </view>
+        <view v-else-if="msg.type === 'custom'">
+          <view>[Custom]</view>
+        </view>
       </view>
     </view>
   </view>
@@ -35,7 +44,8 @@ const props = defineProps<Props>();
 
 const { msg } = props;
 
-const isSelf = useConnStore().getChatConn().user === msg.from;
+const isSelf =
+  useConnStore().getChatConn().user === msg.from || msg.from === "";
 </script>
 
 <style lang="scss" scoped>

@@ -2,10 +2,13 @@ import { defineStore } from "pinia";
 import { useConnStore } from "./conn";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { getTimeStringAutoShort } from "@/utils/index";
-import { ref } from "vue";
+import { ref, toRef, reactive } from "vue";
+import type { ConversationBaseInfo } from "./types/index";
 
 export const useConversationStore = defineStore("conversation", () => {
   const { getChatConn, getChatSDK } = useConnStore();
+
+  let currConversation = ref<ConversationBaseInfo | null>(null);
 
   const conn = getChatConn();
 
@@ -123,14 +126,24 @@ export const useConversationStore = defineStore("conversation", () => {
       conv.unReadCount = 0;
     }
   };
+  /** 设置当前进行的会话 */
+  const setCurrentConversation = (
+    conversation: ConversationBaseInfo | null
+  ) => {
+    if (conversation) {
+      currConversation.value = reactive(conversation);
+    }
+  };
   return {
     conversationList,
     conversationParams,
+    currConversation,
     setConversationParams,
     getConversationList,
     deleteConversation,
     getConversationById,
     getConversationTime,
-    markConversationRead
+    markConversationRead,
+    setCurrentConversation
   };
 });

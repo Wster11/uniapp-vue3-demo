@@ -46,7 +46,6 @@ export const useMessageStore = defineStore("message", () => {
         info.messages.unshift(...dt.messages.reverse());
         info.cursor = dt.cursor || "";
         info.isLast = dt.isLast;
-        conversationMessagesMap.value.set(conversation.conversationId, info);
       }
       return;
     }
@@ -59,5 +58,41 @@ export const useMessageStore = defineStore("message", () => {
     });
   };
 
-  return { messageMap, conversationMessagesMap, getHistoryMessages };
+  /** 插入新消息 */
+  const insertMessage = (msg: EasemobChat.MessageBody) => {
+    let convId = "";
+    const { to, from } = msg;
+    if (from === conn.getChatConn().user || from === "") {
+      convId = to;
+    } else {
+      convId = from || "";
+    }
+
+    if (conversationMessagesMap.value.has(convId)) {
+      const info = conversationMessagesMap.value.get(convId);
+      if (info) {
+        //@ts-ignore
+        info.messages.push(msg);
+      }
+    }
+  };
+
+  /** 发送消息 */
+  const sendMessage = (msg: EasemobChat.MessageBody) => {
+    return conn
+      .getChatConn()
+      .send(msg)
+      .then((res) => {
+        insertMessage(msg);
+        return res;
+      });
+  };
+
+  return {
+    messageMap,
+    conversationMessagesMap,
+    getHistoryMessages,
+    insertMessage,
+    sendMessage
+  };
 });

@@ -28,5 +28,6 @@ export default {
   thursday: "星期四",
   friday: "星期五",
   saturday: "星期六",
-  loadMore: "加载更多"
+  loadMore: "加载更多",
+  sendMessagePlaceholder: "请输入消息..."
 };

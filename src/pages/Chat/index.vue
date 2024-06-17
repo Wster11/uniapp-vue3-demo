@@ -1,10 +1,18 @@
 <template>
   <view class="chat-wrap">
-    <view class="loadMore" v-if="msgs && !isLast" @tap="loadMore">{{
-      $t("loadMore")
-    }}</view>
+    <!-- 消息列表 -->
     <view class="msgs-wrap">
-      <MessageList v-if="msgs" :msgs="msgs" />
+      <MessageList
+        v-if="msgs"
+        ref="msgListRef"
+        :msgs="msgs"
+        :conversationId="conversationId"
+        :conversationType="conversationType"
+      />
+    </view>
+    <!-- 输入框 -->
+    <view class="chat-input-wrap">
+      <MessageInput @onMessageSend="onMessageSend" />
     </view>
   </view>
 </template>
@@ -15,46 +23,27 @@ import { useMessageStore } from "@/store/message";
 import { useConversationStore } from "@/store/conversation";
 import { useI18n } from "vue-i18n";
 import MessageList from "./components/message/messageList.vue";
+import MessageInput from "./components/messageInput/index.vue";
 import { onMounted, computed } from "vue";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { onLoad } from "@dcloudio/uni-app";
 
+const msgListRef = ref(null);
+
 const { t } = useI18n();
 const conversationId = ref("");
-const conversationType = ref("");
-const isLoading = ref(false);
+const conversationType = ref<EasemobChat.ConversationItem["conversationType"]>(
+  "" as EasemobChat.ConversationItem["conversationType"]
+);
 const { getHistoryMessages, conversationMessagesMap } = useMessageStore();
-const { markConversationRead } = useConversationStore();
+const { markConversationRead, setCurrentConversation } = useConversationStore();
 
 const msgs = computed(() => {
   return conversationMessagesMap.get(conversationId.value)?.messages;
 });
 
-const isLast = computed(() => {
-  return conversationMessagesMap.get(conversationId.value)?.isLast;
-});
-
-const cursor = computed(() => {
-  return conversationMessagesMap.get(conversationId.value)?.cursor;
-});
-
-const loadMore = async () => {
-  if (isLoading.value === true) {
-    return;
-  }
-  isLoading.value = true;
-  try {
-    await getHistoryMessages(
-      {
-        conversationId: conversationId.value,
-        conversationType: conversationType.value
-      } as EasemobChat.ConversationItem,
-      cursor.value
-    );
-    isLoading.value = false;
-  } catch (error) {
-    isLoading.value = false;
-  }
+const onMessageSend = () => {
+  msgListRef?.value?.toBottomMsg();
 };
 
 onMounted(() => {
@@ -77,6 +66,12 @@ onMounted(() => {
 onLoad((option) => {
   conversationType.value = option?.type;
   conversationId.value = option?.id;
+  if (option?.id) {
+    setCurrentConversation({
+      conversationId: conversationId.value,
+      conversationType: conversationType.value
+    });
+  }
 });
 </script>
 <style lang="scss" scoped>
