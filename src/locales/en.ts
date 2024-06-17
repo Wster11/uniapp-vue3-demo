@@ -27,5 +27,6 @@ export default {
   wednesday: "星期三",
   thursday: "星期四",
   friday: "星期五",
-  saturday: "星期六"
+  saturday: "星期六",
+  loadMore: "加载更多"
 };

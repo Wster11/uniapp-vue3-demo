@@ -28,7 +28,7 @@ export const useMessageStore = defineStore("message", () => {
     const dt = await conn.getChatConn().getHistoryMessages({
       targetId: conversation.conversationId,
       chatType: conversation.conversationType,
-      pageSize: 10,
+      pageSize: 100,
       cursor: cursor || ""
     });
     // 更新本地消息映射
@@ -37,11 +37,25 @@ export const useMessageStore = defineStore("message", () => {
       messageMap.value.set(msg.id, msg);
     });
 
+    if (conversationMessagesMap.value.has(conversation.conversationId)) {
+      const info = conversationMessagesMap.value.get(
+        conversation.conversationId
+      );
+      if (info) {
+        //@ts-ignore
+        info.messages.unshift(...dt.messages.reverse());
+        info.cursor = dt.cursor || "";
+        info.isLast = dt.isLast;
+        conversationMessagesMap.value.set(conversation.conversationId, info);
+      }
+      return;
+    }
+
     conversationMessagesMap.value.set(conversation.conversationId, {
       //@ts-ignore
       messages: dt.messages.reverse(),
-      cursor: "",
-      isLast: false
+      cursor: dt.cursor || "",
+      isLast: dt.isLast
     });
   };
 

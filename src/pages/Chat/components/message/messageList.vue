@@ -1,14 +1,14 @@
 <template>
   <view class="msg-bubble">
-    <scroll-view scroll-y="true" class="message-scroll-list">
-      <view v-for="(msg, idx) in msgs" :key="msg.id">
+    <div class="message-scroll-list" ref="content">
+      <view v-for="(msg, idx) in msgs" :id="`msg-${msg.id}`" :key="msg.id">
         <MessageTime
           :curr-time="msg.time"
           :prev-time="idx > 0 ? msgs[idx - 1].time : 0"
         />
         <MessageItem :msg="msg" />
       </view>
-    </scroll-view>
+    </div>
   </view>
 </template>
 
@@ -16,7 +16,7 @@
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import MessageItem from "./messageItem.vue";
 import MessageTime from "./messageTime.vue";
-import { ref, toRef } from "vue";
+import { ref, toRef, onMounted } from "vue";
 interface Props {
   msgs: EasemobChat.ExcludeAckMessageBody[];
 }
@@ -24,5 +24,14 @@ const props = defineProps<Props>();
 
 const { msgs } = props;
 
-// const scrollTop = ref(999999);
+const content = ref(null);
+
+onMounted(() => {
+  const contentEl = content.value;
+  uni.pageScrollTo({
+    //@ts-ignore
+    scrollTop: contentEl?.scrollHeight,
+    duration: 0
+  });
+});
 </script>

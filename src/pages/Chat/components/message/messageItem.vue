@@ -12,6 +12,9 @@
         <view v-if="msg.type === 'txt'">
           <TextMessage :msg="msg" />
         </view>
+        <view v-else-if="msg.type === 'img'">
+          <ImageMessage :msg="msg" />
+        </view>
       </view>
     </view>
   </view>
@@ -21,6 +24,7 @@
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import Avatar from "@/components/avatar/index.vue";
 import TextMessage from "./messageTxt.vue";
+import ImageMessage from "./messageImage.vue";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import { useConnStore } from "@/store/conn";
 

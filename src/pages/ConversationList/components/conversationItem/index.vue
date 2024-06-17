@@ -43,7 +43,7 @@ const getAvatarPlaceholder = () => {
 
 const toChatPage = () => {
   uni.navigateTo({
-    url: "../../pages/Chat/index"
+    url: `../../pages/Chat/index?type=${props.conversation.conversationType}&id=${props.conversation.conversationId}`
   });
 };
 
