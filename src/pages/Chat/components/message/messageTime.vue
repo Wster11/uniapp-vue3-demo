@@ -5,7 +5,7 @@
 </template>
 <script setup lang="ts">
 import { toRefs, ref, watch } from "vue";
-import { formatTime } from "@/utils/index";
+import { getTimeStringAutoShort } from "@/utils/index";
 interface Props {
   currTime: number;
   prevTime: number;
@@ -24,13 +24,13 @@ const handleItemTime = (currTime: number, prevTime: number) => {
     return "";
   } else if (!prevTime || prevTime <= 0) {
     isShowTime.value = true;
-    return formatTime(currTime);
+    return getTimeStringAutoShort(currTime, true);
   } else {
     const minDiffToShow = 10 * 60 * 1000; // 10min
     const diff = currTime - prevTime; //
     if (diff >= minDiffToShow) {
       isShowTime.value = true;
-      return formatTime(currTime);
+      return getTimeStringAutoShort(currTime,true);
     }
   }
   return "";

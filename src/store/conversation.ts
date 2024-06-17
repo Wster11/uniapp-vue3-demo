@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { useConnStore } from "./conn";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
-import { formatTime } from "@/utils/index";
+import { getTimeStringAutoShort } from "@/utils/index";
 import { ref } from "vue";
 
 export const useConversationStore = defineStore("conversation", () => {
@@ -105,7 +105,7 @@ export const useConversationStore = defineStore("conversation", () => {
     //@ts-ignore
     const time = message.time;
     if (!time) return "";
-    return formatTime(time);
+    return getTimeStringAutoShort(time);
   };
 
   /** 标记会话已读 */

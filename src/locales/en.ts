@@ -17,5 +17,15 @@ export default {
   deleteConv: "删除会话",
   pinConv: "置顶会话",
   muteConv: "消息免打扰",
-  markRead: "标记已读"
+  markRead: "标记已读",
+  justNow: "刚刚",
+  yesterday: "昨天",
+  beforeYesterday: "前天",
+  sunday: "星期日",
+  monday: "星期一",
+  tuesday: "星期二",
+  wednesday: "星期三",
+  thursday: "星期四",
+  friday: "星期五",
+  saturday: "星期六"
 };

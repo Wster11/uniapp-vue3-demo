@@ -1,17 +1,8 @@
 import { createSSRApp } from "vue";
 import App from "./App.vue";
-import messages from "./locales/index";
-import { createI18n } from "vue-i18n"; // v9.x
+import i18n from "./locales/index";
 import * as Pinia from "pinia";
-import ppp from "@/store/pinia"
-let i18nConfig = {
-  legacy: false,
-  locale: uni.getLocale() || "en", // 获取已设置的语言
-  messages,
-  globalInjection: true
-};
-
-const i18n = createI18n(i18nConfig);
+import ppp from "@/store/pinia";
 
 export function createApp() {
   const app = createSSRApp(App);
