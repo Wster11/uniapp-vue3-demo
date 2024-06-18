@@ -39,6 +39,38 @@ export const useChatStore = defineStore("chat", () => {
       },
       onImageMessage: (msg) => {
         onMessage(msg);
+      },
+      onVideoMessage: (msg) => {
+        onMessage(msg);
+      }
+    });
+
+    conn.addEventHandler("STORE_CONNECTION_STATE", {
+      onConnected: () => {
+        uni.showToast({
+          title: "onConnected"
+        });
+      },
+      onDisconnected: () => {
+        uni.showToast({
+          title: "onDisconnected"
+        });
+      },
+      //@ts-ignore
+      onReconnecting: () => {
+        uni.showToast({
+          title: "onReconnecting"
+        });
+      },
+      onOnline: () => {
+        uni.showToast({
+          title: "onOnline"
+        });
+      },
+      onOffline: () => {
+        uni.showToast({
+          title: "onOffline"
+        });
       }
     });
   };

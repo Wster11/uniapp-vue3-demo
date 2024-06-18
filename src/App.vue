@@ -33,7 +33,6 @@ const autoLogin = async () => {
 
 onLaunch(() => {
   console.log("App Launch");
-  // set Connection
   useConnStore().setChatConn(conn);
   autoLogin();
 });

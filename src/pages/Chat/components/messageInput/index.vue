@@ -3,10 +3,15 @@
     <view class="send-input">
       <input
         v-model="text"
-        auto-blur
+        :adjust-position="true"
+        :auto-blur="true"
+        confirm-type="send"
         @confirm="handleSendMessage"
         :placeholder="$t('sendMessagePlaceholder')"
     /></view>
+    <view class="send-more">
+      <image class="icon" @tap.stop="emits('onShowToolbar')" :src="PlusIcon"></image>
+    </view>
   </view>
 </template>
 
@@ -15,8 +20,9 @@ import { ref, nextTick } from "vue";
 import { useConnStore } from "@/store/conn";
 import { useConversationStore } from "@/store/conversation";
 import { useMessageStore } from "@/store/message";
+import PlusIcon from "@/static/images/inputbar/tofeipeng/icons/plus_in_circle@2x.png";
 
-const emits = defineEmits(["onMessageSend"]);
+const emits = defineEmits(["onMessageSend", "onShowToolbar"]);
 
 const { currConversation } = useConversationStore();
 

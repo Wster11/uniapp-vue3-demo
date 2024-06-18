@@ -130,6 +130,8 @@ export const useConversationStore = defineStore("conversation", () => {
   ) => {
     if (conversation) {
       currConversation.value = reactive(conversation);
+    } else {
+      currConversation.value = null;
     }
   };
   /** Top会话位置 */
@@ -178,7 +180,7 @@ export const useConversationStore = defineStore("conversation", () => {
     let conversationId = "";
     if (message.chatType === "groupChat" || message.chatType === "chatRoom") {
       conversationId = message.to;
-    } else if (message.from === conn.user) {
+    } else if (message.from === conn.user || message.from === "") {
       // self message
       conversationId = message.to;
     } else {

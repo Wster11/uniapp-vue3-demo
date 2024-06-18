@@ -15,7 +15,10 @@
 		{
 			"path": "pages/Chat/index",
 			"style": {
-				"navigationBarTitleText": "Easemob Uniapp"
+				"navigationBarTitleText": "Easemob Uniapp",
+				"app-plus": {
+					"softinputMode": "adjustResize"
+				}
 			}
 		}
 	],

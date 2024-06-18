@@ -29,5 +29,7 @@ export default {
   friday: "星期五",
   saturday: "星期六",
   loadMore: "加载更多",
-  sendMessagePlaceholder: "请输入消息..."
+  sendMessagePlaceholder: "请输入消息...",
+  imageUpload: "图片",
+  videoUpload: "视频"
 };

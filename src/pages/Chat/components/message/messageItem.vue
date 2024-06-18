@@ -16,7 +16,7 @@
           <ImageMessage :msg="msg" />
         </view>
         <view v-else-if="msg.type === 'video'">
-          <view>[video]</view>
+          <VideoMessage :msg="msg" />
         </view>
         <view v-else-if="msg.type === 'audio'">
           <view>[Audio]</view>
@@ -34,6 +34,7 @@ import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import Avatar from "@/components/avatar/index.vue";
 import TextMessage from "./messageTxt.vue";
 import ImageMessage from "./messageImage.vue";
+import VideoMessage from "./messageVideo.vue";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import { useConnStore } from "@/store/conn";
 
