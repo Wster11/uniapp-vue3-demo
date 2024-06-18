@@ -8,7 +8,7 @@ import { ref } from "vue";
 export const useChatStore = defineStore("chat", () => {
   const { getChatConn } = useConnStore();
   const { getConversationById, deleteConversation } = useConversationStore();
-  const { insertMessage } = useMessageStore();
+  const { onMessage } = useMessageStore();
   const conn = getChatConn();
   const isInitEvent = ref(false);
 
@@ -35,7 +35,10 @@ export const useChatStore = defineStore("chat", () => {
 
     conn.addEventHandler("STORE_MESSAGE", {
       onTextMessage: (msg) => {
-        insertMessage(msg);
+        onMessage(msg);
+      },
+      onImageMessage: (msg) => {
+        onMessage(msg);
       }
     });
   };

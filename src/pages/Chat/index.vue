@@ -24,7 +24,7 @@ import { useConversationStore } from "@/store/conversation";
 import { useI18n } from "vue-i18n";
 import MessageList from "./components/message/messageList.vue";
 import MessageInput from "./components/messageInput/index.vue";
-import { onMounted, computed } from "vue";
+import { onMounted, computed, onUnmounted } from "vue";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { onLoad } from "@dcloudio/uni-app";
 
@@ -43,6 +43,7 @@ const msgs = computed(() => {
 });
 
 const onMessageSend = () => {
+  //@ts-ignore
   msgListRef?.value?.toBottomMsg();
 };
 
@@ -53,7 +54,7 @@ onMounted(() => {
   markConversationRead({
     conversationId: conversationId.value,
     conversationType: conversationType.value
-  } as EasemobChat.ConversationItem);
+  });
   const vl = msgs.value;
   if (!vl) {
     getHistoryMessages({
@@ -63,6 +64,10 @@ onMounted(() => {
   }
 });
 
+onUnmounted(() => {
+  setCurrentConversation(null);
+});
+
 onLoad((option) => {
   conversationType.value = option?.type;
   conversationId.value = option?.id;
@@ -70,6 +75,9 @@ onLoad((option) => {
     setCurrentConversation({
       conversationId: conversationId.value,
       conversationType: conversationType.value
+    });
+    uni.setNavigationBarTitle({
+      title: option?.id
     });
   }
 });

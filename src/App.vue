@@ -13,7 +13,6 @@ const autoLogin = async () => {
     // 如果存在缓存，直接登录
     if (res.data) {
       const pages = getCurrentPages();
-      console.log(pages, "pages");
       // 跳转会话列表页面
       uni.switchTab({
         url: "/pages/ConversationList/index"

@@ -85,7 +85,7 @@ export const useConversationStore = defineStore("conversation", () => {
     deleteStoreConversation(conversation);
   };
 
-  /** 根据会话ID和会话类型获取会话 */
+  /** 根据会话ID获取会话 */
   const getConversationById = (
     conversationId: string
   ): EasemobChat.ConversationItem | undefined => {
@@ -112,9 +112,7 @@ export const useConversationStore = defineStore("conversation", () => {
   };
 
   /** 标记会话已读 */
-  const markConversationRead = async (
-    conversation: EasemobChat.ConversationItem
-  ) => {
+  const markConversationRead = async (conversation: ConversationBaseInfo) => {
     const msg = SDK.message.create({
       type: "channel",
       chatType: conversation.conversationType,
@@ -134,6 +132,61 @@ export const useConversationStore = defineStore("conversation", () => {
       currConversation.value = reactive(conversation);
     }
   };
+  /** Top会话位置 */
+  const moveConversationTop = (conversation: EasemobChat.ConversationItem) => {
+    const conv = getConversationById(conversation.conversationId);
+    if (conv) {
+      const idx = conversationList.value.findIndex((item) => {
+        return item.conversationId === conversation.conversationId;
+      });
+      if (idx > -1) {
+        conversationList.value.splice(idx, 1);
+        conversationList.value.unshift(conversation);
+      }
+    } else {
+      conversationList.value.unshift(conversation);
+    }
+  };
+  /** 创建会话 */
+  const createConversation = (
+    conversation: ConversationBaseInfo,
+    msg: EasemobChat.MessageBody,
+    unReadCount?: number
+  ) => {
+    const conv = {
+      conversationId: conversation.conversationId,
+      conversationType: conversation.conversationType,
+      lastMessage: msg,
+      unReadCount: unReadCount || 0
+    } as EasemobChat.ConversationItem;
+    return conv;
+  };
+  /** 更新会话*/
+  const updateConversationLastMessage = (
+    conversation: ConversationBaseInfo,
+    msg: EasemobChat.MessageBody,
+    unReadCount?: number
+  ) => {
+    const conv = getConversationById(conversation.conversationId);
+    if (conv) {
+      conv.lastMessage = msg;
+      conv.unReadCount = unReadCount || 0;
+    }
+  };
+  /** 根据消息获取会话Id */
+  const getCvsIdFromMessage = (message: EasemobChat.ExcludeAckMessageBody) => {
+    let conversationId = "";
+    if (message.chatType === "groupChat" || message.chatType === "chatRoom") {
+      conversationId = message.to;
+    } else if (message.from === conn.user) {
+      // self message
+      conversationId = message.to;
+    } else {
+      // target message
+      conversationId = message.from || "";
+    }
+    return conversationId;
+  };
   return {
     conversationList,
     conversationParams,
@@ -144,6 +197,10 @@ export const useConversationStore = defineStore("conversation", () => {
     getConversationById,
     getConversationTime,
     markConversationRead,
-    setCurrentConversation
+    setCurrentConversation,
+    moveConversationTop,
+    createConversation,
+    updateConversationLastMessage,
+    getCvsIdFromMessage
   };
 });

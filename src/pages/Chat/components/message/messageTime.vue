@@ -1,7 +1,7 @@
 <template>
-  <div v-if="isShowTime" class="message-time">
+  <view v-if="isShowTime" class="message-time">
     {{ time }}
-  </div>
+  </view>
 </template>
 <script setup lang="ts">
 import { toRefs, ref, watch } from "vue";

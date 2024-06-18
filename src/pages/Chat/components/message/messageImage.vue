@@ -27,6 +27,7 @@ const onError = (e: any) => {
 <style lang="scss" scoped>
 .image {
   max-width: 400rpx;
+  max-height: 550rpx;
 }
 .msg-image {
   width: 80%;

@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.avatar-wrap{
+.avatar-wrap {
   position: relative;
 }
 
@@ -48,4 +48,6 @@
 .time {
   flex-shrink: 0;
   margin-left: 30rpx;
+  color: #999;
+  font-size: 28rpx;
 }

@@ -50,9 +50,11 @@ const isSelf =
 
 <style lang="scss" scoped>
 .msg-item-wrap {
+  display: flex;
   width: 100%;
   display: flex;
   margin-bottom: 30rpx;
+  align-items: center;
 
   .msg-bubble {
     font-size: 28rpx;
@@ -66,7 +68,7 @@ const isSelf =
   }
 
   .msg-content {
-    margin: 0 20rpx;
+    margin: 0 20rpx 20rpx;
   }
 
   .avatar-wrap {

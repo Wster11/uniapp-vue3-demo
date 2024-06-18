@@ -1,17 +1,28 @@
 <template>
-  <view class="msg-bubble">
-    <div class="message-scroll-list" ref="content">
+  <view class="msg-list-wrap">
+    <scroll-view
+      scroll-y
+      :scroll-top="scrollHeight"
+      class="message-scroll-list"
+      :style="{ height: '100%' }"
+      :scroll-into-view="`msg-${currentViewMsgId}`"
+    >
       <view class="loadMore" v-if="msgs && !isLast" @tap="loadMore">{{
         $t("loadMore")
       }}</view>
-      <view v-for="(msg, idx) in msgs" :id="`msg-${msg.id}`" :key="msg.id">
+      <view
+        class="scroll-msg-item"
+        v-for="(msg, idx) in msgs"
+        :id="`msg-${msg.id}`"
+        :key="msg.id"
+      >
         <MessageTime
           :curr-time="msg.time"
           :prev-time="idx > 0 ? msgs[idx - 1].time : 0"
         />
         <MessageItem :msg="msg" />
       </view>
-    </div>
+    </scroll-view>
   </view>
 </template>
 
@@ -19,7 +30,7 @@
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import MessageItem from "./messageItem.vue";
 import MessageTime from "./messageTime.vue";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, nextTick } from "vue";
 import { useMessageStore } from "@/store/message";
 interface Props {
   msgs: EasemobChat.ExcludeAckMessageBody[];
@@ -30,9 +41,11 @@ const props = defineProps<Props>();
 
 const { msgs, conversationId, conversationType } = props;
 
-const content = ref(null);
+const scrollHeight = ref(msgs.length * 300);
 
 const isLoading = ref(false);
+
+const currentViewMsgId = ref<string>("");
 
 const { getHistoryMessages, conversationMessagesMap } = useMessageStore();
 
@@ -49,6 +62,7 @@ const loadMore = async () => {
     return;
   }
   isLoading.value = true;
+  const viewedMsgId = msgs[0].id;
   try {
     await getHistoryMessages(
       {
@@ -57,16 +71,21 @@ const loadMore = async () => {
       } as EasemobChat.ConversationItem,
       cursor.value
     );
-    isLoading.value = false;
+    nextTick(() => {
+      currentViewMsgId.value = viewedMsgId;
+      const timer = setTimeout(() => {
+        isLoading.value = false;
+        currentViewMsgId.value = "";
+        clearTimeout(timer);
+      }, 300);
+    });
   } catch (error) {
     isLoading.value = false;
   }
 };
 
 const toBottomMsg = () => {
-  const contentEl = content.value;
-  //@ts-ignore
-  contentEl.scrollTop = contentEl?.scrollHeight;
+  scrollHeight.value += 300;
 };
 
 onMounted(() => {
@@ -76,11 +95,10 @@ onMounted(() => {
 defineExpose({
   toBottomMsg
 });
-
 </script>
 
 <style lang="scss" scoped>
-.msg-bubble {
+.msg-list-wrap {
   height: 100%;
   overflow-y: scroll;
 }
@@ -88,7 +106,10 @@ defineExpose({
 .message-scroll-list {
   height: 100%;
   overflow-y: scroll;
-  padding: 0 20rpx;
+}
+
+.scroll-msg-item {
+  padding: 0 30rpx;
 }
 
 .loadMore {
