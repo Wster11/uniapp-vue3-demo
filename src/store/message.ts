@@ -115,7 +115,9 @@ export const useMessageStore = defineStore("message", () => {
           conversationType: msg.chatType
         },
         msg,
-        conv.unReadCount + 1
+        msg.from !== getChatConn().user
+          ? conv.unReadCount + 1
+          : conv.unReadCount
       );
       // 移动会话到顶部
       moveConversationTop(conv);

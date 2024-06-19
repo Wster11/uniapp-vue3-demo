@@ -17,6 +17,8 @@ export const useConnStore = defineStore("conn", () => {
   /** 设置conn实例 */
   const setChatConn = (connection: EasemobChat.Connection) => {
     conn = connection;
+    //@ts-ignore
+    uni.conn = connection;
   };
 
   /** 获取conn实例 */
