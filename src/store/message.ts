@@ -161,9 +161,17 @@ export const useMessageStore = defineStore("message", () => {
     // 移动会话到顶部
     moveConversationTop(newConv);
   };
+
+  /** 清空store数据*/
+  const clear = () => {
+    messageMap.value.clear();
+    conversationMessagesMap.value.clear();
+  };
+
   return {
     messageMap,
     conversationMessagesMap,
+    clear,
     getHistoryMessages,
     insertMessage,
     sendMessage,

@@ -189,10 +189,21 @@ export const useConversationStore = defineStore("conversation", () => {
     }
     return conversationId;
   };
+
+  const clear = () => {
+    conversationList.value = [];
+    conversationParams.value = {
+      pageSize: 50,
+      cursor: ""
+    };
+    currConversation.value = null;
+  };
+
   return {
     conversationList,
     conversationParams,
     currConversation,
+    clear,
     setConversationParams,
     getConversationList,
     deleteConversation,

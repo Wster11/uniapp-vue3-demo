@@ -1,4 +1,4 @@
-import { useI18n } from "vue-i18n";
+import i18n from "@/locales/index";
 export const formatDate = function (date: Date, fmt: string = "") {
   const o = {
     "M+": date.getMonth() + 1, //月份
@@ -56,7 +56,7 @@ export const getTimeStringAutoShort = function (
     // 当天（月份和日期一致才是）
     if (currentMonth == srcMonth && currentDateD == srcDateD) {
       // 时间相差60秒以内
-      if (deltaTime < 60 * 1000) ret = useI18n().t("justNow");
+      if (deltaTime < 60 * 1000) ret = i18n.global.t("justNow");
       // 否则当天其它时间段的，直接显示“时:分”的形式
       else ret = formatDate(srcDate, "hh:mm");
     }
@@ -77,13 +77,13 @@ export const getTimeStringAutoShort = function (
         srcMonth == yesterdayDate.getMonth() + 1 &&
         srcDateD == yesterdayDate.getDate()
       )
-        ret = useI18n().t("yesterday") + timeExtraStr; // -1d
+        ret = i18n.global.t("yesterday") + timeExtraStr; // -1d
       // “前天”判断逻辑同上
       else if (
         srcMonth == beforeYesterdayDate.getMonth() + 1 &&
         srcDateD == beforeYesterdayDate.getDate()
       )
-        ret = useI18n().t("beforeYesterday") + timeExtraStr; // -2d
+        ret = i18n.global.t("beforeYesterday") + timeExtraStr; // -2d
       else {
         // 跟当前时间相差的小时数
         let deltaHour = deltaTime / (3600 * 1000);
@@ -91,13 +91,13 @@ export const getTimeStringAutoShort = function (
         // 如果小于或等 7*24小时就显示星期几
         if (deltaHour <= 7 * 24) {
           let weekday = new Array(7);
-          weekday[0] = useI18n().t("sunday");
-          weekday[1] = useI18n().t("monday");
-          weekday[2] = useI18n().t("tuesday");
-          weekday[3] = useI18n().t("wednesday");
-          weekday[4] = useI18n().t("thursday");
-          weekday[5] = useI18n().t("friday");
-          weekday[6] = useI18n().t("saturday");
+          weekday[0] = i18n.global.t("sunday");
+          weekday[1] = i18n.global.t("monday");
+          weekday[2] = i18n.global.t("tuesday");
+          weekday[3] = i18n.global.t("wednesday");
+          weekday[4] = i18n.global.t("thursday");
+          weekday[5] = i18n.global.t("friday");
+          weekday[6] = i18n.global.t("saturday");
 
           // 取出当前是星期几
           let weedayDesc = weekday[srcDate.getDay()];

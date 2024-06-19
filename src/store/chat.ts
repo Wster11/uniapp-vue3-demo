@@ -19,6 +19,10 @@ export const useChatStore = defineStore("chat", () => {
     return conn.open(p);
   };
 
+  const close = () => {
+    return conn.close();
+  };
+
   const initSDKEvent = () => {
     if (isInitEvent.value) return;
     isInitEvent.value = true;
@@ -81,6 +85,7 @@ export const useChatStore = defineStore("chat", () => {
   return {
     conn,
     login,
+    close,
     getChatConn
   };
 });

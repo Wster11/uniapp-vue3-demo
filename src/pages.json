@@ -13,6 +13,18 @@
 			}
 		},
 		{
+			"path": "pages/ContactList/index",
+			"style": {
+				"navigationBarTitleText": "Easemob Uniapp"
+			}
+		},
+		{
+			"path": "pages/User/index",
+			"style": {
+				"navigationBarTitleText": "Easemob Uniapp"
+			}
+		},
+		{
 			"path": "pages/Chat/index",
 			"style": {
 				"navigationBarTitleText": "Easemob Uniapp",
@@ -36,15 +48,15 @@
 			},
 			{
 				"text": "通讯录",
-				"iconPath": "static/images/conversation.png",
-				"selectedIconPath": "static/images/conversation_active.png",
-				"pagePath": "pages/ConversationList/index"
+				"iconPath": "static/images/contacts.png",
+				"selectedIconPath": "static/images/contacts_active.png",
+				"pagePath": "pages/ContactList/index"
 			},
 			{
 				"text": "个人中心",
-				"iconPath": "static/images/conversation.png",
-				"selectedIconPath": "static/images/conversation_active.png",
-				"pagePath": "pages/ConversationList/index"
+				"iconPath": "static/images/mine.png",
+				"selectedIconPath": "static/images/mine_active.png",
+				"pagePath": "pages/User/index"
 			}
 		]
 	},

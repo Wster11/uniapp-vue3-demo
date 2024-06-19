@@ -31,5 +31,7 @@ export default {
   loadMore: "加载更多",
   sendMessagePlaceholder: "请输入消息...",
   imageUpload: "图片",
-  videoUpload: "视频"
+  videoUpload: "视频",
+  about: "关于",
+  logout: "退出登录",
 };
