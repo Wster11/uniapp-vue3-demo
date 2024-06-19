@@ -1,11 +1,6 @@
 <template>
   <view class="msg-image">
-    <image
-      @error="onError"
-      class="image"
-      :src="msg.url"
-      mode="aspectFit"
-    ></image>
+    <image @error="onError" class="image" :src="msg.url" mode="aspectFit" />
   </view>
 </template>
 
