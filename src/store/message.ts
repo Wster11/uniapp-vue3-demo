@@ -92,6 +92,25 @@ export const useMessageStore = defineStore("message", () => {
           msg.type !== "channel"
         ) {
           insertMessage(msg);
+          if (msg.chatType === "chatRoom") {
+            return res;
+          }
+          const convId = getCvsIdFromMessage(msg);
+          const conv = getConversationById(convId);
+          if (conv) {
+            // 如果会话存在，则更新会话最后一条消息和未读消息数
+            updateConversationLastMessage(
+              {
+                conversationId: convId,
+                conversationType: msg.chatType
+              },
+              msg,
+              conv.unReadCount
+            );
+            // 移动会话到顶部
+            moveConversationTop(conv);
+            return;
+          }
         }
         return res;
       });

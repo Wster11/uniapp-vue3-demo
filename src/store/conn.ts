@@ -6,14 +6,15 @@ import type {
 //@ts-ignore
 import websdk from "easemob-websdk/uniApp/Easemob-chat";
 
+websdk.logger.onLog = (log: any) => {
+  console.log(log.time, log.logs);
+};
+
+websdk.logger.setConsoleLogVisibility(false);
+
 export const useConnStore = defineStore("conn", () => {
   let conn = null as unknown as EasemobChat.Connection;
   let sdk = websdk as EasemobChatStatic;
-
-  sdk.logger.onLog = (log) => {
-    console.log(log.time, log.logs);
-  };
-
   /** 设置conn实例 */
   const setChatConn = (connection: EasemobChat.Connection) => {
     conn = connection;
