@@ -34,4 +34,11 @@ export default {
   videoUpload: "视频",
   about: "关于",
   logout: "退出登录",
+  groupList: "群聊",
+  contact: "联系人",
+  addContact: "添加好友",
+  addGroup: "申请入群",
+  searchPlaceholder: "请输入...",
+  searchNoContact: "无搜索结果",
+  add: "申请"
 };

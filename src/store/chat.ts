@@ -2,13 +2,16 @@ import { defineStore } from "pinia";
 import { useConnStore } from "./conn";
 import { useConversationStore } from "./conversation";
 import { useMessageStore } from "./message";
+import { useContactStore } from "./contact";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
+import type { ContactNotice } from "@/types/index";
 import { ref } from "vue";
 
 export const useChatStore = defineStore("chat", () => {
   const { getChatConn } = useConnStore();
   const { getConversationById, deleteConversation } = useConversationStore();
   const { onMessage } = useMessageStore();
+  const { addContactNotice } = useContactStore();
   const conn = getChatConn();
   const isInitEvent = ref(false);
 
@@ -52,29 +55,77 @@ export const useChatStore = defineStore("chat", () => {
     conn.addEventHandler("STORE_CONNECTION_STATE", {
       onConnected: () => {
         uni.showToast({
+          icon: "none",
           title: "onConnected"
         });
       },
       onDisconnected: () => {
         uni.showToast({
+          icon: "none",
           title: "onDisconnected"
         });
       },
       //@ts-ignore
       onReconnecting: () => {
         uni.showToast({
+          icon: "none",
           title: "onReconnecting"
         });
       },
       onOnline: () => {
         uni.showToast({
+          icon: "none",
           title: "onOnline"
         });
       },
       onOffline: () => {
         uni.showToast({
+          icon: "none",
           title: "onOffline"
         });
+      }
+    });
+
+    conn.addEventHandler("STORE_CONTACT", {
+      onContactInvited: (msg) => {
+        const notice: ContactNotice = {
+          ...msg,
+          ext: "invited",
+          time: new Date().getTime()
+        };
+        addContactNotice(notice);
+      },
+      onContactAgreed: (msg) => {
+        const notice: ContactNotice = {
+          ...msg,
+          ext: "agreed",
+          time: new Date().getTime()
+        };
+        addContactNotice(notice);
+      },
+      onContactRefuse: (msg) => {
+        const notice: ContactNotice = {
+          ...msg,
+          ext: "refused",
+          time: new Date().getTime()
+        };
+        addContactNotice(notice);
+      },
+      onContactDeleted: (msg) => {
+        const notice: ContactNotice = {
+          ...msg,
+          ext: "deleted",
+          time: new Date().getTime()
+        };
+        addContactNotice(notice);
+      },
+      onContactAdded: (msg) => {
+        const notice: ContactNotice = {
+          ...msg,
+          ext: "added",
+          time: new Date().getTime()
+        };
+        addContactNotice(notice);
       }
     });
   };

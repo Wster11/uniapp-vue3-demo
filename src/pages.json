@@ -19,6 +19,12 @@
 			}
 		},
 		{
+			"path": "pages/ContactNotices/index",
+			"style": {
+				"navigationBarTitleText": "Easemob Uniapp"
+			}
+		},
+		{
 			"path": "pages/User/index",
 			"style": {
 				"navigationBarTitleText": "Easemob Uniapp"

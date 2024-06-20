@@ -68,7 +68,7 @@ const getWindowSize = () => {
   });
 };
 
-const onLongPress = (e) => {
+const onLongPress = (e: any) => {
   let [touches, style, conversationId] = [
     e.touches[0],
     "",
