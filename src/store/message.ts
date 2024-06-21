@@ -91,7 +91,7 @@ export const useMessageStore = defineStore("message", () => {
           msg.type !== "read" &&
           msg.type !== "channel"
         ) {
-          insertMessage(msg);
+          insertMessage(res.message as EasemobChat.ExcludeAckMessageBody);
           if (msg.chatType === "chatRoom") {
             return res;
           }
