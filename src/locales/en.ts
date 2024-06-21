@@ -40,5 +40,10 @@ export default {
   addGroup: "申请入群",
   searchPlaceholder: "请输入...",
   searchNoContact: "无搜索结果",
-  add: "申请"
+  add: "申请",
+  applyAddFriend: "请求添加您为好友",
+  agreedFriend: "同意了您的好友申请",
+  refusedFriend: "拒绝了您的好友申请",
+  addedFriend: "已添加您为好友",
+  deletedFriend: "已解除您的好友关系"
 };

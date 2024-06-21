@@ -1,6 +1,12 @@
 <template>
   <view class="msg-image">
-    <image @error="onError" class="image" :src="msg.url" mode="aspectFit" />
+    <image
+      @error="onError"
+      @tap="previewImage"
+      class="image"
+      :src="msg.thumb"
+      mode="aspectFit"
+    />
   </view>
 </template>
 
@@ -16,6 +22,12 @@ const { msg } = props;
 
 const onError = (e: any) => {
   msg.url = ImageNotFound;
+};
+
+const previewImage = (url: string) => {
+  uni.previewImage({
+    urls: [msg.url || ""]
+  });
 };
 </script>
 

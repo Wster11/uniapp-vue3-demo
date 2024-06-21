@@ -10,19 +10,19 @@
         <view class="notice-info">
           <view class="notice-msg">
             <view v-if="notice.ext === 'invited'" class="item-opt">
-              <view>请求添加您为好友</view>
+              <view>{{ $t("applyAddFriend") }}</view>
             </view>
             <view v-else-if="notice.ext === 'agreed'" class="item-opt">
-              <view>同意了您的好友申请</view>
+              <view>{{ $t("agreedFriend") }}</view>
             </view>
             <view v-else-if="notice.ext === 'refused'" class="item-opt">
-              <view>拒绝了您的好友申请</view>
+              <view>{{ $t("refusedFriend") }}</view>
             </view>
             <view v-else-if="notice.ext === 'added'" class="item-opt">
-              <view>已添加您为好友</view>
+              <view>{{ $t("addedFriend") }}</view>
             </view>
             <view v-else-if="notice.ext === 'deleted'" class="item-opt">
-              <view>已解除您的好友关系</view>
+              <view>{{ $t("deletedFriend") }}</view>
             </view>
           </view>
           <view class="notice-time">
