@@ -1,0 +1,29 @@
+.create-group-wrap {
+  padding-bottom: 130rpx;
+}
+
+.uni-list-cell {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.user-item-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.user-id {
+  margin: 0 30rpx;
+}
+
+.create-btn {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 20rpx;
+  background: #479ff8;
+  text-align: center;
+  color: #fff;
+}

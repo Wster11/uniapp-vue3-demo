@@ -1,7 +1,7 @@
 <template>
   <view class="notices-wrap">
     <view class="notice-empty" v-if="contactsNotices.length === 0">
-      {{ $t("EmptyNoticeTip") }}
+      {{ $t("emptyNoticeTip") }}
     </view>
     <view
       class="item-info-wrap"

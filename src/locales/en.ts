@@ -46,5 +46,9 @@ export default {
   refusedFriend: "拒绝了您的好友申请",
   addedFriend: "已添加您为好友",
   deletedFriend: "已解除您的好友关系",
-  EmptyNoticeTip: "暂时没有新的通知"
+  emptyNoticeTip: "暂时没有新的通知",
+  contactNotice: "好友通知",
+  createGroup: "创建群聊",
+  selectContactTip: "请选择联系人",
+  createGroupSuccess: "创建群聊成功",
 };

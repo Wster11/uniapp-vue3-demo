@@ -12,8 +12,11 @@
       <view class="contact-search menu-item">
         <view @tap="searchGroup"> + {{ $t("addGroup") }}</view>
       </view>
+      <view class="menu-item">
+        <view @tap="toCreateGroup"> + {{ $t("createGroup") }}</view>
+      </view>
       <view class="menu-item" @tap="toContactNotices">
-        > {{ $t("好友通知") }} 
+        > {{ $t("contactNotice") }}
         {{ contactsNotices.length > 0 ? `(${contactsNotices.length})` : "" }}
       </view>
       <view class="menu-item">
@@ -87,6 +90,12 @@ const onSearchCancel = () => {
 const toContactNotices = () => {
   uni.navigateTo({
     url: `../../pages/ContactNotices/index`
+  });
+};
+
+const toCreateGroup = () => {
+  uni.navigateTo({
+    url: `../../pages/CreateGroup/index`
   });
 };
 

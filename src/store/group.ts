@@ -10,6 +10,8 @@ export const useGroupStore = defineStore("group", () => {
 
   type GetJoinedGroupListParams = Parameters<typeof conn.getJoinedGroups>[0];
 
+  type CreateGroupParams = Parameters<typeof conn.createGroup>[0];
+
   const getJoinedGroupListParams = ref<GetJoinedGroupListParams>({
     pageSize: 50,
     pageNum: 1
@@ -36,6 +38,20 @@ export const useGroupStore = defineStore("group", () => {
       });
   };
 
+  const createGroup = (params: CreateGroupParams) => {
+    return conn
+      .createGroup({
+        ...params
+      })
+      .then((res) => {
+        joinedGroupList.value.unshift({
+          groupid: res?.data?.groupid || "",
+          groupname: params.data.groupname
+        });
+        return res;
+      });
+  };
+
   const clear = () => {
     joinedGroupList.value = [];
   };
@@ -45,6 +61,7 @@ export const useGroupStore = defineStore("group", () => {
     getJoinedGroupListParams,
     getJoinedGroupList,
     applyJoinGroup,
+    createGroup,
     clear
   };
 });
