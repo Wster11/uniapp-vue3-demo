@@ -88,7 +88,6 @@ const sendImageMessage = (res: any) => {
 
 <style lang="scss" scoped>
 .tool-item {
-  width: 25%;
   display: flex;
   justify-content: center;
 }

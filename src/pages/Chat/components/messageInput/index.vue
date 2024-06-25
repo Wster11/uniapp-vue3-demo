@@ -10,7 +10,11 @@
         :placeholder="$t('sendMessagePlaceholder')"
     /></view>
     <view class="send-more">
-      <image class="icon" @tap.stop="emits('onShowToolbar')" :src="PlusIcon"></image>
+      <image
+        class="icon"
+        @tap.stop="emits('onShowToolbar')"
+        :src="PlusIcon"
+      ></image>
     </view>
   </view>
 </template>
@@ -24,7 +28,7 @@ import PlusIcon from "@/static/images/inputbar/tofeipeng/icons/plus_in_circle@2x
 
 const emits = defineEmits(["onMessageSend", "onShowToolbar"]);
 
-const { currConversation } = useConversationStore();
+const convStore = useConversationStore();
 
 const { sendMessage } = useMessageStore();
 
@@ -36,8 +40,8 @@ const text = ref("");
 
 const handleSendMessage = async () => {
   const msg = SDK.message.create({
-    to: currConversation!.conversationId,
-    chatType: currConversation!.conversationType,
+    to: convStore.currConversation!.conversationId,
+    chatType: convStore.currConversation!.conversationType,
     type: "txt",
     msg: text.value
   });
