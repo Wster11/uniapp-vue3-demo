@@ -15,7 +15,13 @@
         </view>
       </label>
     </checkbox-group>
-    <view @tap="newGroup" class="create-btn">{{ $t("createGroup") }}</view>
+    <button
+      class="create-btn"
+      @tap="newGroup"
+      :disabled="checkedUserIdList.length === 0"
+    >
+      {{ $t("createGroup") }}
+    </button>
   </view>
 </template>
 
@@ -29,7 +35,7 @@ import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
-const { getContacts, contacts } = useContactStore();
+const { contacts } = useContactStore();
 const { createGroup } = useGroupStore();
 
 const checkedUserIdList = ref<string[]>([]);
@@ -39,13 +45,6 @@ const checkboxChange = (e: any) => {
 };
 
 const newGroup = () => {
-  if (checkedUserIdList.value.length === 0) {
-    uni.showToast({
-      icon: "none",
-      title: t("selectContact")
-    });
-    return;
-  }
   createGroup({
     data: {
       groupname: checkedUserIdList.value.join(","),
@@ -72,12 +71,6 @@ const newGroup = () => {
       });
     });
 };
-
-onMounted(() => {
-  if (contacts.length === 0) {
-    getContacts();
-  }
-});
 </script>
 
 <style lang="scss" scoped>

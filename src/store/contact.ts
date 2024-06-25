@@ -9,6 +9,10 @@ export const useContactStore = defineStore("contact", () => {
 
   const contactsNotices = ref<ContactNotice[]>([]);
 
+  const viewedUserInfo = ref<EasemobChat.ContactItem>(
+    {} as EasemobChat.ContactItem
+  );
+
   const { getChatConn } = useConnStore();
   const conn = getChatConn();
 
@@ -22,6 +26,13 @@ export const useContactStore = defineStore("contact", () => {
 
   const addContact = (userId: string) => {
     return conn.addContact(userId, "apply join contact").then((res) => {
+      return res;
+    });
+  };
+
+  const deleteContact = (userId: string) => {
+    return conn.deleteContact(userId).then((res) => {
+      deleteStoreContact(userId);
       return res;
     });
   };
@@ -42,18 +53,58 @@ export const useContactStore = defineStore("contact", () => {
     contactsNotices.value.unshift(msg);
   };
 
+  const deleteStoreContact = (userId: string) => {
+    const index = contacts.value.findIndex((item) => item.userId === userId);
+    if (index !== -1) {
+      contacts.value.splice(index, 1);
+    }
+  };
+
+  const addStoreContact = (user: EasemobChat.ContactItem) => {
+    contacts.value.unshift(user);
+  };
+
+  const setViewedUserInfo = (user: EasemobChat.ContactItem) => {
+    viewedUserInfo.value.userId = user.userId;
+    viewedUserInfo.value.remark = user.remark;
+  };
+
+  const setContactRemark = (userId: string, remark: string) => {
+    return conn
+      .setContactRemark({
+        userId,
+        remark
+      })
+      .then((res) => {
+        const index = contacts.value.findIndex(
+          (item) => item.userId === userId
+        );
+        if (index !== -1) {
+          contacts.value[index].remark = remark;
+        }
+        return res;
+      });
+  };
+
   const clear = () => {
     contacts.value = [];
+    contactsNotices.value = [];
+    viewedUserInfo.value = {} as EasemobChat.ContactItem;
   };
 
   return {
     contacts,
     contactsNotices,
+    viewedUserInfo,
     getContacts,
     addContact,
+    deleteContact,
     addContactNotice,
     declineContactInvite,
     acceptContactInvite,
+    addStoreContact,
+    setViewedUserInfo,
+    setContactRemark,
     clear
   };
 });

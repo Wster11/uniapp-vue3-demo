@@ -11,7 +11,7 @@ export const useChatStore = defineStore("chat", () => {
   const { getChatConn } = useConnStore();
   const { getConversationById, deleteConversation } = useConversationStore();
   const { onMessage } = useMessageStore();
-  const { addContactNotice } = useContactStore();
+  const { addContactNotice, addStoreContact } = useContactStore();
   const conn = getChatConn();
   const isInitEvent = ref(false);
 
@@ -125,6 +125,10 @@ export const useChatStore = defineStore("chat", () => {
           ext: "added",
           time: new Date().getTime()
         };
+        addStoreContact({
+          userId: msg.from,
+          remark: ""
+        });
         addContactNotice(notice);
       }
     });

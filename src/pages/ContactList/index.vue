@@ -1,5 +1,6 @@
 <template>
   <view class="contact-list-wrap">
+    <UserInfoPanel v-if="viewedUserInfo.userId" />
     <ContactSearch
       v-if="isShowSearchPanel"
       :searchType="isSearchContact ? 'contact' : 'group'"
@@ -19,6 +20,18 @@
         > {{ $t("contactNotice") }}
         {{ contactsNotices.length > 0 ? `(${contactsNotices.length})` : "" }}
       </view>
+      <view class="menu-item">{{ $t("contact") }}</view>
+      <view class="items-wrap">
+        <view
+          class="item-wrap"
+          v-for="contact in contacts"
+          :key="contact.userId"
+          @tap="viewUserInfo(contact)"
+        >
+          <Avatar src="" :placeholder="defaultAvatar" />
+          <view class="item-id">{{ contact.userId }}</view>
+        </view>
+      </view>
       <view class="menu-item">
         {{ $t("groupList") }}
       </view>
@@ -33,18 +46,6 @@
           <view class="item-id">{{ group.groupid }}</view>
         </view>
       </view>
-      <view class="menu-item">{{ $t("contact") }}</view>
-      <view class="items-wrap">
-        <view
-          class="item-wrap"
-          v-for="contact in contacts"
-          :key="contact.userId"
-          @tap="goChat('singleChat', contact.userId)"
-        >
-          <Avatar src="" :placeholder="defaultAvatar" />
-          <view class="item-id">{{ contact.userId }}</view>
-        </view>
-      </view>
     </view>
   </view>
 </template>
@@ -55,6 +56,8 @@ import ContactSearch from "./components/contactSearch/index.vue";
 import type { EasemobChat } from "easemob-websdk";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import defaultGroupAvatar from "@/static/images/defaultGroupAvatar.png";
+import UserInfoPanel from "./components/userInfoPanel/index.vue";
+import { useBlockStore } from "@/store/block"
 import { onMounted } from "vue";
 import { useContactStore } from "@/store/contact";
 import { useGroupStore } from "@/store/group";
@@ -64,7 +67,16 @@ import { ref } from "vue";
 const isSearchContact = ref(true);
 const isShowSearchPanel = ref(false);
 
-const { getContacts, contacts, contactsNotices } = useContactStore();
+const {
+  getContacts,
+  contacts,
+  contactsNotices,
+  viewedUserInfo,
+  setViewedUserInfo
+} = useContactStore();
+
+const { blockList, getBlockList } = useBlockStore();
+
 const { joinedGroupList, getJoinedGroupList } = useGroupStore();
 
 const goChat = (chatType: EasemobChat.ChatType, toId: string) => {
@@ -99,6 +111,10 @@ const toCreateGroup = () => {
   });
 };
 
+const viewUserInfo = (contact: EasemobChat.ContactItem) => {
+  setViewedUserInfo(contact);
+};
+
 onMounted(() => {
   if (contacts.length === 0) {
     getContacts();
@@ -106,6 +122,10 @@ onMounted(() => {
 
   if (joinedGroupList.length === 0) {
     getJoinedGroupList();
+  }
+
+  if (blockList.length === 0) {
+    getBlockList();
   }
 });
 </script>
