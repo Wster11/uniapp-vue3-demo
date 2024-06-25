@@ -11,22 +11,20 @@
     <view class="divider"></view>
     <view class="menu-wrap">
       <view class="menu-item">
-        <view>{{$t("about")}}</view>
+        <view>{{ $t("about") }}</view>
         <view class="item-info">Easemob UniApp SDK v4.7.0</view>
       </view>
-      <view class="menu-item menu-item-logout" @tap="logout"> {{$t("logout")}}</view>
+      <view class="menu-item menu-item-logout" @tap="logout">
+        {{ $t("logout") }}</view
+      >
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import Avatar from "@/components/avatar/index.vue";
 import { useChatStore } from "@/store/chat";
 import { useConnStore } from "@/store/conn";
-import { useMessageStore } from "@/store/message";
-import { useConversationStore } from "@/store/conversation";
-import { useI18n } from "vue-i18n";
 import { CHAT_STORE } from "@/const/index";
 
 const { close } = useChatStore();
@@ -37,8 +35,6 @@ const userId = getChatConn().user;
 
 const logout = () => {
   close();
-  useMessageStore().clear();
-  useConversationStore().clear();
   uni.removeStorageSync(CHAT_STORE);
   uni.reLaunch({
     url: "/pages/Login/index"

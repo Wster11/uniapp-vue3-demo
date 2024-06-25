@@ -12,8 +12,6 @@
 <script setup lang="ts">
 import ImageUpload from "./imageUpload.vue";
 import VideoUpload from "./videoUpload.vue";
-import { ref, nextTick } from "vue";
-
 const emits = defineEmits(["onMessageSend"]);
 </script>
 <style lang="scss" scoped>

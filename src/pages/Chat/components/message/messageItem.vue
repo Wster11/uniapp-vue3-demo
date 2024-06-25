@@ -43,10 +43,8 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const { msg } = props;
-
 const isSelf =
-  useConnStore().getChatConn().user === msg.from || msg.from === "";
+  useConnStore().getChatConn().user === props.msg.from || props.msg.from === "";
 </script>
 
 <style lang="scss" scoped>

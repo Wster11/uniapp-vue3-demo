@@ -18,7 +18,7 @@ import { useI18n } from "vue-i18n";
 interface Props {
   title?: string;
 }
-const props = defineProps<Props>();
+defineProps<Props>();
 const { t } = useI18n();
 
 const title = t("imageUpload");
@@ -28,6 +28,8 @@ const toolbarInject = inject<InputToolbarEvent>("InputToolbarEvent");
 const { getChatConn, getChatSDK } = useConnStore();
 
 const { sendMessage } = useMessageStore();
+
+const convStore = useConversationStore();
 
 const conn = getChatConn();
 
@@ -66,19 +68,25 @@ const sendImageMessage = (res: any) => {
       const data = JSON.parse(res.data);
       const imgMsg = SDK.message.create({
         type: "img",
-        to: useConversationStore().currConversation!.conversationId,
-        chatType: useConversationStore().currConversation!.conversationType,
+        to: convStore.currConversation!.conversationId,
+        chatType: convStore.currConversation!.conversationType,
         url: data.uri + "/" + data.entities[0].uuid
       });
-      await sendMessage(imgMsg);
-      toolbarInject?.onMessageSend();
-      toolbarInject?.closeToolbar();
+      try {
+        await sendMessage(imgMsg);
+        toolbarInject?.onMessageSend();
+        toolbarInject?.closeToolbar();
+      } catch (error: any) {
+        uni.showToast({
+          title: `send failed: ${error.message}`,
+          icon: "none"
+        });
+      }
       uni.hideLoading();
     },
     fail: (e: any) => {
-      console.log("图片上传失败", e);
       uni.hideLoading();
-      uni.showToast({ title: "图片上传失败", icon: "none" });
+      uni.showToast({ title: t("uploadFailed"), icon: "none" });
     }
   };
   //@ts-ignore

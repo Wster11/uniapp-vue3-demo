@@ -19,18 +19,16 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const { msg } = props;
-
 const isError = ref(false);
 
 const onError = () => {
-  msg.thumb = ImageNotFound;
+  props.msg.thumb = ImageNotFound;
   isError.value = true;
 };
 
 const toVideoPreview = () => {
   uni.navigateTo({
-    url: `../..//pages/VideoPreview/index?url=${msg.url}`
+    url: `../../pages/VideoPreview/index?url=${props.msg.url}`
   });
 };
 </script>

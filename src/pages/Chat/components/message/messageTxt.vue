@@ -1,6 +1,6 @@
 <template>
   <view class="msg-text">
-      <span class="msg">{{ msg.msg }}</span>
+    <span class="msg">{{ msg.msg }}</span>
   </view>
 </template>
 
@@ -9,9 +9,8 @@ import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 interface Props {
   msg: EasemobChat.TextMsgBody;
 }
-const props = defineProps<Props>();
+defineProps<Props>();
 
-const { msg } = props;
 </script>
 
 <style lang="scss" scoped>

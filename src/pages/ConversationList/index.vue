@@ -49,11 +49,12 @@ const winSize = ref({
   height: 0
 });
 
-const { getConversationList, conversationList, conversationParams } =
-  useConversationStore();
+const convStore = useConversationStore();
+
+const { getConversationList } = convStore;
 
 const filteredConversationList = computed(() => {
-  return conversationList.filter((conv) => {
+  return convStore.conversationList.filter((conv) => {
     return conv.conversationId.includes(filter.value);
   });
 });
@@ -75,7 +76,7 @@ const onLongPress = (e: any) => {
     e.currentTarget.dataset.id
   ];
 
-  selectedConv.value = conversationList.find(
+  selectedConv.value = convStore.conversationList.find(
     (conv) => conv.conversationId === conversationId
   ) as EasemobChat.ConversationItem;
 
@@ -101,20 +102,19 @@ const onMenuClose = () => {
 };
 
 watch(
-  () => conversationParams.cursor,
+  () => convStore.conversationParams.cursor,
   (newCursor) => {
     if (newCursor) {
       getConversationList();
     }
+  },
+  {
+    immediate: true
   }
 );
 
 onLoad(() => {
   getWindowSize();
-});
-
-onMounted(() => {
-  getConversationList();
 });
 </script>
 <style lang="scss" scoped>

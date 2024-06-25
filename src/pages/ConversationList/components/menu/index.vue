@@ -35,7 +35,6 @@ interface Props {
 }
 const emits = defineEmits(["onMenuClose"]);
 const props = defineProps<Props>();
-const { popStyle, conversation } = props;
 const popButton = ref([
   {
     name: t("markRead"),
@@ -58,10 +57,10 @@ const popButton = ref([
 const handleClick = (params: { type: string }) => {
   switch (params.type) {
     case CONV_OPERATION_TYPE.MARK_READ:
-      markConversationRead(conversation);
+      markConversationRead(props.conversation);
       break;
     case CONV_OPERATION_TYPE.DELETE:
-      deleteConversation(conversation);
+      deleteConversation(props.conversation);
       break;
     case CONV_OPERATION_TYPE.PIN:
       console.log("置顶会话");

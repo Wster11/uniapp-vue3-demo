@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import { useConnStore } from "./conn";
 
 export const useBlockStore = defineStore("block", () => {
@@ -8,7 +8,7 @@ export const useBlockStore = defineStore("block", () => {
 
   const getBlockList = () => {
     conn.getBlocklist().then((res) => {
-      blockList.value = res.data || [];
+      blockList.value = res.data || reactive([]);
     });
   };
 
@@ -37,10 +37,15 @@ export const useBlockStore = defineStore("block", () => {
       });
   };
 
+  const clear = () => {
+    blockList.value = [];
+  };
+
   return {
     blockList,
     blockUser,
     unBlockUser,
-    getBlockList
+    getBlockList,
+    clear
   };
 });

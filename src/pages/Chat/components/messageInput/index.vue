@@ -46,10 +46,17 @@ const handleSendMessage = async () => {
     msg: text.value
   });
   text.value = "";
-  await sendMessage(msg);
-  nextTick(() => {
-    emits("onMessageSend");
-  });
+  try {
+    await sendMessage(msg);
+    nextTick(() => {
+      emits("onMessageSend");
+    });
+  } catch (error: any) {
+    uni.showToast({
+      title: `send failed: ${error.message}`,
+      icon: "none"
+    });
+  }
 };
 </script>
 <style lang="scss" scoped>

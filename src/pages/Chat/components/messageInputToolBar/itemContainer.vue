@@ -8,7 +8,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 interface Props {
   title: string;
   iconUrl: string;

@@ -1,8 +1,8 @@
 <template>
   <view class="user-wrap">
     <view class="user-header-wrap">
-      <view @tap="resetClearViewedUserInfo" class="back">{{ "<" }}</view>
-      <view class="title">{{ "好友详情" }}</view>
+      <view @tap="resetViewedUserInfo" class="back">{{ "<" }}</view>
+      <view class="title">{{ $t("contactDetail") }}</view>
     </view>
 
     <view class="user-info-wrap">
@@ -15,27 +15,31 @@
 
     <view class="user-remark-wrap">
       <view
-        >备注名:
+        >{{ $t("remark") }}:
         <span>{{ editRemark ? "" : contactStore.viewedUserInfo.remark }}</span>
       </view>
       <input
         class="remark-input"
         v-if="editRemark"
         @confirm="setRemark"
-        placeholder="请输入备注名"
+        :placeholder="$t('remarkPlaceholder')"
         v-model="remarkValue"
       />
-      <view v-else @tap="editRemark = true">{{ "编辑" }}</view>
+      <view v-else @tap="editRemark = true">{{ $t("editRemark") }}</view>
     </view>
 
     <view class="user-block-wrap">
-      <view>黑名单:</view>
+      <view>{{ $t("blockList") }}:</view>
       <switch :checked="isBlockUser" @change="switchChange" />
     </view>
 
     <view class="user-opt-wrap">
-      <button class="opt-btn" type="primary" @tap="goChat">发送消息</button>
-      <button class="opt-btn" type="warn" @tap="deleteContact">删除好友</button>
+      <button class="opt-btn" type="primary" @tap="goChat">
+        {{ $t("sendMessage") }}
+      </button>
+      <button class="opt-btn" type="warn" @tap="deleteContact">
+        {{ $t("deleteFriend") }}
+      </button>
     </view>
   </view>
 </template>
@@ -43,22 +47,24 @@
 <script setup lang="ts">
 import Avatar from "@/components/avatar/index.vue";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
-import defaultGroupAvatar from "@/static/images/defaultGroupAvatar.png";
 import { useContactStore } from "@/store/contact";
 import { useBlockStore } from "@/store/block";
-import { useGroupStore } from "@/store/group";
-import { ref, onUnmounted } from "vue";
-import type { EasemobChat } from "easemob-websdk";
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { computed } from "vue";
+
 const contactStore = useContactStore();
-const { blockList, blockUser, unBlockUser } = useBlockStore();
+const blockStore = useBlockStore();
+const { t } = useI18n();
+const { blockUser, unBlockUser } = blockStore;
 const remarkValue = ref("");
 const editRemark = ref(false);
+
 const isBlockUser = computed(() => {
-  return blockList.includes(contactStore.viewedUserInfo.userId);
+  return blockStore.blockList.includes(contactStore.viewedUserInfo.userId);
 });
 
-const resetClearViewedUserInfo = () => {
+const resetViewedUserInfo = () => {
   contactStore.setViewedUserInfo({
     userId: "",
     remark: ""
@@ -77,26 +83,35 @@ const setRemark = async () => {
   editRemark.value = false;
 };
 
-const switchChange = (e: any) => {
-  if (e.detail.value) {
-    blockUser(contactStore.viewedUserInfo.userId);
-  } else {
-    unBlockUser(contactStore.viewedUserInfo.userId);
+const switchChange = async (e: any) => {
+  uni.showLoading();
+  try {
+    if (e.detail.value) {
+      await blockUser(contactStore.viewedUserInfo.userId);
+    } else {
+      await unBlockUser(contactStore.viewedUserInfo.userId);
+    }
+    uni.hideLoading();
+  } catch (error) {
+    uni.hideLoading();
   }
+
+  uni.hideLoading();
 };
 
 const goChat = () => {
   uni.navigateTo({
     url: `../../pages/Chat/index?type=singleChat&id=${contactStore.viewedUserInfo.userId}`
   });
-  resetClearViewedUserInfo();
+  resetViewedUserInfo();
 };
 
 const deleteContact = () => {
   contactStore.deleteContact(contactStore.viewedUserInfo.userId).then(() => {
     uni.showToast({
-      title: "删除成功"
+      title: t("deleteSuccess")
     });
+    resetViewedUserInfo();
   });
 };
 </script>
@@ -127,6 +142,7 @@ const deleteContact = () => {
   padding-right: 40rpx;
 }
 .avatar {
+  flex-shrink: 0;
   margin-right: 30rpx;
 }
 .user-info-wrap {
@@ -169,6 +185,8 @@ const deleteContact = () => {
   font-size: 36rpx;
 }
 .opt-btn {
+  width: 90%;
+  margin-left: 5%;
   margin-top: 20rpx;
 }
 </style>

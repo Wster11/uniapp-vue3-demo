@@ -65,8 +65,7 @@ export const useContactStore = defineStore("contact", () => {
   };
 
   const setViewedUserInfo = (user: EasemobChat.ContactItem) => {
-    viewedUserInfo.value.userId = user.userId;
-    viewedUserInfo.value.remark = user.remark;
+    viewedUserInfo.value = user;
   };
 
   const setContactRemark = (userId: string, remark: string) => {

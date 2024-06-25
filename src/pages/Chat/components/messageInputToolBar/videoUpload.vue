@@ -18,7 +18,7 @@ import { useI18n } from "vue-i18n";
 interface Props {
   title?: string;
 }
-const props = defineProps<Props>();
+defineProps<Props>();
 const { t } = useI18n();
 
 const title = t("videoUpload");
@@ -32,6 +32,8 @@ const { sendMessage } = useMessageStore();
 const conn = getChatConn();
 
 const SDK = getChatSDK();
+
+const convStore = useConversationStore();
 
 const chooseVideo = () => {
   uni.chooseVideo({
@@ -52,7 +54,7 @@ const sendVideoMessage = (res: any) => {
   }
   uni.showLoading();
   const token = conn.token;
-  console.log(token, '  token')
+  console.log(token, "  token");
   const requestParams = {
     url: uploadUrl,
     filePath: tempFilePath,
@@ -62,27 +64,32 @@ const sendVideoMessage = (res: any) => {
       Authorization: "Bearer " + token
     },
     success: async (res: any) => {
-      console.log("视频上传成功", res);
       const data = JSON.parse(res.data);
       const videoMsg = SDK.message.create({
         type: "video",
-        to: useConversationStore().currConversation!.conversationId,
-        chatType: useConversationStore().currConversation!.conversationType,
+        to: convStore.currConversation!.conversationId,
+        chatType: convStore.currConversation!.conversationType,
         file_length: res.duration,
         //@ts-ignore
         body: {
           url: data.uri + "/" + data.entities[0].uuid
         }
       });
-      await sendMessage(videoMsg);
-      toolbarInject?.onMessageSend();
-      toolbarInject?.closeToolbar();
+      try {
+        await sendMessage(videoMsg);
+        toolbarInject?.onMessageSend();
+        toolbarInject?.closeToolbar();
+      } catch (error: any) {
+        uni.showToast({
+          title: `send failed: ${error.message}`,
+          icon: "none"
+        });
+      }
       uni.hideLoading();
     },
     fail: (e: any) => {
-      console.log("视频上传失败", e);
       uni.hideLoading();
-      uni.showToast({ title: "视频上传失败", icon: "none" });
+      uni.showToast({ title: t("uploadFailed"), icon: "none" });
     }
   };
   //@ts-ignore

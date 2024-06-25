@@ -18,15 +18,13 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const { msg } = props;
-
 const onError = (e: any) => {
-  msg.url = ImageNotFound;
+  props.msg.url = ImageNotFound;
 };
 
 const previewImage = (url: string) => {
   uni.previewImage({
-    urls: [msg.url || ""]
+    urls: [props.msg.url || ""]
   });
 };
 </script>

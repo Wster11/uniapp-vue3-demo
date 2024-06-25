@@ -4,7 +4,7 @@
   </view>
 </template>
 <script setup lang="ts">
-import { toRefs, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { getTimeStringAutoShort } from "@/utils/index";
 interface Props {
   currTime: number;
@@ -13,12 +13,10 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const { currTime, prevTime } = toRefs(props);
 const isShowTime = ref(false);
 const time = ref("");
 
 const handleItemTime = (currTime: number, prevTime: number) => {
-
   isShowTime.value = true;
   if (currTime <= 0) {
     return "";
@@ -30,19 +28,19 @@ const handleItemTime = (currTime: number, prevTime: number) => {
     const diff = currTime - prevTime; //
     if (diff >= minDiffToShow) {
       isShowTime.value = true;
-      return getTimeStringAutoShort(currTime,true);
+      return getTimeStringAutoShort(currTime, true);
     }
   }
   return "";
 };
 
 watch(
-  () => [currTime.value, prevTime.value],
+  () => [props.currTime, props.prevTime],
   (newVal: any, oldVal: any) => {
     if (newVal?.toString() === oldVal?.toString()) {
       return;
     } else {
-      time.value = handleItemTime(currTime.value, prevTime.value);
+      time.value = handleItemTime(props.currTime, props.prevTime);
     }
   },
   {

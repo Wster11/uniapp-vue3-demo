@@ -1,27 +1,38 @@
 <template>
   <view class="create-group-wrap">
-    <checkbox-group class="uni-list" @change="checkboxChange">
-      <label
-        class="uni-list-cell uni-list-cell-pd"
-        v-for="item in contacts"
-        :key="item.userId"
+    <view class="content">
+      <view class="input-wrap">
+        <view class="label">{{ $t("groupName") }}</view>
+        <input v-model="groupName" :placeholder="$t('groupNamePlaceholder')" />
+      </view>
+      <view class="input-wrap">
+        <view class="label">{{ $t("groupDesc") }}</view>
+        <input v-model="groupDesc" :placeholder="$t('groupDescPlaceholder')" />
+      </view>
+      <view class="label">{{ $t("groupMember") }}</view>
+      <checkbox-group class="uni-list" @change="checkboxChange">
+        <label
+          class="uni-list-cell uni-list-cell-pd"
+          v-for="item in contactStore.contacts"
+          :key="item.userId"
+        >
+          <view>
+            <checkbox :value="item.userId"></checkbox>
+          </view>
+          <view class="user-item-wrap">
+            <Avatar src="" :placeholder="defaultAvatar" />
+            <view class="user-id">{{ item.userId }}</view>
+          </view>
+        </label>
+      </checkbox-group>
+      <button
+        class="create-btn"
+        @tap="newGroup"
+        :disabled="checkedUserIdList.length === 0"
       >
-        <view>
-          <checkbox :value="item.userId"></checkbox>
-        </view>
-        <view class="user-item-wrap">
-          <Avatar src="" :placeholder="defaultAvatar" />
-          <view class="user-id">{{ item.userId }}</view>
-        </view>
-      </label>
-    </checkbox-group>
-    <button
-      class="create-btn"
-      @tap="newGroup"
-      :disabled="checkedUserIdList.length === 0"
-    >
-      {{ $t("createGroup") }}
-    </button>
+        {{ $t("createGroup") }}
+      </button>
+    </view>
   </view>
 </template>
 
@@ -30,26 +41,39 @@ import Avatar from "@/components/avatar/index.vue";
 import { useContactStore } from "@/store/contact";
 import { useGroupStore } from "@/store/group";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
-import { ref, onMounted, computed } from "vue";
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
-const { contacts } = useContactStore();
+const contactStore = useContactStore();
+
 const { createGroup } = useGroupStore();
 
 const checkedUserIdList = ref<string[]>([]);
+
+const groupName = ref("");
+
+const groupDesc = ref("");
 
 const checkboxChange = (e: any) => {
   checkedUserIdList.value = e.detail.value;
 };
 
 const newGroup = () => {
+  if (groupName.value === "") {
+    groupName.value = checkedUserIdList.value.join(",");
+  }
+
+  if (groupDesc.value === "") {
+    groupDesc.value = `group desc`;
+  }
+
   createGroup({
     data: {
-      groupname: checkedUserIdList.value.join(","),
+      groupname: groupName.value,
       members: checkedUserIdList.value,
-      desc: `${Date.now()} group desc`,
+      desc: groupDesc.value,
       public: true,
       allowinvites: true,
       inviteNeedConfirm: false,

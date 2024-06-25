@@ -39,22 +39,22 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const { msgs, conversationId, conversationType } = props;
-
-const scrollHeight = ref(msgs.length * 300);
+const scrollHeight = ref(props.msgs.length * 300);
 
 const isLoading = ref(false);
 
 const currentViewMsgId = ref<string>("");
 
-const { getHistoryMessages, conversationMessagesMap } = useMessageStore();
+const messageStore = useMessageStore();
+
+const { getHistoryMessages } = messageStore;
 
 const isLast = computed(() => {
-  return conversationMessagesMap.get(conversationId)?.isLast;
+  return messageStore.conversationMessagesMap.get(props.conversationId)?.isLast;
 });
 
 const cursor = computed(() => {
-  return conversationMessagesMap.get(conversationId)?.cursor;
+  return messageStore.conversationMessagesMap.get(props.conversationId)?.cursor;
 });
 
 const loadMore = async () => {
@@ -62,12 +62,12 @@ const loadMore = async () => {
     return;
   }
   isLoading.value = true;
-  const viewedMsgId = msgs[0].id;
+  const viewedMsgId = props.msgs[0].id;
   try {
     await getHistoryMessages(
       {
-        conversationId: conversationId,
-        conversationType: conversationType
+        conversationId: props.conversationId,
+        conversationType: props.conversationType
       } as EasemobChat.ConversationItem,
       cursor.value
     );

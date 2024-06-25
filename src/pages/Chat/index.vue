@@ -31,7 +31,6 @@
 import { ref } from "vue";
 import { useMessageStore } from "@/store/message";
 import { useConversationStore } from "@/store/conversation";
-import { useI18n } from "vue-i18n";
 import MessageList from "./components/message/messageList.vue";
 import MessageInput from "./components/messageInput/index.vue";
 import MessageInputToolbar from "./components/messageInputToolBar/index.vue";
@@ -40,19 +39,19 @@ import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { onLoad } from "@dcloudio/uni-app";
 import type { InputToolbarEvent } from "@/types/index";
 
-
 const msgListRef = ref(null);
-const { t } = useI18n();
 const conversationId = ref("");
 const isShowToolbar = ref(false);
 const conversationType = ref<EasemobChat.ConversationItem["conversationType"]>(
   "" as EasemobChat.ConversationItem["conversationType"]
 );
-const { getHistoryMessages, conversationMessagesMap } = useMessageStore();
+const messageStore = useMessageStore();
+const { getHistoryMessages } = messageStore;
 const { markConversationRead, setCurrentConversation } = useConversationStore();
 
 const msgs = computed(() => {
-  return conversationMessagesMap.get(conversationId.value)?.messages;
+  return messageStore.conversationMessagesMap.get(conversationId.value)
+    ?.messages;
 });
 
 const onMessageSend = () => {

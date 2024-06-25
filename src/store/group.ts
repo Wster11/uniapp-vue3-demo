@@ -5,6 +5,11 @@ import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 
 export const useGroupStore = defineStore("group", () => {
   const joinedGroupList = ref<EasemobChat.BaseGroupInfo[]>([]);
+
+  const viewedGroupInfo = ref<EasemobChat.BaseGroupInfo>(
+    {} as EasemobChat.BaseGroupInfo
+  );
+
   const { getChatConn } = useConnStore();
   const conn = getChatConn();
 
@@ -52,13 +57,37 @@ export const useGroupStore = defineStore("group", () => {
       });
   };
 
+  const destroyGroup = (groupId: string) => {
+    return conn
+      .destroyGroup({
+        groupId
+      })
+      .then((res) => {
+        let index = joinedGroupList.value.findIndex(
+          (group) => group.groupid === groupId
+        );
+        if (index !== -1) {
+          joinedGroupList.value.splice(index, 1);
+        }
+        return res;
+      });
+  };
+
+  const setViewedGroupInfo = (group: EasemobChat.BaseGroupInfo) => {
+    viewedGroupInfo.value = group;
+  };
+
   const clear = () => {
     joinedGroupList.value = [];
+    viewedGroupInfo.value = {} as EasemobChat.BaseGroupInfo;
   };
 
   return {
     joinedGroupList,
     getJoinedGroupListParams,
+    viewedGroupInfo,
+    destroyGroup,
+    setViewedGroupInfo,
     getJoinedGroupList,
     applyJoinGroup,
     createGroup,

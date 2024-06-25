@@ -3,15 +3,28 @@ import { useConnStore } from "./conn";
 import { useConversationStore } from "./conversation";
 import { useMessageStore } from "./message";
 import { useContactStore } from "./contact";
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
+import { useGroupStore } from "./group";
+import { useBlockStore } from "./block";
 import type { ContactNotice } from "@/types/index";
 import { ref } from "vue";
 
 export const useChatStore = defineStore("chat", () => {
   const { getChatConn } = useConnStore();
-  const { getConversationById, deleteConversation } = useConversationStore();
-  const { onMessage } = useMessageStore();
-  const { addContactNotice, addStoreContact } = useContactStore();
+  const {
+    getConversationById,
+    deleteConversation,
+    getConversationList,
+    clear: clearConversation
+  } = useConversationStore();
+  const { onMessage, clear: clearMessage } = useMessageStore();
+  const {
+    addContactNotice,
+    addStoreContact,
+    getContacts,
+    clear: clearContacts
+  } = useContactStore();
+  const { getJoinedGroupList, clear: clearGroup } = useGroupStore();
+  const { getBlockList, clear: clearBlock } = useBlockStore();
   const conn = getChatConn();
   const isInitEvent = ref(false);
 
@@ -19,10 +32,25 @@ export const useChatStore = defineStore("chat", () => {
   type LoginParams = Parameters<typeof conn.open>[0];
 
   const login = (p: LoginParams) => {
-    return conn.open(p);
+    return conn.open(p).then((res) => {
+      getConversationList();
+      getContacts();
+      getJoinedGroupList();
+      getBlockList();
+      return res;
+    });
+  };
+
+  const clearStore = () => {
+    clearContacts();
+    clearMessage();
+    clearContacts();
+    clearGroup();
+    clearBlock();
   };
 
   const close = () => {
+    clearStore();
     return conn.close();
   };
 
@@ -101,6 +129,10 @@ export const useChatStore = defineStore("chat", () => {
           ext: "agreed",
           time: new Date().getTime()
         };
+        addStoreContact({
+          userId: msg.from,
+          remark: ""
+        });
         addContactNotice(notice);
       },
       onContactRefuse: (msg) => {
