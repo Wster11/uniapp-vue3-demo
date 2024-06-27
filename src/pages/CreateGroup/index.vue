@@ -9,6 +9,8 @@
         <view class="label">{{ $t("groupDesc") }}</view>
         <input v-model="groupDesc" :placeholder="$t('groupDescPlaceholder')" />
       </view>
+      <view class="label">{{ $t("publicGroup") }}</view>
+      <switch class="switch" :checked="isPublicGroup" @change="switchChange" />
       <view class="label">{{ $t("groupMember") }}</view>
       <checkbox-group class="uni-list" @change="checkboxChange">
         <label
@@ -56,8 +58,14 @@ const groupName = ref("");
 
 const groupDesc = ref("");
 
+const isPublicGroup = ref(true);
+
 const checkboxChange = (e: any) => {
   checkedUserIdList.value = e.detail.value;
+};
+
+const switchChange = (e: any) => {
+  isPublicGroup.value = e.detail.value;
 };
 
 const newGroup = () => {
@@ -74,7 +82,7 @@ const newGroup = () => {
       groupname: groupName.value,
       members: checkedUserIdList.value,
       desc: groupDesc.value,
-      public: true,
+      public: isPublicGroup.value,
       allowinvites: true,
       inviteNeedConfirm: false,
       approval: false,

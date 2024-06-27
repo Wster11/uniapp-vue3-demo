@@ -13,9 +13,11 @@ export const useContactStore = defineStore("contact", () => {
     {} as EasemobChat.ContactItem
   );
 
-  const { getChatConn } = useConnStore();
+  const connStore = useConnStore();
+  const { getChatConn } = connStore;
   const conn = getChatConn();
 
+  /** 获取全部联系人 */
   const getContacts = () => {
     conn.getAllContacts().then((res) => {
       if (res.data) {
@@ -24,12 +26,14 @@ export const useContactStore = defineStore("contact", () => {
     });
   };
 
+  /** 添加好友 */
   const addContact = (userId: string) => {
     return conn.addContact(userId, "apply join contact").then((res) => {
       return res;
     });
   };
 
+  /** 删除好友 */
   const deleteContact = (userId: string) => {
     return conn.deleteContact(userId).then((res) => {
       deleteStoreContact(userId);
@@ -37,22 +41,26 @@ export const useContactStore = defineStore("contact", () => {
     });
   };
 
+  /** 拒绝好友申请 */
   const declineContactInvite = (userId: string) => {
     return conn.declineContactInvite(userId).then((res) => {
       return res;
     });
   };
 
+  /** 接受好友申请 */
   const acceptContactInvite = (userId: string) => {
     return conn.acceptContactInvite(userId).then((res) => {
       return res;
     });
   };
 
+  /** push 好友通知 */
   const addContactNotice = (msg: ContactNotice) => {
     contactsNotices.value.unshift(msg);
   };
 
+  /** 删除store中的联系人 */
   const deleteStoreContact = (userId: string) => {
     const index = contacts.value.findIndex((item) => item.userId === userId);
     if (index !== -1) {
@@ -60,6 +68,7 @@ export const useContactStore = defineStore("contact", () => {
     }
   };
 
+  /** 添加store的联系人 */
   const addStoreContact = (user: EasemobChat.ContactItem) => {
     contacts.value.unshift(user);
   };
@@ -68,6 +77,7 @@ export const useContactStore = defineStore("contact", () => {
     viewedUserInfo.value = user;
   };
 
+  /** 设置联系人备注 */
   const setContactRemark = (userId: string, remark: string) => {
     return conn
       .setContactRemark({

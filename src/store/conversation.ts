@@ -25,7 +25,8 @@ export const useConversationStore = defineStore("conversation", () => {
 
   const conversationList = ref<EasemobChat.ConversationItem[]>([]);
 
-  const setConversation = (conversations: EasemobChat.ConversationItem[]) => {
+  /** 设置会话列表 */
+  const setConversations = (conversations: EasemobChat.ConversationItem[]) => {
     if (!Array.isArray(conversations)) {
       return console.error("Invalid parameter: conversations");
     }
@@ -47,14 +48,19 @@ export const useConversationStore = defineStore("conversation", () => {
     conversationParams.value.pageSize = p.pageSize;
   };
 
+  /** 获取会话列表 */
   const getConversationList = () => {
     return conn.getServerConversations(conversationParams.value).then((res) => {
-      setConversation(res.data?.conversations || []);
+      setConversations(res.data?.conversations || []);
       conversationParams.value.cursor = res.data?.cursor;
+      if (res.data?.cursor) {
+        getConversationList();
+      }
       return res;
     });
   };
 
+  /** 删除Store中的会话 */
   const deleteStoreConversation = (
     conversation: EasemobChat.ConversationItem
   ) => {
@@ -69,7 +75,7 @@ export const useConversationStore = defineStore("conversation", () => {
     }
   };
 
-  /** 删除会话*/
+  /** 删除会话 */
   const deleteConversation = async (
     conversation: EasemobChat.ConversationItem,
     deleteMessage?: boolean

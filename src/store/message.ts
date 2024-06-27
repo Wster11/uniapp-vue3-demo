@@ -25,6 +25,7 @@ export const useMessageStore = defineStore("message", () => {
     new Map()
   );
 
+  // 会话ID和会话消息的映射
   const conversationMessagesMap = ref<Map<string, ConversationMessagesInfo>>(
     new Map()
   );
@@ -171,10 +172,10 @@ export const useMessageStore = defineStore("message", () => {
   return {
     messageMap,
     conversationMessagesMap,
-    clear,
     getHistoryMessages,
     insertMessage,
     sendMessage,
-    onMessage
+    onMessage,
+    clear
   };
 });

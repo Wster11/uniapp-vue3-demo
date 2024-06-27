@@ -70,5 +70,18 @@ export default {
   groupDescPlaceholder: "请输入群描述",
   groupName: "群名称",
   groupDesc: "群描述",
-  groupMember: "群成员"
+  groupMember: "群成员",
+  cancel: "取消",
+  groupNotice: "群组通知",
+  publicGroup: "公开群",
+  privateGroup: "私有群",
+  requestSended: "已发送请求",
+  joinedGroupNotice: "加入群组成功",
+  destroyGroupNotice: "群组已被解散",
+  groupDetailButton: "群详情",
+  owner: "群主",
+  inviteUser: "邀请入群",
+  removeUser: "移除出群",
+  feedback: "意见反馈",
+  personalInfo: "个人信息"
 };

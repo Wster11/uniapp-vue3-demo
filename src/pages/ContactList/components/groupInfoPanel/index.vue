@@ -6,13 +6,17 @@
     </view>
 
     <view class="group-info-wrap">
-      <Avatar class="avatar" src="" :placeholder="defaultGroupAvatar" />
+      <Avatar class="group-avatar" src="" :placeholder="defaultGroupAvatar" />
       <view>
         <view class="groupname">{{
-          groupStore.viewedGroupInfo.groupname
+          groupStore.viewedGroupInfo.groupName
         }}</view>
         <view class="group-id"
-          >groupId: {{ groupStore.viewedGroupInfo.groupid }}</view
+          >GroupId: {{ groupStore.viewedGroupInfo.groupId }}（{{
+            groupStore.viewedGroupInfo.public
+              ? $t("publicGroup")
+              : $t("privateGroup")
+          }}）</view
         >
       </view>
     </view>
@@ -21,7 +25,16 @@
       <button class="opt-btn" type="primary" @tap="goChat">
         {{ $t("enterGroup") }}
       </button>
-      <button class="opt-btn" type="warn" @tap="destroyGroup">
+      <button class="opt-btn" @tap="goGroupDetail">
+        {{ $t("groupDetail") }}
+      </button>
+
+      <button
+        class="opt-btn"
+        v-if="groupStore.viewedGroupInfo.role === 'owner'"
+        type="warn"
+        @tap="destroyGroup"
+      >
         {{ $t("destroyGroup") }}
       </button>
     </view>
@@ -33,25 +46,32 @@ import Avatar from "@/components/avatar/index.vue";
 import defaultGroupAvatar from "@/static/images/defaultGroupAvatar.png";
 import { useGroupStore } from "@/store/group";
 import { useI18n } from "vue-i18n";
+import type { EasemobChat } from "easemob-websdk";
 const groupStore = useGroupStore();
 const { t } = useI18n();
 
 const resetViewedGroupInfo = () => {
   groupStore.setViewedGroupInfo({
-    groupid: "",
-    groupname: ""
-  });
+    groupName: "",
+    groupId: ""
+  } as EasemobChat.GroupInfo);
 };
 
 const goChat = () => {
   uni.navigateTo({
-    url: `../../pages/Chat/index?type=groupChat&id=${groupStore.viewedGroupInfo.groupid}`
+    url: `../../pages/Chat/index?type=groupChat&id=${groupStore.viewedGroupInfo.groupId}`
   });
   resetViewedGroupInfo();
 };
 
+const goGroupDetail = () => {
+  uni.navigateTo({
+    url: `../../pages/GroupDetail/index?id=${groupStore.viewedGroupInfo.groupId}`
+  });
+};
+
 const destroyGroup = async () => {
-  await groupStore.destroyGroup(groupStore.viewedGroupInfo.groupid);
+  await groupStore.destroyGroup(groupStore.viewedGroupInfo.groupId);
   resetViewedGroupInfo();
   uni.showToast({
     title: t("destroyGroupSuccess")
@@ -83,8 +103,9 @@ const destroyGroup = async () => {
   width: 100%;
   text-align: center;
   padding-right: 40rpx;
+  font-size: 28rpx;
 }
-.avatar {
+.group-avatar {
   flex-shrink: 0;
   margin-right: 30rpx;
 }

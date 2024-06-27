@@ -23,7 +23,14 @@ export const useChatStore = defineStore("chat", () => {
     getContacts,
     clear: clearContacts
   } = useContactStore();
-  const { getJoinedGroupList, clear: clearGroup } = useGroupStore();
+  const {
+    getJoinedGroupList,
+    clear: clearGroup,
+    addGroupNotice,
+    getGroupInfo,
+    setJoinedGroupList,
+    removeStoreGroup
+  } = useGroupStore();
   const { getBlockList, clear: clearBlock } = useBlockStore();
   const conn = getChatConn();
   const isInitEvent = ref(false);
@@ -31,6 +38,7 @@ export const useChatStore = defineStore("chat", () => {
   /** 登录参数类型 */
   type LoginParams = Parameters<typeof conn.open>[0];
 
+  /** 登录IM */
   const login = (p: LoginParams) => {
     return conn.open(p).then((res) => {
       getConversationList();
@@ -41,14 +49,16 @@ export const useChatStore = defineStore("chat", () => {
     });
   };
 
+  /** 清除Store */
   const clearStore = () => {
-    clearContacts();
+    clearConversation();
     clearMessage();
     clearContacts();
     clearGroup();
     clearBlock();
   };
 
+  /** 关闭IM连接 */
   const close = () => {
     clearStore();
     return conn.close();
@@ -57,7 +67,8 @@ export const useChatStore = defineStore("chat", () => {
   const initSDKEvent = () => {
     if (isInitEvent.value) return;
     isInitEvent.value = true;
-    conn.addEventHandler("STORE_MULTI_DEIVCE", {
+    /** 多端同步事件 */
+    conn.addEventHandler("STORE_MULTI_DEVICE", {
       onMultiDeviceEvent: (e) => {
         if (e.operation === "deleteConversation") {
           let conv = getConversationById(e.conversationId);
@@ -68,6 +79,7 @@ export const useChatStore = defineStore("chat", () => {
       }
     });
 
+    /** 消息事件 */
     conn.addEventHandler("STORE_MESSAGE", {
       onTextMessage: (msg) => {
         onMessage(msg);
@@ -80,6 +92,7 @@ export const useChatStore = defineStore("chat", () => {
       }
     });
 
+    /** 连接状态事件 */
     conn.addEventHandler("STORE_CONNECTION_STATE", {
       onConnected: () => {
         uni.showToast({
@@ -114,6 +127,7 @@ export const useChatStore = defineStore("chat", () => {
       }
     });
 
+    /** 联系人事件 */
     conn.addEventHandler("STORE_CONTACT", {
       onContactInvited: (msg) => {
         const notice: ContactNotice = {
@@ -133,7 +147,6 @@ export const useChatStore = defineStore("chat", () => {
           userId: msg.from,
           remark: ""
         });
-        addContactNotice(notice);
       },
       onContactRefuse: (msg) => {
         const notice: ContactNotice = {
@@ -162,6 +175,42 @@ export const useChatStore = defineStore("chat", () => {
           remark: ""
         });
         addContactNotice(notice);
+      }
+    });
+    /** 群组事件 */
+    conn.addEventHandler("STORE_GROUP", {
+      onGroupEvent: async (event) => {
+        switch (event.operation) {
+          case "directJoined":
+          case "create":
+          case "acceptRequest":
+            let res = await getGroupInfo(event.id);
+            const info = res.data?.[0];
+            if (info) {
+              setJoinedGroupList([
+                {
+                  groupId: info.id,
+                  groupName: info.name,
+                  public: info.public,
+                  description: info.description,
+                  disabled: true,
+                  allowInvites: info.allowinvites,
+                  maxUsers: info.maxusers,
+                  approval: info.membersonly
+                }
+              ]);
+            }
+            break;
+          case "removeMember":
+          case "destroy":
+            removeStoreGroup(event.id);
+          default:
+            break;
+        }
+        addGroupNotice({
+          ...event,
+          time: new Date().getTime()
+        });
       }
     });
   };

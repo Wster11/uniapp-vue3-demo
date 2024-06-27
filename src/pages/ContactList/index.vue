@@ -1,7 +1,7 @@
 <template>
   <view class="contact-list-wrap">
     <UserInfoPanel v-if="contactStore.viewedUserInfo.userId" />
-    <GroupInfoPanel v-if="groupStore.viewedGroupInfo.groupid" />
+    <GroupInfoPanel v-if="groupStore.viewedGroupInfo.groupId" />
     <ContactSearch
       v-if="isShowSearchPanel"
       :searchType="isSearchContact ? 'contact' : 'group'"
@@ -9,21 +9,13 @@
     />
     <view v-else>
       <view class="contact-search menu-item">
-        <view @tap="searchContact"> + {{ $t("addContact") }}</view>
+        <view @tap="searchContact"> {{ $t("addContact") }} ></view>
       </view>
       <view class="contact-search menu-item">
-        <view @tap="searchGroup"> + {{ $t("addGroup") }}</view>
+        <view @tap="searchGroup"> {{ $t("addGroup") }} ></view>
       </view>
       <view class="menu-item">
-        <view @tap="toCreateGroup"> + {{ $t("createGroup") }}</view>
-      </view>
-      <view class="menu-item" @tap="toContactNotices">
-        > {{ $t("contactNotice") }}
-        {{
-          contactStore.contactsNotices.length > 0
-            ? `(${contactStore.contactsNotices.length})`
-            : ""
-        }}
+        <view @tap="toCreateGroup"> {{ $t("createGroup") }} ></view>
       </view>
       <view class="menu-item">{{ $t("blockList") }}</view>
       <view
@@ -53,11 +45,11 @@
         <view
           class="item-wrap"
           v-for="group in groupStore.joinedGroupList"
-          :key="group.groupid"
+          :key="group.groupId"
           @tap="viewGroupInfo(group)"
         >
           <Avatar src="" :placeholder="defaultGroupAvatar" />
-          <view class="item-id">{{ group.groupid }}</view>
+          <view class="item-id">{{ group.groupId }}</view>
         </view>
       </view>
     </view>
@@ -103,12 +95,6 @@ const onSearchCancel = () => {
   isShowSearchPanel.value = false;
 };
 
-const toContactNotices = () => {
-  uni.navigateTo({
-    url: `../../pages/ContactNotices/index`
-  });
-};
-
 const toCreateGroup = () => {
   uni.navigateTo({
     url: `../../pages/CreateGroup/index`
@@ -119,7 +105,7 @@ const viewUserInfo = (contact: EasemobChat.ContactItem) => {
   setViewedUserInfo(contact);
 };
 
-const viewGroupInfo = (group: EasemobChat.BaseGroupInfo) => {
+const viewGroupInfo = (group: EasemobChat.GroupInfo) => {
   setViewedGroupInfo(group);
 };
 </script>

@@ -1,17 +1,19 @@
 import { defineStore } from "pinia";
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import { useConnStore } from "./conn";
 
 export const useBlockStore = defineStore("block", () => {
   const blockList = ref<string[]>([]);
   const conn = useConnStore().getChatConn();
 
+  /** 获取黑名单列表 */
   const getBlockList = () => {
     conn.getBlocklist().then((res) => {
-      blockList.value = res.data || reactive([]);
+      blockList.value = res.data || [];
     });
   };
 
+  /** 将用户加入黑名单 */
   const blockUser = (userId: string) => {
     return conn
       .addUsersToBlocklist({
@@ -22,7 +24,7 @@ export const useBlockStore = defineStore("block", () => {
         return res;
       });
   };
-
+  /** 将用户移除黑名单 */
   const unBlockUser = (userId: string) => {
     return conn
       .removeUserFromBlocklist({

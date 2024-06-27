@@ -14,7 +14,7 @@
           :placeholder="$t('searchPlaceholder')"
         />
       </view>
-      <view @tap="onCancel" class="cancel">取消</view>
+      <view @tap="onCancel" class="cancel">{{ $t("cancel") }}</view>
     </view>
 
     <view class="search-content">
@@ -46,6 +46,7 @@ import defaultGroupAvatar from "@/static/images/defaultGroupAvatar.png";
 import { useContactStore } from "@/store/contact";
 import { useGroupStore } from "@/store/group";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 interface Props {
   searchType: "contact" | "group";
@@ -60,6 +61,8 @@ const { addContact } = useContactStore();
 const { applyJoinGroup } = useGroupStore();
 
 const emits = defineEmits(["onCancel"]);
+
+const { t } = useI18n();
 
 const inputValue = ref("");
 const hasResult = ref(false);
@@ -76,13 +79,13 @@ const onAdd = () => {
   if (searchType === "contact") {
     addContact(inputValue.value);
     uni.showToast({
-      title: "请求已经发送"
+      title: t("requestSended")
     });
   } else {
     applyJoinGroup(inputValue.value)
       .then(() => {
         uni.showToast({
-          title: "请求已经发送"
+          title: t("requestSended")
         });
       })
       .catch((err) => {
@@ -130,6 +133,7 @@ const onAdd = () => {
   width: 100%;
   text-align: center;
   padding-right: 40rpx;
+  font-size: 28rpx;
 }
 
 .search-content {

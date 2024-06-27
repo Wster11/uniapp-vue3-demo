@@ -37,7 +37,7 @@
 import ConversationItem from "./components/conversationItem/index.vue";
 import PopMenu from "./components/menu/index.vue";
 import { useConversationStore } from "@/store/conversation";
-import { ref, onMounted, computed, watch, nextTick } from "vue";
+import { ref, computed } from "vue";
 import type { EasemobChat } from "easemob-websdk";
 import { onLoad } from "@dcloudio/uni-app";
 const filter = ref("");
@@ -50,8 +50,6 @@ const winSize = ref({
 });
 
 const convStore = useConversationStore();
-
-const { getConversationList } = convStore;
 
 const filteredConversationList = computed(() => {
   return convStore.conversationList.filter((conv) => {
@@ -100,18 +98,6 @@ const onMenuClose = () => {
   isShowMenu.value = false;
   selectedConv.value = {} as EasemobChat.ConversationItem;
 };
-
-watch(
-  () => convStore.conversationParams.cursor,
-  (newCursor) => {
-    if (newCursor) {
-      getConversationList();
-    }
-  },
-  {
-    immediate: true
-  }
-);
 
 onLoad(() => {
   getWindowSize();

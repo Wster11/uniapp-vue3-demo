@@ -21,7 +21,6 @@ const emits = defineEmits(["onMessageSend"]);
 
 .swiper-item {
   display: grid;
-  flex-flow: row wrap;
   width: 100%;
   grid-template-columns: repeat(4, 25%);
   grid-template-rows: repeat(2, 100px);

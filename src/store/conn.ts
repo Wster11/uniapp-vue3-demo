@@ -10,11 +10,21 @@ websdk.logger.onLog = (log: any) => {
   console.log(log.time, log.logs);
 };
 
+// 关闭控制台日志
 websdk.logger.setConsoleLogVisibility(false);
 
 export const useConnStore = defineStore("conn", () => {
+  /** IM连接实例 */
   let conn = null as unknown as EasemobChat.Connection;
+
   let sdk = websdk as EasemobChatStatic;
+
+  /** 初始化webIM */
+  const initChatSDK = (config: EasemobChat.ConnectionParameters) => {
+    setChatConn(new sdk.connection(config));
+    return conn;
+  };
+
   /** 设置conn实例 */
   const setChatConn = (connection: EasemobChat.Connection) => {
     conn = connection;
@@ -42,6 +52,7 @@ export const useConnStore = defineStore("conn", () => {
     conn,
     setChatConn,
     getChatConn,
+    initChatSDK,
     getChatSDK
   };
 });

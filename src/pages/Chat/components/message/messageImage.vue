@@ -13,16 +13,22 @@
 <script lang="ts" setup>
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import ImageNotFound from "@/static/images/img404.jpg";
+import { ref } from "vue";
 interface Props {
   msg: EasemobChat.ImgMsgBody;
 }
 const props = defineProps<Props>();
+const isError = ref(false);
 
-const onError = (e: any) => {
-  props.msg.url = ImageNotFound;
+const onError = () => {
+  isError.value = true;
+  props.msg.thumb = ImageNotFound;
 };
 
-const previewImage = (url: string) => {
+const previewImage = () => {
+  if (isError.value) {
+    return;
+  }
   uni.previewImage({
     urls: [props.msg.url || ""]
   });

@@ -6,7 +6,7 @@
     <view
       class="item-info-wrap"
       v-for="notice in contactStore.contactsNotices"
-      :key="new Date().getTime()"
+      :key="notice.time"
     >
       <view class="notice-info-wrap">
         <view class="item-id">{{ notice.from }}</view>

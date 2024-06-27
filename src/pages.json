@@ -31,6 +31,12 @@
 			}
 		},
 		{
+			"path": "pages/GroupNotices/index",
+			"style": {
+				"navigationBarTitleText": "Easemob Uniapp"
+			}
+		},
+		{
 			"path": "pages/User/index",
 			"style": {
 				"navigationBarTitleText": "Easemob Uniapp"
@@ -47,6 +53,24 @@
 		},
 		{
 			"path": "pages/CreateGroup/index",
+			"style": {
+				"navigationBarTitleText": "Easemob Uniapp",
+				"app-plus": {
+					"softinputMode": "adjustResize"
+				}
+			}
+		},
+		{
+			"path": "pages/GroupDetail/index",
+			"style": {
+				"navigationBarTitleText": "Easemob Uniapp",
+				"app-plus": {
+					"softinputMode": "adjustResize"
+				}
+			}
+		},
+		{
+			"path": "pages/InviteList/index",
 			"style": {
 				"navigationBarTitleText": "Easemob Uniapp",
 				"app-plus": {

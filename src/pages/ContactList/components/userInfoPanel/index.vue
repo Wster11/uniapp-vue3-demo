@@ -6,7 +6,7 @@
     </view>
 
     <view class="user-info-wrap">
-      <Avatar class="avatar" src="" :placeholder="defaultAvatar" />
+      <Avatar class="user-avatar" src="" :placeholder="defaultAvatar" />
       <view>
         <view class="remark">{{ contactStore.viewedUserInfo.userId }}</view>
         <view class="user-id">{{ contactStore.viewedUserInfo.userId }}</view>
@@ -140,8 +140,9 @@ const deleteContact = () => {
   width: 100%;
   text-align: center;
   padding-right: 40rpx;
+  font-size: 28rpx;
 }
-.avatar {
+.user-avatar {
   flex-shrink: 0;
   margin-right: 30rpx;
 }

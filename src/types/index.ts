@@ -10,4 +10,8 @@ type ContactNotice = EasemobChat.ContactMsgBody & {
   time: number;
 };
 
-export type { InputToolbarEvent, ContactNotice };
+type GroupNotice = EasemobChat.GroupEvent & {
+  time: number;
+};
+
+export type { InputToolbarEvent, ContactNotice, GroupNotice };
