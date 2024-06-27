@@ -6,9 +6,13 @@
     </view>
 
     <view class="user-info-wrap">
-      <Avatar class="user-avatar" src="" :placeholder="defaultAvatar" />
+      <Avatar
+        class="user-avatar"
+        :src="userInfo.avatar"
+        :placeholder="defaultAvatar"
+      />
       <view>
-        <view class="remark">{{ contactStore.viewedUserInfo.userId }}</view>
+        <view class="remark">{{ userInfo.name }}</view>
         <view class="user-id">{{ contactStore.viewedUserInfo.userId }}</view>
       </view>
     </view>
@@ -49,12 +53,14 @@ import Avatar from "@/components/avatar/index.vue";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import { useContactStore } from "@/store/contact";
 import { useBlockStore } from "@/store/block";
+import { useAppUserStore } from "@/store/appUser";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 
 const contactStore = useContactStore();
 const blockStore = useBlockStore();
+const appUserStore = useAppUserStore();
 const { t } = useI18n();
 const { blockUser, unBlockUser } = blockStore;
 const remarkValue = ref("");
@@ -105,6 +111,10 @@ const goChat = () => {
   });
   resetViewedUserInfo();
 };
+
+const userInfo = computed(() => {
+  return appUserStore.getUserInfoFromStore(contactStore.viewedUserInfo.userId);
+});
 
 const deleteContact = () => {
   contactStore.deleteContact(contactStore.viewedUserInfo.userId).then(() => {
@@ -174,6 +184,7 @@ const deleteContact = () => {
 
 .remark {
   font-size: 36rpx;
+  word-break: break-all;
 }
 
 .user-id {

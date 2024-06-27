@@ -22,8 +22,13 @@
             <checkbox :value="item.userId"></checkbox>
           </view>
           <view class="user-item-wrap">
-            <Avatar src="" :placeholder="defaultAvatar" />
-            <view class="user-id">{{ item.userId }}</view>
+            <Avatar
+              :src="getUserInfoFromStore(item.userId).avatar"
+              :placeholder="defaultAvatar"
+            />
+            <view class="user-name ellipsis">{{
+              getUserInfoFromStore(item.userId).name
+            }}</view>
           </view>
         </label>
       </checkbox-group>
@@ -42,6 +47,7 @@
 import Avatar from "@/components/avatar/index.vue";
 import { useContactStore } from "@/store/contact";
 import { useGroupStore } from "@/store/group";
+import { useAppUserStore } from "@/store/appUser";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -49,6 +55,10 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
 const contactStore = useContactStore();
+
+const appUserStore = useAppUserStore();
+
+const { getUserInfoFromStore } = appUserStore;
 
 const { createGroup } = useGroupStore();
 

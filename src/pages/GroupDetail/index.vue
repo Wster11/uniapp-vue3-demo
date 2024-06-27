@@ -31,15 +31,22 @@
           v-for="item in groupDetail?.affiliations"
           :key="item.joined_time"
         >
-          <Avatar class="avatar1" src="" :placeholder="defaultAvatar" />
-          <view v-if="item.owner" class="user-id">{{ item.owner }}</view>
-          <view v-if="item.member" class="user-id">{{ item.member }}</view>
+          <Avatar
+            :src="getUserInfoFromStore(item.owner || item.member).avatar"
+            :placeholder="defaultAvatar"
+          />
+          <view v-if="item.owner" class="user-name ellipsis"
+            >{{ getUserInfoFromStore(item.owner).name }}
+          </view>
+          <view v-if="item.member" class="user-name ellipsis"
+            >{{ getUserInfoFromStore(item.member).name }}
+          </view>
         </view>
         <view v-if="isGroupOwner" class="opt-item" @tap="toInviteList">
-          <Avatar class="avatar1" src="" :placeholder="addAvatar" />
+          <Avatar src="" :placeholder="addAvatar" />
         </view>
         <view v-if="isGroupOwner" class="opt-item" @tap="toRemoveList">
-          <Avatar class="avatar1" src="" :placeholder="delAvatar" />
+          <Avatar src="" :placeholder="delAvatar" />
         </view>
       </view>
     </view>
@@ -54,6 +61,7 @@
 import Avatar from "@/components/avatar/index.vue";
 import { useGroupStore } from "@/store/group";
 import { useConnStore } from "@/store/conn";
+import { useAppUserStore } from "@/store/appUser";
 import defaultGroupAvatar from "@/static/images/defaultGroupAvatar.png";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import addAvatar from "@/static/images/add_contacts.png";
@@ -64,6 +72,9 @@ import { onLoad } from "@dcloudio/uni-app";
 const groupId = ref("");
 const groupStore = useGroupStore();
 const connStore = useConnStore();
+const appUserStore = useAppUserStore();
+
+const { getUserInfoFromStore } = appUserStore;
 
 const { getGroupInfo } = groupStore;
 
@@ -91,7 +102,9 @@ onLoad(async (option) => {
   try {
     uni.showLoading();
     groupId.value = option?.id;
-    await getGroupInfo(groupId.value);
+    if (groupId.value) {
+      await getGroupInfo(groupId.value);
+    }
     uni.hideLoading();
   } catch (error) {
     console.error(error);

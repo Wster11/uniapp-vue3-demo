@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
 import { useConnStore } from "./conn";
+import { useAppUserStore } from "./appUser";
 import { ref } from "vue";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import type { ContactNotice } from "@/types/index";
 
 export const useContactStore = defineStore("contact", () => {
+  const appUserStore = useAppUserStore();
   const contacts = ref<EasemobChat.ContactItem[]>([]);
 
   const contactsNotices = ref<ContactNotice[]>([]);
@@ -16,11 +18,15 @@ export const useContactStore = defineStore("contact", () => {
   const connStore = useConnStore();
   const { getChatConn } = connStore;
   const conn = getChatConn();
+  const { getUsersInfo } = appUserStore;
 
   /** 获取全部联系人 */
   const getContacts = () => {
     conn.getAllContacts().then((res) => {
       if (res.data) {
+        getUsersInfo({
+          userIdList: res.data.map((item) => item.userId)
+        });
         contacts.value.push(...res.data);
       }
     });

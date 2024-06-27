@@ -7,7 +7,7 @@
 
 .content-wrap {
   display: flex;
-  width: 100%;
+  flex: 1;
 }
 
 .avatar-wrap {
@@ -32,15 +32,25 @@
 }
 
 .user-info-wrap {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   margin-left: 20rpx;
-  width: 100%;
 }
 
 .user-nick-name {
   font-size: 32rpx;
+  width: 240rpx;
+  flex: 1;
+}
+
+.msg-wrap{
+  display: flex;
 }
 
 .last-msg {
+  flex: 1;
+  width: 0;
   font-size: 28rpx;
   color: gray;
 }

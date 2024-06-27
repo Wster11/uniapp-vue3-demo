@@ -137,6 +137,7 @@ const destroyGroup = async () => {
 
 .groupname {
   font-size: 36rpx;
+  word-break: break-all;
 }
 
 .group-id {

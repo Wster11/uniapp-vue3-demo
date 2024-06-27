@@ -24,7 +24,8 @@
   padding: 20rpx 0;
 }
 
-.member-item, .opt-item {
+.member-item,
+.opt-item {
   display: flex;
   flex-flow: column wrap;
   align-items: center;
@@ -65,12 +66,18 @@
 
 .groupname {
   font-size: 36rpx;
+  word-break: break-all;
 }
 
 .group-id,
 .desc,
-.user-id,
+.user-name,
 .member-count {
   color: #999;
   font-size: 28rpx;
+}
+
+.user-name {
+  text-align: center;
+  width: 100%;
 }
