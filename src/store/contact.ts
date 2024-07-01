@@ -41,7 +41,7 @@ export const useContactStore = defineStore("contact", () => {
     conn.getAllContacts().then((res) => {
       if (res.data) {
         getContactsUserInfo(res?.data?.map((item) => item.userId) || []);
-        contacts.value.push(...res.data);
+        contacts.value = res.data;
       }
     });
   };
@@ -90,7 +90,9 @@ export const useContactStore = defineStore("contact", () => {
 
   /** 添加store的联系人 */
   const addStoreContact = (user: EasemobChat.ContactItem) => {
-    contacts.value.unshift(user);
+    if (!contacts.value.find((item) => item.userId === user.userId)) {
+      contacts.value.unshift(user);
+    }
   };
 
   const setViewedUserInfo = (user: EasemobChat.ContactItem) => {
