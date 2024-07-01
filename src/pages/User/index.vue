@@ -93,13 +93,25 @@ const userId = getChatConn().user;
 
 const userInfo = computed(() => getUserInfoFromStore(userId));
 
-watch(contactsNotices, () => {
-  contactNoticeTip.value = true;
-});
+watch(
+  contactsNotices,
+  () => {
+    contactNoticeTip.value = true;
+  },
+  {
+    immediate: true
+  }
+);
 
-watch(groupNotices, () => {
-  groupNoticeTip.value = true;
-});
+watch(
+  groupNotices,
+  () => {
+    groupNoticeTip.value = true;
+  },
+  {
+    immediate: true
+  }
+);
 
 const changeAvatar = () => {
   uni.chooseImage({
