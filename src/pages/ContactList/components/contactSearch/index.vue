@@ -44,6 +44,7 @@ import Avatar from "@/components/avatar/index.vue";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import defaultGroupAvatar from "@/static/images/defaultGroupAvatar.png";
 import { useContactStore } from "@/store/contact";
+import { useConnStore } from "@/store/conn";
 import { useGroupStore } from "@/store/group";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -56,9 +57,13 @@ const props = defineProps<Props>();
 
 const { searchType } = props;
 
-const { addContact } = useContactStore();
+const { addContact, contacts } = useContactStore();
 
 const { applyJoinGroup } = useGroupStore();
+
+const { getChatConn } = useConnStore();
+
+const conn = getChatConn();
 
 const emits = defineEmits(["onCancel"]);
 
@@ -77,6 +82,23 @@ const onCancel = () => {
 
 const onAdd = () => {
   if (searchType === "contact") {
+    if (inputValue.value === conn.user) {
+      uni.showToast({
+        icon: "none",
+        title: t("disabledAddSelf")
+      });
+      return;
+    }
+    const isContact = contacts?.find(
+      (contact) => contact.userId === inputValue.value
+    );
+    if (isContact) {
+      uni.showToast({
+        icon: "none",
+        title: t("alreadyContact")
+      });
+      return;
+    }
     addContact(inputValue.value);
     uni.showToast({
       title: t("requestSended")

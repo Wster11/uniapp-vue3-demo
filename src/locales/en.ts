@@ -94,4 +94,6 @@ export default {
   updateUserInfo: "更新",
   newNoticeTip: "您有新的通知",
   viewAllGroupMembers: "查看全部群成员",
+  disabledAddSelf: "不能添加自己为好友",
+  alreadyContact: "已经是好友了",
 };
