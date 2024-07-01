@@ -5,6 +5,7 @@ import { useMessageStore } from "./message";
 import { useContactStore } from "./contact";
 import { useGroupStore } from "./group";
 import { useBlockStore } from "./block";
+import { useAppUserStore } from "./appUser";
 import type { ContactNotice } from "@/types/index";
 import { ref } from "vue";
 
@@ -33,6 +34,7 @@ export const useChatStore = defineStore("chat", () => {
   } = useGroupStore();
   const { getBlockList, clear: clearBlock } = useBlockStore();
   const conn = getChatConn();
+  const { getUsersInfo, clear: clearAppUser } = useAppUserStore();
   const isInitEvent = ref(false);
 
   /** 登录参数类型 */
@@ -45,6 +47,9 @@ export const useChatStore = defineStore("chat", () => {
       getContacts();
       getJoinedGroupList();
       getBlockList();
+      getUsersInfo({
+        userIdList: [p.user]
+      });
       return res;
     });
   };
@@ -56,6 +61,7 @@ export const useChatStore = defineStore("chat", () => {
     clearContacts();
     clearGroup();
     clearBlock();
+    clearAppUser();
   };
 
   /** 关闭IM连接 */

@@ -4,7 +4,10 @@
     :style="{ flexDirection: isSelf ? 'row-reverse' : 'row' }"
   >
     <view class="avatar-wrap">
-      <Avatar :src="defaultAvatar" />
+      <Avatar
+        :src="getUserInfoFromStore(msg.from || '').avatar"
+        :placeholder="defaultAvatar"
+      />
     </view>
     <view class="msg-content">
       <view v-if="!isSelf"> {{ msg.from }}</view>
@@ -37,11 +40,16 @@ import ImageMessage from "./messageImage.vue";
 import VideoMessage from "./messageVideo.vue";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import { useConnStore } from "@/store/conn";
+import { useAppUserStore } from "@/store/appUser";
 
 interface Props {
   msg: EasemobChat.ExcludeAckMessageBody;
 }
 const props = defineProps<Props>();
+
+const appUserStore = useAppUserStore();
+
+const { getUserInfoFromStore } = appUserStore;
 
 const isSelf =
   useConnStore().getChatConn().user === props.msg.from || props.msg.from === "";

@@ -1,14 +1,14 @@
 <template>
   <view
     :class="['avatar', shape]"
-    :style="{ width: size + 'px', height: size + 'px' }"
+    :style="{ width: size + 'rpx', height: size + 'rpx' }"
   >
-    <image class="image" :src="imageSrc" :alt="alt" @error="onError" />
+    <image class="image" :src="imageSrc" :alt="alt" @error="onError"> </image>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 interface Props {
   src: string;
@@ -19,16 +19,19 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const isError = ref(false);
 
-const imageSrc = ref(props.src || props.placeholder);
-const size = props.size ?? 50; // 默认大小为50px
+const imageSrc = computed(() => {
+  if (isError.value) {
+    return props.placeholder;
+  }
+  return props.src || props.placeholder;
+});
+const size = props.size ?? 100; // 默认大小为100rpx
 const shape = props.shape ?? "circle"; // 默认形状为圆形
-const placeholder = props.placeholder;
 
 const onError = () => {
-  if (props.placeholder) {
-    imageSrc.value = placeholder || "";
-  }
+  isError.value = true;
 };
 </script>
 

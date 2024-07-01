@@ -25,7 +25,7 @@ export const useContactStore = defineStore("contact", () => {
     conn.getAllContacts().then((res) => {
       if (res.data) {
         getUsersInfo({
-          userIdList: res.data.map((item) => item.userId)
+          userIdList: res?.data?.map((item) => item.userId) || []
         });
         contacts.value.push(...res.data);
       }

@@ -6,8 +6,41 @@
   padding: 20rpx;
 }
 
-.user-id-wrap {
+.avatar-wrap {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+
+  .change-avatar {
+    width: 100rpx;
+    position: absolute;
+    font-size: 24rpx;
+    text-align: center;
+    background-color: rgba(107, 96, 99, .7);
+    color: #fff;
+    line-height: 40rpx;
+    bottom: 0;
+  }
+}
+
+.user-avatar {
+  flex-shrink: 0;
+}
+
+.info-wrap {
   margin-left: 40rpx;
+
+  .name {
+    font-size: 36rpx;
+    color: #303133;
+  }
+
+  .sign {
+    color: gray;
+    word-break: break-all;
+  }
 }
 
 .divider {

@@ -46,11 +46,23 @@ export const useAppUserStore = defineStore("appUser", () => {
     });
   };
 
+  type UpdateUserInfoParams = Parameters<typeof conn.updateUserInfo>[0];
+
+  /** 更新用户信息 */
+  const updateUserInfo = (params: UpdateUserInfoParams) => {
+    return conn.updateUserInfo(params).then((res) => {
+      appUserInfo.value.set(conn.user, res.data || {});
+      return res;
+    });
+  };
+
+  /** 从Store中获取用户信息 */
   const getUserInfoFromStore = (userId: string) => {
     const userInfo = appUserInfo.value.get(userId);
     return {
       name: userInfo?.nickname || userId,
-      avatar: userInfo?.avatarurl || ""
+      avatar: userInfo?.avatarurl || "",
+      sign: userInfo?.sign || ""
     };
   };
 
@@ -62,6 +74,7 @@ export const useAppUserStore = defineStore("appUser", () => {
     appUserInfo,
     getUserInfoFromStore,
     getUsersInfo,
+    updateUserInfo,
     clear
   };
 });

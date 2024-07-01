@@ -75,7 +75,7 @@ export default {
   groupNotice: "群组通知",
   publicGroup: "公开群",
   privateGroup: "私有群",
-  requestSended: "已发送请求",
+  requestSended: "操作成功",
   joinedGroupNotice: "加入群组成功",
   destroyGroupNotice: "群组已被解散",
   groupDetailButton: "群详情",
@@ -83,5 +83,13 @@ export default {
   inviteUser: "邀请入群",
   removeUser: "移除出群",
   feedback: "意见反馈",
-  personalInfo: "个人信息"
+  personalInfo: "个人信息",
+  personalSetting: "个人设置",
+  avatar: "头像",
+  nickname: "昵称",
+  nickNamePlaceholder: "请输入昵称",
+  sign: "个性签名",
+  signPlaceholder: "请输入个性签名",
+  edit: "修改",
+  updateUserInfo: "更新"
 };

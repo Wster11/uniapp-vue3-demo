@@ -1,9 +1,19 @@
 <template>
   <view class="user-wrap">
     <view class="user-info-wrap">
-      <Avatar src="" :placeholder="defaultAvatar" />
-      <view class="user-id-wrap">
-        <view>{{ userId }}</view>
+      <view class="avatar-wrap">
+        <Avatar
+          class="user-avatar"
+          :src="userInfo.avatar"
+          :placeholder="defaultAvatar"
+        />
+        <view @tap="changeAvatar" class="change-avatar">
+          {{ $t("edit") }}
+        </view>
+      </view>
+      <view class="info-wrap">
+        <view class="name">{{ userInfo.name }}</view>
+        <view class="sign"> {{ userInfo.sign }}</view>
       </view>
     </view>
     <view class="divider"></view>
@@ -20,6 +30,10 @@
       </view>
       <view class="menu-item" @tap="toGroupNotices">
         {{ $t("groupNotice") }}
+        <view class="item-info">></view>
+      </view>
+      <view class="menu-item" @tap="toSetting">
+        {{ $t("personalSetting") }}
         <view class="item-info">></view>
       </view>
       <view class="menu-item">
@@ -44,6 +58,10 @@ import { useChatStore } from "@/store/chat";
 import { useConnStore } from "@/store/conn";
 import { CHAT_STORE } from "@/const/index";
 import { useContactStore } from "@/store/contact";
+import { useAppUserStore } from "@/store/appUser";
+import { computed } from "vue";
+import conn from "@/initIM";
+import { getInsideUploadUrl } from "@/const/index";
 
 const contactStore = useContactStore();
 
@@ -51,7 +69,41 @@ const { close } = useChatStore();
 
 const { getChatConn } = useConnStore();
 
+const appUserStore = useAppUserStore();
+
+const { getUserInfoFromStore, updateUserInfo } = appUserStore;
+
 const userId = getChatConn().user;
+
+const userInfo = computed(() => getUserInfoFromStore(userId));
+
+const changeAvatar = () => {
+  uni.chooseImage({
+    count: 1,
+    success: (res) => {
+      const info = appUserStore.appUserInfo.get(userId);
+      appUserStore.appUserInfo.set(userId, {
+        ...info,
+        avatarurl: res.tempFilePaths[0]
+      });
+      uni.uploadFile({
+        url: getInsideUploadUrl(userId),
+        filePath: res.tempFilePaths[0],
+        fileType: "image",
+        name: "file",
+        header: {
+          Authorization: "Bearer " + conn.token
+        },
+        success: (res) => {
+          updateUserInfo({
+            //@ts-ignore
+            avatarurl: res.avatarUrl
+          });
+        }
+      });
+    }
+  });
+};
 
 const toContactNotices = () => {
   uni.navigateTo({
@@ -62,6 +114,12 @@ const toContactNotices = () => {
 const toGroupNotices = () => {
   uni.navigateTo({
     url: `../../pages/GroupNotices/index`
+  });
+};
+
+const toSetting = () => {
+  uni.navigateTo({
+    url: `../../pages/Setting/index`
   });
 };
 
