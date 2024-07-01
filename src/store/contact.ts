@@ -20,13 +20,27 @@ export const useContactStore = defineStore("contact", () => {
   const conn = getChatConn();
   const { getUsersInfo } = appUserStore;
 
+  // 递归获取联系人信息
+  const getContactsUserInfo = (userIdList: string[], pageNum: number = 1) => {
+    const pageSize = 100; // 最多支持请求100个用户信息
+    //@ts-ignore
+    const userIds = userIdList;
+    const start = (pageNum - 1) * pageSize;
+    const end = pageNum * pageSize;
+    getUsersInfo({
+      userIdList: userIds.slice(start, end)
+    }).then(() => {
+      if (userIds.length > end) {
+        getContactsUserInfo(userIds, pageNum + 1);
+      }
+    });
+  };
+
   /** 获取全部联系人 */
   const getContacts = () => {
     conn.getAllContacts().then((res) => {
       if (res.data) {
-        getUsersInfo({
-          userIdList: res?.data?.map((item) => item.userId) || []
-        });
+        getContactsUserInfo(res?.data?.map((item) => item.userId) || []);
         contacts.value.push(...res.data);
       }
     });

@@ -33,7 +33,7 @@ export const useAppUserStore = defineStore("appUser", () => {
       const fetchUserIds = userIdList.filter((userId) => {
         return !appUserInfo.value.has(userId);
       });
-
+      
       if (fetchUserIds.length === 0) {
         resolve({});
         return;

@@ -4,7 +4,10 @@ import { useAppUserStore } from "./appUser";
 import { ref } from "vue";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import type { GroupNotice } from "@/types/index";
-import { DEFAULT_GROUP_MEMBER_COUNT } from "@/const/index";
+import {
+  DEFAULT_GROUP_MEMBER_COUNT,
+  GET_GROUP_MEMBERS_PAGESIZE
+} from "@/const/index";
 
 export const useGroupStore = defineStore("group", () => {
   const joinedGroupList = ref<EasemobChat.GroupInfo[]>([]);
@@ -183,6 +186,24 @@ export const useGroupStore = defineStore("group", () => {
       });
   };
 
+  /** 分页获取群组成员 */
+  const getGroupMembers = (groupId: string, pageNum: number) => {
+    return conn
+      .listGroupMembers({
+        groupId,
+        pageNum,
+        pageSize: GET_GROUP_MEMBERS_PAGESIZE
+      })
+      .then((res) => {
+        // 获取群组成员的用户属性
+        getUsersInfo({
+          //@ts-ignore
+          userIdList: res.data.map((item) => item.member || item.owner) || []
+        });
+        return res;
+      });
+  };
+
   const clear = () => {
     joinedGroupList.value = [];
     groupNotices.value = [];
@@ -207,6 +228,7 @@ export const useGroupStore = defineStore("group", () => {
     removeStoreGroup,
     inviteJoinGroup,
     removeUserFromGroup,
+    getGroupMembers,
     clear
   };
 });
