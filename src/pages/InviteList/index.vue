@@ -15,8 +15,13 @@
             ></checkbox>
           </view>
           <view class="user-item-wrap">
-            <Avatar src="" :placeholder="defaultAvatar" />
-            <view class="user-id">{{ item.userId }}</view>
+            <Avatar
+              :src="getUserInfoFromStore(item.userId).avatar"
+              :placeholder="defaultAvatar"
+            />
+            <view class="user-name">{{
+              getUserInfoFromStore(item.userId).name
+            }}</view>
           </view>
         </label>
       </checkbox-group>
@@ -47,6 +52,7 @@
 import Avatar from "@/components/avatar/index.vue";
 import { useContactStore } from "@/store/contact";
 import { useGroupStore } from "@/store/group";
+import { useAppUserStore } from "@/store/appUser";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
@@ -62,6 +68,10 @@ const groupId = ref("");
 const inviteType = ref<"remove" | "invite">("invite");
 
 const checkedUserIdList = ref<string[]>([]);
+
+const appUserStore = useAppUserStore();
+
+const { getUserInfoFromStore } = appUserStore;
 
 const groupMemberList = computed(() => {
   return groupStore.groupDetailMap

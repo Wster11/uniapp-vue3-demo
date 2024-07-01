@@ -22,14 +22,19 @@
       <view class="menu-item" @tap="toContactNotices">
         {{ $t("contactNotice") }}
         {{
-          contactStore.contactsNotices.length > 0
-            ? `(${contactStore.contactsNotices.length})`
+          contactNoticeTip && contactStore.contactsNotices.length > 0
+            ? `（${$t("newNoticeTip")}）`
             : ""
         }}
         <view class="item-info">></view>
       </view>
       <view class="menu-item" @tap="toGroupNotices">
         {{ $t("groupNotice") }}
+        {{
+          groupNoticeTip && groupStore.groupNotices.length > 0
+            ? `（${$t("newNoticeTip")}）`
+            : ""
+        }}
         <view class="item-info">></view>
       </view>
       <view class="menu-item" @tap="toSetting">
@@ -59,13 +64,24 @@ import { useConnStore } from "@/store/conn";
 import { CHAT_STORE } from "@/const/index";
 import { useContactStore } from "@/store/contact";
 import { useAppUserStore } from "@/store/appUser";
-import { computed } from "vue";
+import { useGroupStore } from "@/store/group";
+import { computed, watch, ref } from "vue";
 import conn from "@/initIM";
 import { getInsideUploadUrl } from "@/const/index";
 
 const contactStore = useContactStore();
 
+const { contactsNotices } = contactStore;
+
+const contactNoticeTip = ref(false);
+
+const groupNoticeTip = ref(false);
+
 const { close } = useChatStore();
+
+const groupStore = useGroupStore();
+
+const { groupNotices } = groupStore;
 
 const { getChatConn } = useConnStore();
 
@@ -76,6 +92,14 @@ const { getUserInfoFromStore, updateUserInfo } = appUserStore;
 const userId = getChatConn().user;
 
 const userInfo = computed(() => getUserInfoFromStore(userId));
+
+watch(contactsNotices, () => {
+  contactNoticeTip.value = true;
+});
+
+watch(groupNotices, () => {
+  groupNoticeTip.value = true;
+});
 
 const changeAvatar = () => {
   uni.chooseImage({
@@ -106,12 +130,14 @@ const changeAvatar = () => {
 };
 
 const toContactNotices = () => {
+  contactNoticeTip.value = false;
   uni.navigateTo({
     url: `../../pages/ContactNotices/index`
   });
 };
 
 const toGroupNotices = () => {
+  groupNoticeTip.value = false;
   uni.navigateTo({
     url: `../../pages/GroupNotices/index`
   });

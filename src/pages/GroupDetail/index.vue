@@ -16,7 +16,7 @@
         <view class="label">
           {{ $t("owner") }}
         </view>
-        <view>{{ groupDetail?.owner }}</view>
+        <view>{{ getUserInfoFromStore(groupDetail?.owner).name }}</view>
       </view>
       <view class="member-count-wrap">
         <view class="label">

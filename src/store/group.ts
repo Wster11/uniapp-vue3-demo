@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useConnStore } from "./conn";
+import { useAppUserStore } from "./appUser";
 import { ref } from "vue";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import type { GroupNotice } from "@/types/index";
@@ -12,6 +13,10 @@ export const useGroupStore = defineStore("group", () => {
   );
 
   const groupNotices = ref<GroupNotice[]>([]);
+
+  const appUserStore = useAppUserStore();
+
+  const { getUsersInfo } = appUserStore;
 
   const viewedGroupInfo = ref<EasemobChat.GroupInfo>(
     {} as EasemobChat.GroupInfo
@@ -132,6 +137,13 @@ export const useGroupStore = defineStore("group", () => {
       .then((res) => {
         res.data?.forEach((info) => {
           groupDetailMap.value.set(info.id, info);
+          const userIdList = info.affiliations.map((affiliation) => {
+            return affiliation.member || affiliation.owner;
+          });
+          // 获取群组成员的用户属性
+          getUsersInfo({
+            userIdList
+          });
         });
         return res;
       });

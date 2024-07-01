@@ -91,5 +91,6 @@ export default {
   sign: "个性签名",
   signPlaceholder: "请输入个性签名",
   edit: "修改",
-  updateUserInfo: "更新"
+  updateUserInfo: "更新",
+  newNoticeTip: "您有新的通知"
 };

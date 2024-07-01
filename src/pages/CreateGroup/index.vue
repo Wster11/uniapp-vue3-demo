@@ -95,7 +95,7 @@ const newGroup = () => {
       public: isPublicGroup.value,
       allowinvites: true,
       inviteNeedConfirm: false,
-      approval: false,
+      approval: false, // 无需审批即可加入群组
       maxusers: 500
     }
   })

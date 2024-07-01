@@ -12,6 +12,7 @@
   border-radius: 50%;
   overflow: hidden;
   position: relative;
+  flex-shrink: 0;
 
   .change-avatar {
     width: 100rpx;
@@ -25,9 +26,6 @@
   }
 }
 
-.user-avatar {
-  flex-shrink: 0;
-}
 
 .info-wrap {
   margin-left: 40rpx;

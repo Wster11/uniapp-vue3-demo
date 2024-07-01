@@ -29,8 +29,16 @@ export const useAppUserStore = defineStore("appUser", () => {
       if (userIdList.length === 0) {
         return;
       }
+      const fetchUserIds = userIdList.filter((userId) => {
+        return !appUserInfo.value.has(userId);
+      });
+
+      if (fetchUserIds.length === 0) {
+        return;
+      }
+
       conn
-        .fetchUserInfoById(userIdList, type)
+        .fetchUserInfoById(fetchUserIds, type)
         .then((res) => {
           res.data &&
             Object.keys(res.data).forEach((key) => {
