@@ -28,7 +28,7 @@
       <view class="member-items-wrap">
         <view
           class="member-item"
-          v-for="item in groupDetail?.affiliations"
+          v-for="item in defaultGroupMembers"
           :key="item.joined_time"
         >
           <Avatar
@@ -49,6 +49,12 @@
           <Avatar src="" :placeholder="delAvatar" />
         </view>
       </view>
+      <view
+        class="view-all-member"
+        @tap="toAllGroupMembers"
+        v-if="groupDetail?.affiliations_count > DEFAULT_GROUP_MEMBER_COUNT"
+        >{{ $t("viewAllGroupMembers") }} ></view
+      >
     </view>
     <view class="group-desc-wrap">
       <view class="label">{{ $t("groupDesc") }}</view>
@@ -68,6 +74,7 @@ import addAvatar from "@/static/images/add_contacts.png";
 import delAvatar from "@/static/images/del_contacts.png";
 import { ref, computed } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
+import { DEFAULT_GROUP_MEMBER_COUNT } from "@/const/index";
 
 const groupId = ref("");
 const groupStore = useGroupStore();
@@ -93,6 +100,18 @@ const toRemoveList = () => {
     url: `/pages/InviteList/index?id=${groupId.value}&type=remove`
   });
 };
+
+const toAllGroupMembers = () => {
+  uni.navigateTo({
+    url: `/pages/GroupMemberList/index?id=${groupId.value}`
+  });
+};
+
+const defaultGroupMembers = computed(() => {
+  return (
+    groupDetail.value?.affiliations.slice(0, DEFAULT_GROUP_MEMBER_COUNT) || []
+  );
+});
 
 const isGroupOwner = computed(() => {
   return groupDetail.value?.owner === connStore.getChatConn().user;

@@ -92,5 +92,6 @@ export default {
   signPlaceholder: "请输入个性签名",
   edit: "修改",
   updateUserInfo: "更新",
-  newNoticeTip: "您有新的通知"
+  newNoticeTip: "您有新的通知",
+  viewAllGroupMembers: "查看全部群成员",
 };

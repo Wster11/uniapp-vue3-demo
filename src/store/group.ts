@@ -4,6 +4,7 @@ import { useAppUserStore } from "./appUser";
 import { ref } from "vue";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import type { GroupNotice } from "@/types/index";
+import { DEFAULT_GROUP_MEMBER_COUNT } from "@/const/index";
 
 export const useGroupStore = defineStore("group", () => {
   const joinedGroupList = ref<EasemobChat.GroupInfo[]>([]);
@@ -137,9 +138,12 @@ export const useGroupStore = defineStore("group", () => {
       .then((res) => {
         res.data?.forEach((info) => {
           groupDetailMap.value.set(info.id, info);
-          const userIdList = info.affiliations.map((affiliation) => {
-            return affiliation.member || affiliation.owner;
-          });
+          // 获取默认展示的群组成员属性
+          const userIdList = info.affiliations
+            .map((affiliation) => {
+              return affiliation.member || affiliation.owner;
+            })
+            .slice(0, DEFAULT_GROUP_MEMBER_COUNT);
           // 获取群组成员的用户属性
           getUsersInfo({
             userIdList

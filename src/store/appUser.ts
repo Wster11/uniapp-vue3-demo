@@ -14,7 +14,7 @@ export const useAppUserStore = defineStore("appUser", () => {
     userIdList: string[];
     withPresence?: boolean;
   }) => {
-    const { userIdList, withPresence = true } = props;
+    const { userIdList = [], withPresence = true } = props;
     return new Promise((resolve, reject) => {
       const type = [
         "nickname",
@@ -27,6 +27,7 @@ export const useAppUserStore = defineStore("appUser", () => {
         "ext"
       ] as EasemobChat.ConfigurableKey[];
       if (userIdList.length === 0) {
+        resolve({});
         return;
       }
       const fetchUserIds = userIdList.filter((userId) => {
@@ -34,6 +35,7 @@ export const useAppUserStore = defineStore("appUser", () => {
       });
 
       if (fetchUserIds.length === 0) {
+        resolve({});
         return;
       }
 
