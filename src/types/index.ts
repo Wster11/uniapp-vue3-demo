@@ -14,4 +14,20 @@ type GroupNotice = EasemobChat.GroupEvent & {
   time: number;
 };
 
-export type { InputToolbarEvent, ContactNotice, GroupNotice };
+interface ContactNoticeInfo {
+  list: ContactNotice[];
+  unReadCount: number;
+}
+
+interface GroupNoticeInfo {
+  list: GroupNotice[];
+  unReadCount: number;
+}
+
+export type {
+  InputToolbarEvent,
+  ContactNotice,
+  GroupNotice,
+  ContactNoticeInfo,
+  GroupNoticeInfo
+};

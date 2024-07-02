@@ -3,13 +3,16 @@ import { useConnStore } from "./conn";
 import { useAppUserStore } from "./appUser";
 import { ref } from "vue";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
-import type { ContactNotice } from "@/types/index";
+import type { ContactNotice, ContactNoticeInfo } from "@/types/index";
 
 export const useContactStore = defineStore("contact", () => {
   const appUserStore = useAppUserStore();
   const contacts = ref<EasemobChat.ContactItem[]>([]);
 
-  const contactsNotices = ref<ContactNotice[]>([]);
+  const contactsNoticeInfo = ref<ContactNoticeInfo>({
+    list: [],
+    unReadCount: 0
+  });
 
   const viewedUserInfo = ref<EasemobChat.ContactItem>(
     {} as EasemobChat.ContactItem
@@ -77,7 +80,8 @@ export const useContactStore = defineStore("contact", () => {
 
   /** push 好友通知 */
   const addContactNotice = (msg: ContactNotice) => {
-    contactsNotices.value.unshift(msg);
+    contactsNoticeInfo.value.list.unshift(msg);
+    contactsNoticeInfo.value.unReadCount++;
   };
 
   /** 删除store中的联系人 */
@@ -119,13 +123,16 @@ export const useContactStore = defineStore("contact", () => {
 
   const clear = () => {
     contacts.value = [];
-    contactsNotices.value = [];
+    contactsNoticeInfo.value = {
+      list: [],
+      unReadCount: 0
+    };
     viewedUserInfo.value = {} as EasemobChat.ContactItem;
   };
 
   return {
     contacts,
-    contactsNotices,
+    contactsNoticeInfo,
     viewedUserInfo,
     getContacts,
     addContact,

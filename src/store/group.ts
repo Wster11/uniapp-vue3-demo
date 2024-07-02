@@ -3,7 +3,7 @@ import { useConnStore } from "./conn";
 import { useAppUserStore } from "./appUser";
 import { ref } from "vue";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
-import type { GroupNotice } from "@/types/index";
+import type { GroupNotice, GroupNoticeInfo } from "@/types/index";
 import {
   DEFAULT_GROUP_MEMBER_COUNT,
   GET_GROUP_MEMBERS_PAGESIZE
@@ -16,7 +16,10 @@ export const useGroupStore = defineStore("group", () => {
     new Map()
   );
 
-  const groupNotices = ref<GroupNotice[]>([]);
+  const groupNotices = ref<GroupNoticeInfo>({
+    list: [],
+    unReadCount: 0
+  });
 
   const appUserStore = useAppUserStore();
 
@@ -158,7 +161,8 @@ export const useGroupStore = defineStore("group", () => {
 
   /** 添加群组通知 */
   const addGroupNotice = (event: GroupNotice) => {
-    groupNotices.value.unshift(event);
+    groupNotices.value.list.unshift(event);
+    groupNotices.value.unReadCount++;
   };
 
   const setViewedGroupInfo = (group: EasemobChat.GroupInfo) => {
@@ -206,7 +210,10 @@ export const useGroupStore = defineStore("group", () => {
 
   const clear = () => {
     joinedGroupList.value = [];
-    groupNotices.value = [];
+    groupNotices.value = {
+      list: [],
+      unReadCount: 0
+    };
     groupDetailMap.value.clear();
     viewedGroupInfo.value = {} as EasemobChat.GroupInfo;
   };

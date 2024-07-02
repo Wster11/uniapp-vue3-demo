@@ -22,7 +22,7 @@
       <view class="menu-item" @tap="toContactNotices">
         {{ $t("contactNotice") }}
         {{
-          contactNoticeTip && contactStore.contactsNotices.length > 0
+          contactNoticeTip && contactStore.contactsNoticeInfo.list.length > 0
             ? `（${$t("newNoticeTip")}）`
             : ""
         }}
@@ -31,7 +31,7 @@
       <view class="menu-item" @tap="toGroupNotices">
         {{ $t("groupNotice") }}
         {{
-          groupNoticeTip && groupStore.groupNotices.length > 0
+          groupNoticeTip && groupStore.groupNotices.list.length > 0
             ? `（${$t("newNoticeTip")}）`
             : ""
         }}
@@ -71,7 +71,7 @@ import { getInsideUploadUrl } from "@/const/index";
 
 const contactStore = useContactStore();
 
-const { contactsNotices } = contactStore;
+const { contactsNoticeInfo } = contactStore;
 
 const contactNoticeTip = ref(false);
 
@@ -94,7 +94,7 @@ const userId = getChatConn().user;
 const userInfo = computed(() => getUserInfoFromStore(userId));
 
 watch(
-  contactsNotices,
+  contactsNoticeInfo.list,
   () => {
     contactNoticeTip.value = true;
   },

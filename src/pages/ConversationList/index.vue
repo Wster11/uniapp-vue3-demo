@@ -6,6 +6,7 @@
         :placeholder="$t('conversationSearchPlaceholder')"
       />
     </view>
+    <NoticeItem />
     <PopMenu
       v-if="isShowMenu"
       :pop-style="popStyle"
@@ -35,6 +36,7 @@
 
 <script setup lang="ts">
 import ConversationItem from "./components/conversationItem/index.vue";
+import NoticeItem from "./components/systemNoticeItem/index.vue";
 import PopMenu from "./components/menu/index.vue";
 import { useConversationStore } from "@/store/conversation";
 import { ref, computed } from "vue";

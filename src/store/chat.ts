@@ -18,12 +18,13 @@ export const useChatStore = defineStore("chat", () => {
     clear: clearConversation
   } = useConversationStore();
   const { onMessage, clear: clearMessage } = useMessageStore();
+  const contactStore = useContactStore();
   const {
     addContactNotice,
     addStoreContact,
     getContacts,
     clear: clearContacts
-  } = useContactStore();
+  } = contactStore;
   const {
     getJoinedGroupList,
     clear: clearGroup,
@@ -139,7 +140,7 @@ export const useChatStore = defineStore("chat", () => {
         const notice: ContactNotice = {
           ...msg,
           ext: "invited",
-          time: new Date().getTime()
+          time: new Date().getTime(),
         };
         addContactNotice(notice);
       },

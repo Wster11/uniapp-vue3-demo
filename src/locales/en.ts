@@ -122,5 +122,7 @@ export default {
   appkeyPlaceholder: "请输入Appkey",
   isUseCustomServer: "是否使用自定义服务器",
   setting: "设置",
-  serverConfig: "服务器自定义配置"
+  serverConfig: "服务器自定义配置",
+  systemNotice: "系统通知",
+  newNotice: "您有新的通知",
 };

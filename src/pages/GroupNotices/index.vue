@@ -1,11 +1,11 @@
 <template>
   <view class="notices-wrap">
-    <view class="notice-empty" v-if="groupStore.groupNotices.length === 0">
+    <view class="notice-empty" v-if="groupStore.groupNotices.list.length === 0">
       {{ $t("emptyNoticeTip") }}
     </view>
     <view
       class="item-info-wrap"
-      v-for="notice in groupStore.groupNotices"
+      v-for="notice in groupStore.groupNotices.list"
       :key="notice.time"
     >
       <view class="notice-info-wrap">
