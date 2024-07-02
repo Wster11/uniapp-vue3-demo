@@ -8,7 +8,7 @@ const APPKEY = serverConfig.appkey || "easemob#easeim"; // 环信appkey
 const API_URL = serverConfig.restUrl || "https://a1.easemob.com"; // 环信api地址
 const URL = serverConfig.url || "wss://im-api-wechat.easemob.com/websocket"; // 环信websocket地址
 
-const DEFAULT_GROUP_MEMBER_COUNT = 8; // 群组详情默认获取群成员详情的数量
+const DEFAULT_GROUP_MEMBER_COUNT = 3; // 群组详情默认获取群成员详情的数量
 
 const GET_GROUP_MEMBERS_PAGESIZE = 100; // 获取群组成员列表的每页数量
 
