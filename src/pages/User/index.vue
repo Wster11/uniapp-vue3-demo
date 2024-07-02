@@ -131,9 +131,10 @@ const changeAvatar = () => {
           Authorization: "Bearer " + conn.token
         },
         success: (res) => {
+          const dt = JSON.parse(res.data);
           updateUserInfo({
             //@ts-ignore
-            avatarurl: res.avatarUrl
+            avatarurl: dt.avatarUrl
           });
         }
       });
