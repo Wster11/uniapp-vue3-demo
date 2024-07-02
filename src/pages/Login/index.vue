@@ -2,10 +2,11 @@
   <view class="login-wrap">
     <view class="login-header">
       <image
+        @click="times++"
         src="/static/images/logo.png"
         style="width: 100px; height: 100px"
       ></image>
-      <text class="login-title">{{ $t("easemob") }}IM Demo</text>
+      <text class="login-title">{{ $t("easemob") }} IM Demo</text>
     </view>
     <!-- 用户名密码登录 -->
     <view v-if="isPasswordLogin" class="login-form-warp">
@@ -51,7 +52,11 @@
         </label>
       </checkbox-group>
     </view>
-    <button type="primary" @click="loginIM">{{ $t("login") }}</button>
+    <button type="primary" @tap="loginIM">{{ $t("login") }}</button>
+
+    <view v-if="times > 5" class="server-config" @tap="toServerConfig">{{
+      $t("serverConfig")
+    }}</view>
   </view>
 </template>
 
@@ -59,7 +64,7 @@
 import { ref } from "vue";
 import { useChatStore } from "@/store/chat";
 import { useI18n } from "vue-i18n";
-import { CHAT_STORE } from "@/const/index";
+import { CHAT_STORE, IS_USE_CUSTOM_SERVER } from "@/const/index";
 
 const { login } = useChatStore();
 const { t } = useI18n();
@@ -69,8 +74,10 @@ const password = ref("");
 const tel = ref("");
 const code = ref("");
 const privacyChecked = ref(false);
+// logo点击次数, 超过5次显示服务器配置
+const times = ref(0);
 // 是否使用用户名密码登录
-const isPasswordLogin = ref(false);
+const isPasswordLogin = ref(!!IS_USE_CUSTOM_SERVER);
 
 const startCount = () => {
   const timer = setInterval(() => {
@@ -299,6 +306,12 @@ const toPrivacy = () => {
 
 const checkboxChange = (e: any) => {
   privacyChecked.value = !!e.detail.value[0];
+};
+
+const toServerConfig = () => {
+  uni.navigateTo({
+    url: "../ServerConfig/index"
+  });
 };
 </script>
 <style lang="scss" scoped>

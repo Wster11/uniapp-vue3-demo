@@ -113,5 +113,14 @@ export default {
   agreeTo: "同意",
   privacyPolicy: "隐私协议",
   login: "登录",
-  easemob: "环信"
+  easemob: "环信",
+  msyncUrl: "WebSocket url",
+  restUrl: "Reset url",
+  appkey: "Appkey",
+  msyncUrlPlaceholder: "请输入WebSocket url",
+  restUrlPlaceholder: "请输入Reset url",
+  appkeyPlaceholder: "请输入Appkey",
+  isUseCustomServer: "是否使用自定义服务器",
+  setting: "设置",
+  serverConfig: "服务器自定义配置"
 };
