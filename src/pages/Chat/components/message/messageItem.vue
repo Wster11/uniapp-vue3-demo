@@ -24,7 +24,7 @@
           <VideoMessage :msg="msg" />
         </view>
         <view v-else-if="msg.type === 'audio'">
-          <view>[Audio]</view>
+          <AudioMessage :msg="msg" />
         </view>
         <view v-else-if="msg.type === 'custom'">
           <view>[Custom]</view>
@@ -40,6 +40,7 @@ import Avatar from "@/components/avatar/index.vue";
 import TextMessage from "./messageTxt.vue";
 import ImageMessage from "./messageImage.vue";
 import VideoMessage from "./messageVideo.vue";
+import AudioMessage from "./messageAudio.vue";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import { useConnStore } from "@/store/conn";
 import { useAppUserStore } from "@/store/appUser";
@@ -64,12 +65,13 @@ const isSelf =
   display: flex;
   margin-bottom: 30rpx;
   align-items: center;
+  color: #333;
 
   .msg-bubble {
     font-size: 28rpx;
     display: inline-block;
     word-break: break-all;
-    background: #f5f5f5;
+    background: #ccd9ee;
     border-radius: 20rpx;
     padding: 14rpx;
     max-width: calc(100vw - 200rpx);

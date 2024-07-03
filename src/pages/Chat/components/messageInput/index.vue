@@ -1,13 +1,13 @@
 <template>
   <view class="message-input-wrap">
     <!-- #ifndef WEB -->
+    <!-- #endif -->
     <view class="icon-wrap" @tap="isSendAudio = !isSendAudio">
       <image class="icon" :src="AudioIcon"></image>
     </view>
     <view class="send-audio" v-if="isSendAudio">
       <AudioMessageSender />
     </view>
-    <!-- #endif -->
     <view class="send-input" v-if="!isSendAudio">
       <input
         v-model="text"
@@ -31,7 +31,7 @@ import { useConversationStore } from "@/store/conversation";
 import { useMessageStore } from "@/store/message";
 import AudioMessageSender from "../messageInputToolBar/audioMessage.vue";
 import PlusIcon from "@/static/images/inputbar/tofeipeng/icons/plus_in_circle@2x.png";
-import AudioIcon from "@/static/images/inputbar/tofeipeng/icons/mic_stroke@2x.png";
+import AudioIcon from "@/static/images/inputbar/audio_click_icon.png";
 
 const emits = defineEmits(["onMessageSend", "onShowToolbar"]);
 

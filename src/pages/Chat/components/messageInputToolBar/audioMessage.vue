@@ -79,6 +79,7 @@ const onStart = () => {
   const option = {
     format: "mp3"
   };
+  duration.value = 0;
   startTime.value = new Date().getTime();
   isTalking.value = true;
   uni.vibrateShort();
@@ -143,6 +144,7 @@ const sendAudioMessage = (tempFilePath: string) => {
     success: async (res: any) => {
       console.log("音频上传成功", res);
       const data = JSON.parse(res.data);
+      //@ts-ignore TODO: 发送附件消息类型问题
       const audioMsg = SDK.message.create({
         type: "audio",
         to: convStore.currConversation!.conversationId,
@@ -157,6 +159,7 @@ const sendAudioMessage = (tempFilePath: string) => {
         }
       });
       try {
+        duration.value = 0;
         await sendMessage(audioMsg);
         toolbarInject?.onMessageSend();
       } catch (error: any) {
@@ -199,7 +202,6 @@ onMounted(() => {
       });
       return;
     }
-    duration.value = 0;
     sendAudioMessage(res.tempFilePath);
   });
 });

@@ -10,12 +10,10 @@ interface Props {
   msg: EasemobChat.TextMsgBody;
 }
 defineProps<Props>();
-
 </script>
 
 <style lang="scss" scoped>
 .msg-text {
-  color: #333;
   text-align: left;
   overflow-y: auto;
   word-break: break-all;
