@@ -19,11 +19,7 @@
       />
     </view>
     <view class="icon-wrap">
-      <image
-        class="icon"
-        @tap.stop="emits('onShowToolbar')"
-        :src="PlusIcon"
-      ></image>
+      <image class="icon" @tap.stop="showToolbar" :src="PlusIcon"></image>
     </view>
   </view>
 </template>
@@ -51,6 +47,12 @@ const isSendAudio = ref(false);
 const SDK = getChatSDK();
 
 const text = ref("");
+
+const showToolbar = () => {
+  // 切换语音发送，否则发送语音计算位置有问题
+  isSendAudio.value = false;
+  emits("onShowToolbar");
+};
 
 const handleSendMessage = async () => {
   const msg = SDK.message.create({

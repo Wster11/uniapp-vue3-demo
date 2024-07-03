@@ -75,7 +75,6 @@ const duration = ref<number>(0);
  * 开始录音
  */
 const onStart = () => {
-  toolbarInject?.closeToolbar();
   console.log("start");
   const option = {
     format: "mp3"
@@ -160,7 +159,6 @@ const sendAudioMessage = (tempFilePath: string) => {
       try {
         await sendMessage(audioMsg);
         toolbarInject?.onMessageSend();
-        toolbarInject?.closeToolbar();
       } catch (error: any) {
         uni.showToast({
           title: `send failed: ${error.message}`,
