@@ -10,7 +10,7 @@
       <view class="user-info-wrap">
         <view class="user-nick-name ellipsis">{{ $t("systemNotice") }}</view>
         <view class="msg-wrap">
-          <view class="last-msg ellipsis">{{ $t("newNotice") }}</view>
+          <view class="last-msg ellipsis">{{ $t("newNoticeTip") }}</view>
         </view>
       </view>
       <view class="time">{{ noticeItem.time }}</view>
@@ -31,14 +31,14 @@ const groupStore = useGroupStore();
 const contactStore = useContactStore();
 
 const { contactsNoticeInfo } = contactStore;
-const { groupNotices } = groupStore;
+const { groupNoticeInfo } = groupStore;
 
 const noticeItem = computed(() => {
   const latestContactNoticeTime = contactsNoticeInfo.list[0]?.time || 0;
-  const latestGroupNoticeTime = contactsNoticeInfo.list[0]?.time || 0;
+  const latestGroupNoticeTime = groupNoticeInfo.list[0]?.time || 0;
   const time = Math.max(latestContactNoticeTime, latestGroupNoticeTime);
   return {
-    unReadCount: contactsNoticeInfo.list.length + groupNotices.list.length,
+    unReadCount: contactsNoticeInfo.unReadCount + groupNoticeInfo.unReadCount,
     time: getTimeStringAutoShort(time)
   };
 });

@@ -6,7 +6,7 @@
         :placeholder="$t('conversationSearchPlaceholder')"
       />
     </view>
-    <NoticeItem />
+    <NoticeItem v-if="isShowNotice" />
     <PopMenu
       v-if="isShowMenu"
       :pop-style="popStyle"
@@ -39,6 +39,8 @@ import ConversationItem from "./components/conversationItem/index.vue";
 import NoticeItem from "./components/systemNoticeItem/index.vue";
 import PopMenu from "./components/menu/index.vue";
 import { useConversationStore } from "@/store/conversation";
+import { useContactStore } from "@/store/contact";
+import { useGroupStore } from "@/store/group";
 import { ref, computed } from "vue";
 import type { EasemobChat } from "easemob-websdk";
 import { onLoad } from "@dcloudio/uni-app";
@@ -46,6 +48,8 @@ const filter = ref("");
 const popStyle = ref("");
 const selectedConv = ref({} as EasemobChat.ConversationItem);
 const isShowMenu = ref(false);
+const groupStore = useGroupStore();
+const contactStore = useContactStore();
 const winSize = ref({
   width: 0,
   height: 0
@@ -57,6 +61,13 @@ const filteredConversationList = computed(() => {
   return convStore.conversationList.filter((conv) => {
     return conv.conversationId.includes(filter.value);
   });
+});
+
+const isShowNotice = computed(() => {
+  return (
+    contactStore.contactsNoticeInfo.list.length ||
+    groupStore.groupNoticeInfo.list.length
+  );
 });
 
 const getWindowSize = () => {

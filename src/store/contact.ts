@@ -121,6 +121,11 @@ export const useContactStore = defineStore("contact", () => {
       });
   };
 
+  /** 清空联系人通知未读数 */
+  const clearContactNoticeUnReadCount = () => {
+    contactsNoticeInfo.value.unReadCount = 0;
+  };
+
   const clear = () => {
     contacts.value = [];
     contactsNoticeInfo.value = {
@@ -143,6 +148,7 @@ export const useContactStore = defineStore("contact", () => {
     addStoreContact,
     setViewedUserInfo,
     setContactRemark,
+    clearContactNoticeUnReadCount,
     clear
   };
 });

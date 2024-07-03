@@ -16,7 +16,7 @@ export const useGroupStore = defineStore("group", () => {
     new Map()
   );
 
-  const groupNotices = ref<GroupNoticeInfo>({
+  const groupNoticeInfo = ref<GroupNoticeInfo>({
     list: [],
     unReadCount: 0
   });
@@ -161,8 +161,8 @@ export const useGroupStore = defineStore("group", () => {
 
   /** 添加群组通知 */
   const addGroupNotice = (event: GroupNotice) => {
-    groupNotices.value.list.unshift(event);
-    groupNotices.value.unReadCount++;
+    groupNoticeInfo.value.list.unshift(event);
+    groupNoticeInfo.value.unReadCount++;
   };
 
   const setViewedGroupInfo = (group: EasemobChat.GroupInfo) => {
@@ -208,9 +208,14 @@ export const useGroupStore = defineStore("group", () => {
       });
   };
 
+  /** 清空群组通知未读数 */
+  const clearGroupNoticeUnReadCount = () => {
+    groupNoticeInfo.value.unReadCount = 0;
+  };
+
   const clear = () => {
     joinedGroupList.value = [];
-    groupNotices.value = {
+    groupNoticeInfo.value = {
       list: [],
       unReadCount: 0
     };
@@ -222,7 +227,7 @@ export const useGroupStore = defineStore("group", () => {
     joinedGroupList,
     getJoinedGroupListParams,
     viewedGroupInfo,
-    groupNotices,
+    groupNoticeInfo,
     groupDetailMap,
     destroyGroup,
     setViewedGroupInfo,
@@ -236,6 +241,7 @@ export const useGroupStore = defineStore("group", () => {
     inviteJoinGroup,
     removeUserFromGroup,
     getGroupMembers,
+    clearGroupNoticeUnReadCount,
     clear
   };
 });
