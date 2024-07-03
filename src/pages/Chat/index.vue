@@ -31,6 +31,8 @@
 import { ref } from "vue";
 import { useMessageStore } from "@/store/message";
 import { useConversationStore } from "@/store/conversation";
+import { useAppUserStore } from "@/store/appUser";
+import { useGroupStore } from "@/store/group";
 import MessageList from "./components/message/messageList.vue";
 import MessageInput from "./components/messageInput/index.vue";
 import MessageInputToolbar from "./components/messageInputToolBar/index.vue";
@@ -46,6 +48,8 @@ const conversationType = ref<EasemobChat.ConversationItem["conversationType"]>(
   "" as EasemobChat.ConversationItem["conversationType"]
 );
 const messageStore = useMessageStore();
+const appUserStore = useAppUserStore();
+const groupStore = useGroupStore();
 const { getHistoryMessages } = messageStore;
 const { markConversationRead, setCurrentConversation } = useConversationStore();
 
@@ -94,8 +98,17 @@ onLoad((option) => {
       conversationId: conversationId.value,
       conversationType: conversationType.value
     });
+    let title = "";
+    if (conversationType.value === "singleChat") {
+      title = appUserStore.getUserInfoFromStore(conversationId.value).name;
+    } else {
+      title =
+        groupStore.joinedGroupList.find(
+          (item) => item.groupId === conversationId.value
+        )?.groupName || "";
+    }
     uni.setNavigationBarTitle({
-      title: option?.id
+      title: title
     });
   }
 });

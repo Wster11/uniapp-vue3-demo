@@ -16,7 +16,7 @@ const emits = defineEmits(["onMessageSend"]);
 </script>
 <style lang="scss" scoped>
 .message-input-toolbar {
-  background: #ebf0f6;
+  background:#f3f3f3;
 }
 
 .swiper-item {

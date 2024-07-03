@@ -10,7 +10,9 @@
       />
     </view>
     <view class="msg-content">
-      <view v-if="!isSelf"> {{ msg.from }}</view>
+      <view v-if="!isSelf">
+        {{ getUserInfoFromStore(msg.from || "").name }}</view
+      >
       <view class="msg-bubble">
         <view v-if="msg.type === 'txt'">
           <TextMessage :msg="msg" />
