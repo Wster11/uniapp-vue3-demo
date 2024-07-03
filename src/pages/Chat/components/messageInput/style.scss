@@ -4,25 +4,36 @@
   align-items: center;
 }
 
-.send-input {
+.send-input,
+.send-audio {
   height: auto;
   background: #fff;
   font-size: 24rpx;
   border-radius: 20rpx;
-  padding: 14rpx 0 14rpx 20rpx;
+  padding: 14rpx 20rpx 14rpx 20rpx;
   max-height: 200rpx;
   width: 100%;
+  margin: 0 10rpx;
 }
 
-.send-more {
+.send-audio {
+  padding: 10rpx;
+}
+
+.send-input input {
+  height: 50rpx;
+}
+
+
+.icon-wrap {
   width: 60rpx;
   height: 60rpx;
   flex-shrink: 0;
+  user-select: none;
 }
 
 .icon {
   width: 60rpx;
   height: 60rpx;
-  margin: 0 10rpx;
   cursor: pointer;
 }

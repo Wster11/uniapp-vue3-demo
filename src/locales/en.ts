@@ -124,4 +124,8 @@ export default {
   setting: "设置",
   serverConfig: "服务器自定义配置",
   systemNotice: "系统通知",
+  holdToTalk: "按住 说话",
+  recording: "说话中...",
+  loose: "松开",
+  sendAudio: "发送"
 };

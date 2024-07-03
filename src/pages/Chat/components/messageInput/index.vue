@@ -1,6 +1,14 @@
 <template>
   <view class="message-input-wrap">
-    <view class="send-input">
+    <!-- #ifndef WEB -->
+    <view class="icon-wrap" @tap="isSendAudio = !isSendAudio">
+      <image class="icon" :src="AudioIcon"></image>
+    </view>
+    <view class="send-audio" v-if="isSendAudio">
+      <AudioMessageSender />
+    </view>
+    <!-- #endif -->
+    <view class="send-input" v-if="!isSendAudio">
       <input
         v-model="text"
         :adjust-position="true"
@@ -8,8 +16,9 @@
         confirm-type="send"
         @confirm="handleSendMessage"
         :placeholder="$t('sendMessagePlaceholder')"
-    /></view>
-    <view class="send-more">
+      />
+    </view>
+    <view class="icon-wrap">
       <image
         class="icon"
         @tap.stop="emits('onShowToolbar')"
@@ -24,7 +33,9 @@ import { ref, nextTick } from "vue";
 import { useConnStore } from "@/store/conn";
 import { useConversationStore } from "@/store/conversation";
 import { useMessageStore } from "@/store/message";
+import AudioMessageSender from "../messageInputToolBar/audioMessage.vue";
 import PlusIcon from "@/static/images/inputbar/tofeipeng/icons/plus_in_circle@2x.png";
+import AudioIcon from "@/static/images/inputbar/tofeipeng/icons/mic_stroke@2x.png";
 
 const emits = defineEmits(["onMessageSend", "onShowToolbar"]);
 
@@ -33,6 +44,9 @@ const convStore = useConversationStore();
 const { sendMessage } = useMessageStore();
 
 const { getChatSDK } = useConnStore();
+
+// 是否发送语音消息
+const isSendAudio = ref(false);
 
 const SDK = getChatSDK();
 
