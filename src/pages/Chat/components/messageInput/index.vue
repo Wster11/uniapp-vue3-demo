@@ -1,13 +1,13 @@
 <template>
   <view class="message-input-wrap">
     <!-- #ifndef WEB -->
-    <!-- #endif -->
     <view class="icon-wrap" @tap="isSendAudio = !isSendAudio">
       <image class="icon" :src="isSendAudio ? AudioIcon : Keyboard"></image>
     </view>
     <view class="send-audio" v-if="isSendAudio">
       <AudioMessageSender />
     </view>
+    <!-- #endif -->
     <view class="send-input" v-if="!isSendAudio">
       <input
         v-model="text"
