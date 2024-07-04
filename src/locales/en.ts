@@ -126,7 +126,7 @@ export default {
   systemNotice: "System Notifications",
   holdToTalk: "Hold to talk",
   recording: "Recording...",
-  loose: "Release",
+  loose: "Loose",
   sendAudio: "Send",
   recall: "Recall",
   recallNotice: "Recalled a message",
