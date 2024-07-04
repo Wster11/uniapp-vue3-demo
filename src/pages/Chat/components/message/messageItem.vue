@@ -71,7 +71,7 @@ const isSelf =
     font-size: 28rpx;
     display: inline-block;
     word-break: break-all;
-    background: #ccd9ee;
+    background: #f5f5f5;
     border-radius: 20rpx;
     padding: 14rpx;
     max-width: calc(100vw - 200rpx);

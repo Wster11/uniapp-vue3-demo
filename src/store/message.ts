@@ -30,6 +30,14 @@ export const useMessageStore = defineStore("message", () => {
     new Map()
   );
 
+  // 当前播放的音频实例
+
+  const audioInstance = ref<any>(null);
+
+  const setAudioInstance = (instance: any) => {
+    audioInstance.value = instance;
+  };
+
   /** 获取历史消息 */
   const getHistoryMessages = async (
     conversation: EasemobChat.ConversationItem,
@@ -172,10 +180,12 @@ export const useMessageStore = defineStore("message", () => {
   return {
     messageMap,
     conversationMessagesMap,
+    audioInstance,
     getHistoryMessages,
     insertMessage,
     sendMessage,
     onMessage,
+    setAudioInstance,
     clear
   };
 });

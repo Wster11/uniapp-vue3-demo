@@ -29,7 +29,7 @@ import { ref, nextTick } from "vue";
 import { useConnStore } from "@/store/conn";
 import { useConversationStore } from "@/store/conversation";
 import { useMessageStore } from "@/store/message";
-import AudioMessageSender from "../messageInputToolBar/audioMessage.vue";
+import AudioMessageSender from "../messageInputToolBar/audioSender.vue";
 import PlusIcon from "@/static/images/inputbar/tofeipeng/icons/plus_in_circle@2x.png";
 import AudioIcon from "@/static/images/inputbar/audio_click_icon.png";
 import Keyboard from "@/static/images/inputbar/keyboard.png";
