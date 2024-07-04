@@ -3,7 +3,7 @@
     <!-- #ifndef WEB -->
     <!-- #endif -->
     <view class="icon-wrap" @tap="isSendAudio = !isSendAudio">
-      <image class="icon" :src="AudioIcon"></image>
+      <image class="icon" :src="isSendAudio ? AudioIcon : Keyboard"></image>
     </view>
     <view class="send-audio" v-if="isSendAudio">
       <AudioMessageSender />
@@ -32,6 +32,7 @@ import { useMessageStore } from "@/store/message";
 import AudioMessageSender from "../messageInputToolBar/audioMessage.vue";
 import PlusIcon from "@/static/images/inputbar/tofeipeng/icons/plus_in_circle@2x.png";
 import AudioIcon from "@/static/images/inputbar/audio_click_icon.png";
+import Keyboard from "@/static/images/inputbar/keyboard.png";
 
 const emits = defineEmits(["onMessageSend", "onShowToolbar"]);
 
