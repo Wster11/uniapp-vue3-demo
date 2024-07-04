@@ -4,7 +4,7 @@
       <view class="notice-content">
         <view class="notice-text">
           <view v-if="noticeType === 'recallMessage'">
-            {{ `${recallFrom} 撤回了一条消息` }}
+            {{ `${recallFrom} ${$t("recallNotice")}` }}
           </view>
         </view>
       </view>

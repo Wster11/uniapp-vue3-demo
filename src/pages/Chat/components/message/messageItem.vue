@@ -20,7 +20,11 @@
       ></view>
 
       <view class="msg-bubble" @longpress="showMsgOperation">
-        <MessageOperation v-if="isShowOperation" :msg="msg" :isSelf="isSelf" />
+        <MessageOperation
+          v-if="isShowOperation && isSelf"
+          :msg="msg"
+          :isSelf="isSelf"
+        />
         <view v-if="msg.type === 'txt'">
           <TextMessage :msg="msg" />
         </view>
@@ -42,7 +46,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import Avatar from "@/components/avatar/index.vue";
 import TextMessage from "./messageTxt.vue";
 import ImageMessage from "./messageImage.vue";

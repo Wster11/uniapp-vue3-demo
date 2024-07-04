@@ -174,7 +174,7 @@ export const useMessageStore = defineStore("message", () => {
 
   type RecallMessageParams = Parameters<typeof conn.recallMessage>[0];
   const recallMessage = (msg: RecallMessageParams) => {
-    getChatConn()
+    return getChatConn()
       .recallMessage(msg)
       .then((res) => {
         onRecallMessage(msg.mid, conn.user);

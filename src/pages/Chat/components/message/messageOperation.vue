@@ -1,18 +1,19 @@
 <template>
   <view class="msg-operation" :style="isSelf ? { right: 0 } : { left: 0 }">
     <view class="content">
-      <view class="msg-operate-item" @tap="emitRecall"> 撤回 </view>
+      <view class="msg-operate-item" @tap="emitRecall">
+        {{ $t("recall") }}
+      </view>
       <!-- <view class="msg-operate-item"> 举报 </view> -->
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
-import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { useMessageStore } from "@/store/message";
 import { useConversationStore } from "@/store/conversation";
 import type { MixedMessageBody } from "@/types/index";
-import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 interface Props {
   msg: MixedMessageBody;
@@ -20,6 +21,7 @@ interface Props {
 }
 const { recallMessage } = useMessageStore();
 const { getCvsIdFromMessage } = useConversationStore();
+const { t } = useI18n();
 
 const props = defineProps<Props>();
 const { msg, isSelf } = props;
@@ -29,6 +31,11 @@ const emitRecall = () => {
     mid: msg.id,
     to: getCvsIdFromMessage(msg),
     chatType: msg.chatType
+  }).catch((e) => {
+    uni.showToast({
+      title: `${t("recallFailed")} ${e.message}`,
+      icon: "none"
+    });
   });
 };
 </script>
@@ -39,7 +46,7 @@ const emitRecall = () => {
   z-index: 99;
   background: rgba(0, 0, 0, 0.7);
   padding: 0 0.625rem;
-  bottom: -45rpx;
+  bottom: -55rpx;
   border-radius: 10rpx;
   color: #fff;
   font-size: 28rpx;

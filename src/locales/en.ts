@@ -127,5 +127,8 @@ export default {
   holdToTalk: "按住 说话",
   recording: "说话中...",
   loose: "松开",
-  sendAudio: "发送"
+  sendAudio: "发送",
+  recall: "撤回",
+  recallNotice: "撤回了一条消息",
+  recallFailed: "撤回失败",
 };
