@@ -70,7 +70,7 @@ export const useAppUserStore = defineStore("appUser", () => {
   const getUserInfoFromStore = (userId: string) => {
     const userInfo = appUserInfo.value.get(userId);
     return {
-      name: userInfo?.nickname || userId,
+      name: userInfo?.nickname || "",
       avatar: userInfo?.avatarurl || "",
       sign: userInfo?.sign || ""
     };
