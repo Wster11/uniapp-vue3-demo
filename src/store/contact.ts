@@ -24,7 +24,7 @@ export const useContactStore = defineStore("contact", () => {
   const { getUsersInfo } = appUserStore;
 
   // 递归获取联系人信息
-  const getContactsUserInfo = (userIdList: string[], pageNum: number = 1) => {
+  const deepGetUserInfo = (userIdList: string[], pageNum: number = 1) => {
     const pageSize = 100; // 最多支持请求100个用户信息
     //@ts-ignore
     const userIds = userIdList;
@@ -34,7 +34,7 @@ export const useContactStore = defineStore("contact", () => {
       userIdList: userIds.slice(start, end)
     }).then(() => {
       if (userIds.length > end) {
-        getContactsUserInfo(userIds, pageNum + 1);
+        deepGetUserInfo(userIds, pageNum + 1);
       }
     });
   };
@@ -43,7 +43,7 @@ export const useContactStore = defineStore("contact", () => {
   const getContacts = () => {
     conn.getAllContacts().then((res) => {
       if (res.data) {
-        getContactsUserInfo(res?.data?.map((item) => item.userId) || []);
+        deepGetUserInfo(res?.data?.map((item) => item.userId) || []);
         contacts.value = res.data;
       }
     });
@@ -148,6 +148,7 @@ export const useContactStore = defineStore("contact", () => {
     addStoreContact,
     setViewedUserInfo,
     setContactRemark,
+    deepGetUserInfo,
     clearContactNoticeUnReadCount,
     clear
   };

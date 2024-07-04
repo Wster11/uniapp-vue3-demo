@@ -5,14 +5,16 @@
   >
     <view class="avatar-wrap">
       <Avatar
-        :src="getUserInfoFromStore(msg.from || '').avatar"
+        :src="
+          getUserInfoFromStore(msg.from || '').avatar || extUserInfo.avatarURL
+        "
         :placeholder="defaultAvatar"
       />
     </view>
     <view class="msg-content" :style="{ textAlign: isSelf ? 'right' : 'left' }">
       <view v-if="!isSelf">
-        {{ getUserInfoFromStore(msg.from || "").name }}</view
-      >
+        {{ getUserInfoFromStore(msg.from || "").name || extUserInfo.nickname }}
+      </view>
       <view
         class="mask"
         @tap="isShowOperation = !isShowOperation"
@@ -75,6 +77,8 @@ const isSelf =
 const showMsgOperation = () => {
   isShowOperation.value = true;
 };
+
+const extUserInfo = props.msg.ext?.ease_chat_uikit_user_info || {};
 </script>
 
 <style lang="scss" scoped>

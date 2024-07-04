@@ -9,6 +9,7 @@ import ItemContainer from "./itemContainer.vue";
 import ImageIcon from "@/static/images/inputbar/tofeipeng/icons/img@2x.png";
 import { useConnStore } from "@/store/conn";
 import { useConversationStore } from "@/store/conversation";
+import { useAppUserStore } from "@/store/appUser";
 import { useMessageStore } from "@/store/message";
 import { API_URL } from "@/const/index";
 import type { InputToolbarEvent } from "@/types/index";
@@ -30,6 +31,8 @@ const { getChatConn, getChatSDK } = useConnStore();
 const { sendMessage } = useMessageStore();
 
 const conn = getChatConn();
+
+const { getSelfUserInfo } = useAppUserStore();
 
 const SDK = getChatSDK();
 
@@ -73,6 +76,12 @@ const sendVideoMessage = (res: any) => {
         //@ts-ignore
         body: {
           url: data.uri + "/" + data.entities[0].uuid
+        },
+        ext: {
+          ease_chat_uikit_user_info: {
+            avatarURL: getSelfUserInfo().avatar,
+            nickname: getSelfUserInfo().name
+          }
         }
       });
       try {

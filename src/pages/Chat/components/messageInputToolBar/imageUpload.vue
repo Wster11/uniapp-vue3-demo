@@ -10,6 +10,7 @@ import ImageIcon from "@/static/images/inputbar/tofeipeng/icons/img@2x.png";
 import { useConnStore } from "@/store/conn";
 import { useConversationStore } from "@/store/conversation";
 import { useMessageStore } from "@/store/message";
+import { useAppUserStore } from "@/store/appUser";
 import { API_URL } from "@/const/index";
 import type { InputToolbarEvent } from "@/types/index";
 import { inject } from "vue";
@@ -28,6 +29,8 @@ const toolbarInject = inject<InputToolbarEvent>("InputToolbarEvent");
 const { getChatConn, getChatSDK } = useConnStore();
 
 const { sendMessage } = useMessageStore();
+
+const { getSelfUserInfo } = useAppUserStore();
 
 const convStore = useConversationStore();
 
@@ -70,7 +73,13 @@ const sendImageMessage = (res: any) => {
         type: "img",
         to: convStore.currConversation!.conversationId,
         chatType: convStore.currConversation!.conversationType,
-        url: data.uri + "/" + data.entities[0].uuid
+        url: data.uri + "/" + data.entities[0].uuid,
+        ext: {
+          ease_chat_uikit_user_info: {
+            avatarURL: getSelfUserInfo().avatar,
+            nickname: getSelfUserInfo().name
+          }
+        }
       });
       try {
         await sendMessage(imgMsg);

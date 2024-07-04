@@ -76,6 +76,10 @@ export const useAppUserStore = defineStore("appUser", () => {
     };
   };
 
+  const getSelfUserInfo = () => {
+    return getUserInfoFromStore(conn.user);
+  };
+
   const clear = () => {
     appUserInfo.value.clear();
   };
@@ -85,6 +89,7 @@ export const useAppUserStore = defineStore("appUser", () => {
     getUserInfoFromStore,
     getUsersInfo,
     updateUserInfo,
+    getSelfUserInfo,
     clear
   };
 });

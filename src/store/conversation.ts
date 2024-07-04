@@ -5,9 +5,12 @@ import { getTimeStringAutoShort } from "@/utils/index";
 import { ref, toRef, reactive } from "vue";
 import type { ConversationBaseInfo } from "./types/index";
 import type { MixedMessageBody } from "@/types/index";
+import { useContactStore } from "./contact";
 
 export const useConversationStore = defineStore("conversation", () => {
   const { getChatConn, getChatSDK } = useConnStore();
+
+  const { deepGetUserInfo } = useContactStore();
 
   let currConversation = ref<ConversationBaseInfo | null>(null);
 
@@ -38,6 +41,16 @@ export const useConversationStore = defineStore("conversation", () => {
     let filteredConversations = conversations.filter(
       ({ conversationId }) => !currentCvsId.find((id) => id === conversationId)
     );
+
+    const userIds = filteredConversations
+      .filter((conversationItem) => {
+        return conversationItem.conversationType === "singleChat";
+      })
+      .map((conversationItem) => {
+        return conversationItem.conversationId;
+      });
+
+    deepGetUserInfo(userIds);
 
     filteredConversations.forEach((conversationItem) => {
       conversationList.value.push(conversationItem);
@@ -168,6 +181,9 @@ export const useConversationStore = defineStore("conversation", () => {
       lastMessage: msg,
       unReadCount: unReadCount || 0
     } as EasemobChat.ConversationItem;
+    if (conversation.conversationType === "singleChat") {
+      deepGetUserInfo([conversation.conversationId]);
+    }
     return conv;
   };
   /** 更新会话*/

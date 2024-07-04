@@ -53,6 +53,7 @@ import { API_URL } from "@/const/index";
 import { useConnStore } from "@/store/conn";
 import { useConversationStore } from "@/store/conversation";
 import { useMessageStore } from "@/store/message";
+import { useAppUserStore } from "@/store/appUser";
 import type { InputToolbarEvent } from "@/types/index";
 import { useI18n } from "vue-i18n";
 const connStore = useConnStore();
@@ -61,6 +62,7 @@ const toolbarInject = inject<InputToolbarEvent>("InputToolbarEvent");
 
 const SDK = connStore.getChatSDK();
 const convStore = useConversationStore();
+const { getSelfUserInfo } = useAppUserStore();
 const { sendMessage } = useMessageStore();
 const { t } = useI18n();
 
@@ -156,6 +158,12 @@ const sendAudioMessage = (tempFilePath: string) => {
           type: "mp3",
           //@ts-ignore
           length: Math.ceil(duration.value / 1000)
+        },
+        ext: {
+          ease_chat_uikit_user_info: {
+            avatarURL: getSelfUserInfo().avatar,
+            nickname: getSelfUserInfo().name
+          }
         }
       });
       try {

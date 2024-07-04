@@ -29,6 +29,7 @@ import { ref, nextTick } from "vue";
 import { useConnStore } from "@/store/conn";
 import { useConversationStore } from "@/store/conversation";
 import { useMessageStore } from "@/store/message";
+import { useAppUserStore } from "@/store/appUser";
 import AudioMessageSender from "../messageInputToolBar/audioSender.vue";
 import PlusIcon from "@/static/images/inputbar/tofeipeng/icons/plus_in_circle@2x.png";
 import AudioIcon from "@/static/images/inputbar/audio_click_icon.png";
@@ -37,6 +38,8 @@ import Keyboard from "@/static/images/inputbar/keyboard.png";
 const emits = defineEmits(["onMessageSend", "onShowToolbar"]);
 
 const convStore = useConversationStore();
+
+const { getSelfUserInfo } = useAppUserStore();
 
 const { sendMessage } = useMessageStore();
 
@@ -60,7 +63,13 @@ const handleSendMessage = async () => {
     to: convStore.currConversation!.conversationId,
     chatType: convStore.currConversation!.conversationType,
     type: "txt",
-    msg: text.value
+    msg: text.value,
+    ext: {
+      ease_chat_uikit_user_info: {
+        avatarURL: getSelfUserInfo().avatar,
+        nickname: getSelfUserInfo().name
+      }
+    }
   });
   text.value = "";
   try {
