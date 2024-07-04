@@ -206,7 +206,7 @@ onMounted(() => {
     if (duration.value < 1000) {
       uni.showToast({
         icon: "error",
-        title: "说话时间太短"
+        title: t("audioDurationIsShort")
       });
       return;
     }

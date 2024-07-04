@@ -131,4 +131,5 @@ export default {
   recall: "Recall",
   recallNotice: "Recalled a message",
   recallFailed: "Recall failed",
+  audioDurationIsShort: "The audio duration is too short"
 };
