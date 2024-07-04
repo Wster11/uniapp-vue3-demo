@@ -3,9 +3,9 @@ import { useConnStore } from "./conn";
 import { ref } from "vue";
 import { useConversationStore } from "./conversation";
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
-
+import type { MixedMessageBody } from "@/types/index";
 interface ConversationMessagesInfo {
-  messages: EasemobChat.ExcludeAckMessageBody[];
+  messages: MixedMessageBody[];
   cursor: string;
   isLast: boolean;
 }
@@ -21,15 +21,14 @@ export const useMessageStore = defineStore("message", () => {
     markConversationRead
   } = useConversationStore();
   // 消息ID和消息体的映射
-  const messageMap = ref<Map<string, EasemobChat.ExcludeAckMessageBody>>(
-    new Map()
-  );
+  const messageMap = ref<Map<string, MixedMessageBody>>(new Map());
 
   // 会话ID和会话消息的映射
   const conversationMessagesMap = ref<Map<string, ConversationMessagesInfo>>(
     new Map()
   );
 
+  const conn = getChatConn();
   // 当前播放的音频实例
 
   const audioInstance = ref<any>(null);
@@ -77,8 +76,8 @@ export const useMessageStore = defineStore("message", () => {
   };
 
   /** 插入新消息 */
-  const insertMessage = (msg: EasemobChat.ExcludeAckMessageBody) => {
-    let convId = getCvsIdFromMessage(msg as EasemobChat.ExcludeAckMessageBody);
+  const insertMessage = (msg: MixedMessageBody) => {
+    let convId = getCvsIdFromMessage(msg as MixedMessageBody);
     // 如果已经存在会话消息映射，则直接插入, 否则通过历史消息获取
     if (conversationMessagesMap.value.has(convId)) {
       const info = conversationMessagesMap.value.get(convId);
@@ -100,7 +99,8 @@ export const useMessageStore = defineStore("message", () => {
           msg.type !== "read" &&
           msg.type !== "channel"
         ) {
-          insertMessage(res.message as EasemobChat.ExcludeAckMessageBody);
+          res.message && messageMap.value.set(res.serverMsgId, res.message);
+          insertMessage(res.message as MixedMessageBody);
           if (msg.chatType === "chatRoom") {
             return res;
           }
@@ -126,8 +126,9 @@ export const useMessageStore = defineStore("message", () => {
   };
 
   /** 收到消息回调处理 */
-  const onMessage = (msg: EasemobChat.ExcludeAckMessageBody) => {
+  const onMessage = (msg: MixedMessageBody) => {
     const { currConversation } = useConversationStore();
+    messageMap.value.set(msg.id, msg);
     insertMessage(msg);
     // 不处理聊天室会话
     if (msg.chatType === "chatRoom") {
@@ -171,6 +172,51 @@ export const useMessageStore = defineStore("message", () => {
     moveConversationTop(newConv);
   };
 
+  type RecallMessageParams = Parameters<typeof conn.recallMessage>[0];
+  const recallMessage = (msg: RecallMessageParams) => {
+    getChatConn()
+      .recallMessage(msg)
+      .then((res) => {
+        onRecallMessage(msg.mid, conn.user);
+        return res;
+      });
+  };
+
+  const onRecallMessage = (mid: string, from: string) => {
+    const recalledMessage = messageMap.value.get(mid);
+    if (recalledMessage) {
+      const cvsId = getCvsIdFromMessage(recalledMessage);
+      const idx =
+        conversationMessagesMap.value
+          .get(cvsId)
+          ?.messages.findIndex((m) => m.id === mid) || -1;
+      if (idx > -1) {
+        conversationMessagesMap.value.get(cvsId)?.messages.splice(idx, 1, {
+          ...recalledMessage,
+          isRecalled: true,
+          extInfo: {
+            recallFrom: from
+          }
+        });
+      }
+      if (recalledMessage.chatType === "chatRoom") {
+        return;
+      }
+      // 撤回更新会话未读数
+      const conv = getConversationById(cvsId);
+      if (conv) {
+        updateConversationLastMessage(
+          {
+            conversationId: cvsId,
+            conversationType: recalledMessage.chatType
+          },
+          null as any,
+          conv.unReadCount - 1
+        );
+      }
+    }
+  };
+
   /** 清空store数据*/
   const clear = () => {
     messageMap.value.clear();
@@ -185,7 +231,9 @@ export const useMessageStore = defineStore("message", () => {
     insertMessage,
     sendMessage,
     onMessage,
+    onRecallMessage,
     setAudioInstance,
+    recallMessage,
     clear
   };
 });

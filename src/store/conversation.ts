@@ -4,6 +4,7 @@ import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import { getTimeStringAutoShort } from "@/utils/index";
 import { ref, toRef, reactive } from "vue";
 import type { ConversationBaseInfo } from "./types/index";
+import type { MixedMessageBody } from "@/types/index";
 
 export const useConversationStore = defineStore("conversation", () => {
   const { getChatConn, getChatSDK } = useConnStore();
@@ -182,7 +183,7 @@ export const useConversationStore = defineStore("conversation", () => {
     }
   };
   /** 根据消息获取会话Id */
-  const getCvsIdFromMessage = (message: EasemobChat.ExcludeAckMessageBody) => {
+  const getCvsIdFromMessage = (message: MixedMessageBody) => {
     let conversationId = "";
     if (message.chatType === "groupChat" || message.chatType === "chatRoom") {
       conversationId = message.to;

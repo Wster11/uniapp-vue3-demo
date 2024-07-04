@@ -24,10 +24,16 @@ interface GroupNoticeInfo {
   unReadCount: number;
 }
 
+type MixedMessageBody = EasemobChat.ExcludeAckMessageBody & {
+  isRecalled?: boolean;
+  extInfo?: Record<string, any>;
+};
+
 export type {
   InputToolbarEvent,
   ContactNotice,
   GroupNotice,
   ContactNoticeInfo,
-  GroupNoticeInfo
+  GroupNoticeInfo,
+  MixedMessageBody
 };

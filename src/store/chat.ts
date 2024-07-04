@@ -17,7 +17,7 @@ export const useChatStore = defineStore("chat", () => {
     getConversationList,
     clear: clearConversation
   } = useConversationStore();
-  const { onMessage, clear: clearMessage } = useMessageStore();
+  const { onMessage, clear: clearMessage, onRecallMessage } = useMessageStore();
   const contactStore = useContactStore();
   const {
     addContactNotice,
@@ -96,6 +96,12 @@ export const useChatStore = defineStore("chat", () => {
       },
       onVideoMessage: (msg) => {
         onMessage(msg);
+      },
+      onAudioMessage: (msg) => {
+        onMessage(msg);
+      },
+      onRecallMessage: (msg) => {
+        onRecallMessage(msg.mid, msg.from);
       }
     });
 
@@ -140,7 +146,7 @@ export const useChatStore = defineStore("chat", () => {
         const notice: ContactNotice = {
           ...msg,
           ext: "invited",
-          time: new Date().getTime(),
+          time: new Date().getTime()
         };
         addContactNotice(notice);
       },

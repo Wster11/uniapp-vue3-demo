@@ -9,11 +9,18 @@
         :placeholder="defaultAvatar"
       />
     </view>
-    <view class="msg-content">
+    <view class="msg-content" :style="{ textAlign: isSelf ? 'right' : 'left' }">
       <view v-if="!isSelf">
         {{ getUserInfoFromStore(msg.from || "").name }}</view
       >
-      <view class="msg-bubble">
+      <view
+        class="mask"
+        @tap="isShowOperation = !isShowOperation"
+        v-if="isShowOperation"
+      ></view>
+
+      <view class="msg-bubble" @longpress="showMsgOperation">
+        <MessageOperation v-if="isShowOperation" :msg="msg" :isSelf="isSelf" />
         <view v-if="msg.type === 'txt'">
           <TextMessage :msg="msg" />
         </view>
@@ -41,12 +48,17 @@ import TextMessage from "./messageTxt.vue";
 import ImageMessage from "./messageImage.vue";
 import VideoMessage from "./messageVideo.vue";
 import AudioMessage from "./messageAudio.vue";
+import MessageOperation from "./messageOperation.vue";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import { useConnStore } from "@/store/conn";
 import { useAppUserStore } from "@/store/appUser";
+import type { MixedMessageBody } from "@/types/index";
+import { ref } from "vue";
+
+const isShowOperation = ref(false);
 
 interface Props {
-  msg: EasemobChat.ExcludeAckMessageBody;
+  msg: MixedMessageBody;
 }
 const props = defineProps<Props>();
 
@@ -56,6 +68,10 @@ const { getUserInfoFromStore } = appUserStore;
 
 const isSelf =
   useConnStore().getChatConn().user === props.msg.from || props.msg.from === "";
+
+const showMsgOperation = () => {
+  isShowOperation.value = true;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -79,11 +95,22 @@ const isSelf =
   }
 
   .msg-content {
+    width: 100%;
+    position: relative;
     margin: 0 20rpx 20rpx;
   }
 
   .avatar-wrap {
     align-self: self-end;
+  }
+
+  .mask {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
   }
 }
 </style>

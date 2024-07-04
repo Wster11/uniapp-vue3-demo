@@ -20,7 +20,12 @@
           :curr-time="msg.time"
           :prev-time="idx > 0 ? msgs[idx - 1].time : 0"
         />
-        <MessageItem :msg="msg" />
+        <NoticeMessageItem
+          v-if="msg?.isRecalled"
+          :noticeType="'recallMessage'"
+          :msg="msg"
+        />
+        <MessageItem v-else :msg="msg" />
       </view>
     </scroll-view>
   </view>
@@ -30,10 +35,12 @@
 import type { EasemobChat } from "easemob-websdk/Easemob-chat";
 import MessageItem from "./messageItem.vue";
 import MessageTime from "./messageTime.vue";
+import NoticeMessageItem from "./noticeMessageItem.vue";
 import { ref, onMounted, computed, nextTick } from "vue";
 import { useMessageStore } from "@/store/message";
+import type { MixedMessageBody } from "@/types/index";
 interface Props {
-  msgs: EasemobChat.ExcludeAckMessageBody[];
+  msgs: MixedMessageBody[];
   conversationId: string;
   conversationType: EasemobChat.ConversationItem["conversationType"];
 }
