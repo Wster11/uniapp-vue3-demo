@@ -193,9 +193,11 @@ export const useMessageStore = defineStore("message", () => {
       if (idx > -1) {
         conversationMessagesMap.value.get(cvsId)?.messages.splice(idx, 1, {
           ...recalledMessage,
-          isRecalled: true,
-          extInfo: {
-            recallFrom: from
+          noticeInfo: {
+            type: "recall",
+            ext: {
+              recallFrom: from
+            }
           }
         });
       }

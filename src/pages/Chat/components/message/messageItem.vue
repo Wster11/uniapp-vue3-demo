@@ -13,7 +13,9 @@
     </view>
     <view class="msg-content" :style="{ textAlign: isSelf ? 'right' : 'left' }">
       <view v-if="!isSelf">
-        {{ getUserInfoFromStore(msg.from || "").name || extUserInfo.nickname }}
+        {{
+          getUserInfoFromStore(msg.from || "").nickname || extUserInfo.nickname
+        }}
       </view>
       <view
         class="mask"
