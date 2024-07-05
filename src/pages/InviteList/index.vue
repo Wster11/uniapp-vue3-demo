@@ -105,7 +105,7 @@ const isDisabled = (userId: string) => {
   if (inviteType.value === "remove") {
     return false;
   } else {
-    return groupMemberList.value?.find((member) => member.userId === userId);
+    return !!groupMemberList.value?.find((member) => member.userId === userId);
   }
 };
 
