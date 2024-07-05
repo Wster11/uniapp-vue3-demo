@@ -6,7 +6,9 @@
     <view class="avatar-wrap">
       <Avatar
         :src="
-          getUserInfoFromStore(msg.from || '').avatar || extUserInfo.avatarURL
+          getUserInfoFromStore(msg.from || '').avatar ||
+          extUserInfo.avatarURL ||
+          ''
         "
         :placeholder="defaultAvatar"
       />

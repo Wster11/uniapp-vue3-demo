@@ -25,10 +25,9 @@ interface GroupNoticeInfo {
 }
 
 interface MessageNoticeInfo {
-  type: "recall";
-  ext: {
-    recallFrom: string;
-  };
+  type: "notice";
+  noticeType: "recall" | "group";
+  ext: Record<string, any>;
 }
 
 type MixedMessageBody = EasemobChat.ExcludeAckMessageBody & {

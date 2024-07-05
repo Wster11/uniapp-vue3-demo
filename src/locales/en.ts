@@ -129,7 +129,10 @@ export default {
   loose: "Loose",
   sendAudio: "Send",
   recall: "Recall",
-  recallNotice: "Recalled a message",
+  recallNotice: "recalled a message",
   recallFailed: "Recall failed",
-  audioDurationIsShort: "The audio duration is too short"
+  audioDurationIsShort: "The audio duration is too short",
+  leaveGroup: "Leave Group",
+  leaveGroupSuccess: "Left the group successfully",
+  group: "the group"
 };

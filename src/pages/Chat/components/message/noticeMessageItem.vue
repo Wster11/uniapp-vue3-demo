@@ -3,8 +3,11 @@
     <view class="notice">
       <view class="notice-content">
         <view class="notice-text">
-          <view v-if="noticeType === 'recallMessage'">
-            {{ `${recallFrom} ${$t("recallNotice")}` }}
+          <view v-if="noticeType === 'recall'">
+            {{ `"${from}" ${$t("recallNotice")}` }}
+          </view>
+          <view v-else-if="noticeType === 'group'">
+            {{ `"${from}" ${noticeExt.operation} ${$t("group")}` }}
           </view>
         </view>
       </view>
@@ -17,14 +20,13 @@ import type { MixedMessageBody } from "@/types/index";
 import { useAppUserStore } from "@/store/appUser";
 interface Props {
   msg: MixedMessageBody;
-  noticeType: "recallMessage";
 }
 const appUserStore = useAppUserStore();
 const props = defineProps<Props>();
-const { msg, noticeType } = props;
-const recallFrom = appUserStore.getUserInfoFromStore(
-  msg?.extInfo?.recallFrom
-).name;
+const { msg } = props;
+const from = appUserStore.getUserInfoFromStore(msg?.noticeInfo?.ext?.from).name;
+const noticeExt = msg.noticeInfo?.ext || {};
+const noticeType = msg.noticeInfo?.noticeType;
 </script>
 
 <style lang="scss" scoped>

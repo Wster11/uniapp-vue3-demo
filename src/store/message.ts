@@ -118,8 +118,16 @@ export const useMessageStore = defineStore("message", () => {
             );
             // 移动会话到顶部
             moveConversationTop(conv);
-            return;
           }
+          //如果会话不存在,创建新会话
+          createConversation(
+            {
+              conversationId: convId,
+              conversationType: msg.chatType
+            },
+            msg,
+            0
+          );
         }
         return res;
       });
@@ -194,9 +202,11 @@ export const useMessageStore = defineStore("message", () => {
         conversationMessagesMap.value.get(cvsId)?.messages.splice(idx, 1, {
           ...recalledMessage,
           noticeInfo: {
-            type: "recall",
+            type: "notice",
+            noticeType: "recall",
             ext: {
-              recallFrom: from
+              isRecalled: true,
+              from: from
             }
           }
         });
@@ -218,11 +228,21 @@ export const useMessageStore = defineStore("message", () => {
       }
     }
   };
+  // 插入消息通知到消息列表
+  const insertNoticeMessage = (msg: MixedMessageBody) => {
+    const cvsId = getCvsIdFromMessage(msg);
+    if (conversationMessagesMap.value.has(cvsId)) {
+      conversationMessagesMap.value.get(cvsId)?.messages.push(msg);
+    } else {
+      // 不存在的会话不插入消息通知
+    }
+  };
 
   /** 清空store数据*/
   const clear = () => {
     messageMap.value.clear();
     conversationMessagesMap.value.clear();
+    audioInstance.value = null;
   };
 
   return {
@@ -236,6 +256,7 @@ export const useMessageStore = defineStore("message", () => {
     onRecallMessage,
     setAudioInstance,
     recallMessage,
+    insertNoticeMessage,
     clear
   };
 });

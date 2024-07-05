@@ -21,8 +21,7 @@
           :prev-time="idx > 0 ? msgs[idx - 1].time : 0"
         />
         <NoticeMessageItem
-          v-if="msg?.noticeInfo?.type === 'recall'"
-          :noticeType="'recallMessage'"
+          v-if="msg?.noticeInfo?.type === 'notice'"
           :msg="msg"
         />
         <MessageItem v-else :msg="msg" />

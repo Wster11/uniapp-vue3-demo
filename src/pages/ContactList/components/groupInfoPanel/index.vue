@@ -37,6 +37,15 @@
       >
         {{ $t("destroyGroup") }}
       </button>
+
+      <button
+        class="opt-btn"
+        v-if="groupStore.viewedGroupInfo.role !== 'owner'"
+        type="warn"
+        @tap="leaveGroup"
+      >
+        {{ $t("leaveGroup") }}
+      </button>
     </view>
   </view>
 </template>
@@ -75,6 +84,14 @@ const destroyGroup = async () => {
   resetViewedGroupInfo();
   uni.showToast({
     title: t("destroyGroupSuccess")
+  });
+};
+
+const leaveGroup = async () => {
+  await groupStore.leaveGroup(groupStore.viewedGroupInfo.groupId);
+  resetViewedGroupInfo();
+  uni.showToast({
+    title: t("leaveGroupSuccess")
   });
 };
 </script>

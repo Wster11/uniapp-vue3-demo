@@ -6,18 +6,23 @@ import { useContactStore } from "./contact";
 import { useGroupStore } from "./group";
 import { useBlockStore } from "./block";
 import { useAppUserStore } from "./appUser";
-import type { ContactNotice } from "@/types/index";
+import type { ContactNotice, MixedMessageBody } from "@/types/index";
 import { ref } from "vue";
 
 export const useChatStore = defineStore("chat", () => {
-  const { getChatConn } = useConnStore();
+  const { getChatConn, getChatSDK } = useConnStore();
   const {
     getConversationById,
     deleteConversation,
     getConversationList,
     clear: clearConversation
   } = useConversationStore();
-  const { onMessage, clear: clearMessage, onRecallMessage } = useMessageStore();
+  const {
+    onMessage,
+    clear: clearMessage,
+    onRecallMessage,
+    insertNoticeMessage
+  } = useMessageStore();
   const contactStore = useContactStore();
   const {
     addContactNotice,
@@ -35,6 +40,7 @@ export const useChatStore = defineStore("chat", () => {
   } = useGroupStore();
   const { getBlockList, clear: clearBlock } = useBlockStore();
   const conn = getChatConn();
+  const SDK = getChatSDK();
   const { getUsersInfo, clear: clearAppUser } = useAppUserStore();
   const isInitEvent = ref(false);
 
@@ -224,6 +230,21 @@ export const useChatStore = defineStore("chat", () => {
           ...event,
           time: new Date().getTime()
         });
+        const msg = SDK.message.create({
+          type: "txt",
+          to: event.id,
+          chatType: "groupChat",
+          msg: ``
+        }) as MixedMessageBody;
+        msg.noticeInfo = {
+          type: "notice",
+          noticeType: "group",
+          ext: {
+            from: event.from,
+            operation: event.operation
+          }
+        };
+        insertNoticeMessage(msg);
       }
     });
   };

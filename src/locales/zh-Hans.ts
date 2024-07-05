@@ -131,5 +131,8 @@ export default {
   recall: "撤回",
   recallNotice: "撤回了一条消息",
   recallFailed: "撤回失败",
-  audioDurationIsShort: "说话时间太短"
+  audioDurationIsShort: "说话时间太短",
+  leaveGroup: "离开群组",
+  leaveGroupSuccess: "离开群组成功",
+  group: "群组"
 };

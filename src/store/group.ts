@@ -208,6 +208,19 @@ export const useGroupStore = defineStore("group", () => {
       });
   };
 
+  /** 退出群组 */
+  const leaveGroup = (groupId: string) => {
+    return conn
+      .leaveGroup({
+        groupId
+      })
+      .then((res) => {
+        // 获取群组成员的用户属性
+        removeStoreGroup(groupId);
+        return res;
+      });
+  };
+
   /** 清空群组通知未读数 */
   const clearGroupNoticeUnReadCount = () => {
     groupNoticeInfo.value.unReadCount = 0;
@@ -242,6 +255,7 @@ export const useGroupStore = defineStore("group", () => {
     removeUserFromGroup,
     getGroupMembers,
     clearGroupNoticeUnReadCount,
+    leaveGroup,
     clear
   };
 });
