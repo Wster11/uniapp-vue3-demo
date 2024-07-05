@@ -41,6 +41,7 @@ import PopMenu from "./components/menu/index.vue";
 import { useConversationStore } from "@/store/conversation";
 import { useContactStore } from "@/store/contact";
 import { useGroupStore } from "@/store/group";
+import { useAppUserStore } from "@/store/appUser";
 import { ref, computed } from "vue";
 import type { EasemobChat } from "easemob-websdk";
 import { onLoad } from "@dcloudio/uni-app";
@@ -56,10 +57,14 @@ const winSize = ref({
 });
 
 const convStore = useConversationStore();
+const appUserStore = useAppUserStore();
+const { getUserInfoFromStore } = appUserStore;
 
 const filteredConversationList = computed(() => {
   return convStore.conversationList.filter((conv) => {
-    return conv.conversationId.includes(filter.value);
+    return getUserInfoFromStore(conv.conversationId).name.includes(
+      filter.value
+    );
   });
 });
 
