@@ -1,4 +1,4 @@
-以下是优化后的README文档，使其更加清晰和友好：
+
 
 # 环信UNIAPP（Vue3 + Typescript）示例项目
 
