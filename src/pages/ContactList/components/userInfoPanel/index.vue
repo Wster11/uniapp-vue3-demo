@@ -143,11 +143,12 @@ const deleteContact = () => {
   display: flex;
   align-items: center;
   background: #fff;
+  padding: 10rpx 0;
 }
 
 .arrow-back {
-  width: 50rpx;
-  height: 50rpx;
+  width: 40rpx;
+  height: 40rpx;
   flex-shrink: 0;
   margin: 0 20rpx;
 }
