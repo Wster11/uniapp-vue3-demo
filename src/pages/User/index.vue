@@ -12,7 +12,7 @@
         </view>
       </view>
       <view class="info-wrap">
-        <view class="name">{{ userInfo.name }}</view>
+        <view class="name" @tap="copy">{{ userInfo.name }}（{{ userId }}）</view>
         <view class="sign"> {{ userInfo.sign }}</view>
       </view>
     </view>
@@ -111,6 +111,12 @@ const changeAvatar = () => {
         }
       });
     }
+  });
+};
+
+const copy = () => {
+  uni.setClipboardData({
+    data: userId
   });
 };
 
