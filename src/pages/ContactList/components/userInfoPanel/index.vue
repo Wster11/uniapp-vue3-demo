@@ -1,7 +1,11 @@
 <template>
   <view class="user-wrap">
     <view class="user-header-wrap">
-      <view @tap="resetViewedUserInfo" class="back">{{ "<" }}</view>
+      <image
+        @tap="resetViewedUserInfo"
+        class="arrow-back"
+        :src="arrowBack"
+      ></image>
       <view class="title">{{ $t("contactDetail") }}</view>
     </view>
 
@@ -51,6 +55,7 @@
 <script setup lang="ts">
 import Avatar from "@/components/avatar/index.vue";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
+import arrowBack from "@/static/images/arrow-back.png";
 import { useContactStore } from "@/store/contact";
 import { useBlockStore } from "@/store/block";
 import { useAppUserStore } from "@/store/appUser";
@@ -139,11 +144,12 @@ const deleteContact = () => {
   align-items: center;
   background: #fff;
 }
-.back {
-  width: 40rpx;
+
+.arrow-back {
+  width: 50rpx;
+  height: 50rpx;
   flex-shrink: 0;
   margin: 0 20rpx;
-  font-size: 40rpx;
 }
 
 .title {

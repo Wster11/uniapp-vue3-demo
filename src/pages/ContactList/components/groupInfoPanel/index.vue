@@ -1,7 +1,11 @@
 <template>
   <view class="group-wrap">
     <view class="group-header-wrap">
-      <view @tap="resetViewedGroupInfo" class="back">{{ "<" }}</view>
+      <image
+        @tap="resetViewedGroupInfo"
+        class="arrow-back"
+        :src="arrowBack"
+      ></image>
       <view class="title">{{ $t("groupDetail") }}</view>
     </view>
 
@@ -56,6 +60,7 @@ import defaultGroupAvatar from "@/static/images/defaultGroupAvatar.png";
 import { useGroupStore } from "@/store/group";
 import { useI18n } from "vue-i18n";
 import type { EasemobChat } from "easemob-websdk";
+import arrowBack from "@/static/images/arrow-back.png";
 const groupStore = useGroupStore();
 const { t } = useI18n();
 
@@ -109,11 +114,12 @@ const leaveGroup = async () => {
   align-items: center;
   background: #fff;
 }
-.back {
-  width: 40rpx;
+
+.arrow-back {
+  width: 50rpx;
+  height: 50rpx;
   flex-shrink: 0;
   margin: 0 20rpx;
-  font-size: 40rpx;
 }
 
 .title {

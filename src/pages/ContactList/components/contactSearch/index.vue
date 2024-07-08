@@ -1,7 +1,7 @@
 <template>
   <view class="contact-search-wrap">
     <view class="search-title-wrap">
-      <view @tap="onCancel" class="back">{{ "<" }}</view>
+      <image @tap="onCancel" class="arrow-back" :src="arrowBack"></image>
       <view class="title">{{
         searchType === "contact" ? $t("addContact") : $t("addGroup")
       }}</view>
@@ -43,6 +43,7 @@
 import Avatar from "@/components/avatar/index.vue";
 import defaultAvatar from "@/static/images/defaultAvatar.png";
 import defaultGroupAvatar from "@/static/images/defaultGroupAvatar.png";
+import arrowBack from "@/static/images/arrow-back.png";
 import { useContactStore } from "@/store/contact";
 import { useConnStore } from "@/store/conn";
 import { useGroupStore } from "@/store/group";
@@ -121,11 +122,11 @@ const onAdd = () => {
 </script>
 
 <style lang="scss" scoped>
-.back {
-  width: 40rpx;
+.arrow-back {
+  width: 50rpx;
+  height: 50rpx;
   flex-shrink: 0;
   margin: 0 20rpx;
-  font-size: 40rpx;
 }
 
 .input-wrap {
@@ -135,6 +136,7 @@ const onAdd = () => {
 .search-title-wrap {
   display: flex;
   align-items: center;
+  margin: 20rpx 0;
 }
 
 .input-content-wrap {
