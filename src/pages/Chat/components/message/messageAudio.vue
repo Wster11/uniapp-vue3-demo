@@ -44,9 +44,6 @@ const messageStore = useMessageStore();
 const { setAudioInstance } = messageStore;
 
 audioContext.onPlay(() => {
-  if (messageStore.audioInstance) {
-    messageStore.audioInstance.stop();
-  }
   setAudioInstance(audioContext);
   playing.value = true;
 });
@@ -64,6 +61,9 @@ audioContext.onError(() => {
 });
 
 const play = () => {
+  if (messageStore.audioInstance) {
+    messageStore.audioInstance.stop();
+  }
   audioContext.src = props.msg.url || "";
   audioContext.play();
 };
