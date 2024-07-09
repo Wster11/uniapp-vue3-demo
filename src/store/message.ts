@@ -118,16 +118,18 @@ export const useMessageStore = defineStore("message", () => {
             );
             // 移动会话到顶部
             moveConversationTop(conv);
+          } else {
+            //如果会话不存在,创建新会话
+            const newConv = createConversation(
+              {
+                conversationId: convId,
+                conversationType: msg.chatType
+              },
+              msg,
+              0
+            );
+            moveConversationTop(newConv);
           }
-          //如果会话不存在,创建新会话
-          createConversation(
-            {
-              conversationId: convId,
-              conversationType: msg.chatType
-            },
-            msg,
-            0
-          );
         }
         return res;
       });
