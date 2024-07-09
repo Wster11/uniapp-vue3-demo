@@ -54,7 +54,7 @@
     </view>
     <button type="primary" @tap="loginIM">{{ $t("login") }}</button>
 
-    <view v-if="times > 5" class="server-config" @tap="toServerConfig">{{
+    <view v-if="times > 5 || IS_USE_CUSTOM_SERVER" class="server-config" @tap="toServerConfig">{{
       $t("serverConfig")
     }}</view>
   </view>

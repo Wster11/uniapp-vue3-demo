@@ -2,7 +2,7 @@
   <view class="message-input-wrap">
     <!-- #ifndef WEB -->
     <view class="icon-wrap" @tap="isSendAudio = !isSendAudio">
-      <image class="icon" :src="isSendAudio ? AudioIcon : Keyboard"></image>
+      <image class="icon" :src="isSendAudio ? Keyboard : AudioIcon"></image>
     </view>
     <view class="send-audio" v-if="isSendAudio">
       <AudioMessageSender />
