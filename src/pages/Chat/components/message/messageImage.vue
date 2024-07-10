@@ -1,11 +1,13 @@
 <template>
   <view class="msg-image">
     <image
+      mode="widthFix"
+      :style="{ height: imgHeight + 'px' }"
       @error="onError"
       @tap="previewImage"
+      @load="onImgLoad"
       class="image"
       :src="msg.thumb"
-      mode="aspectFit"
     />
   </view>
 </template>
@@ -19,6 +21,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 const isError = ref(false);
+const imgHeight = ref(0);
 
 const onError = () => {
   isError.value = true;
@@ -33,14 +36,16 @@ const previewImage = () => {
     urls: [props.msg.url || ""]
   });
 };
+
+const onImgLoad = (e: any) => {
+  const { width, height } = e.detail;
+  imgHeight.value = (height / width) * 100;
+};
 </script>
 
 <style lang="scss" scoped>
 .image {
   max-width: 400rpx;
   max-height: 550rpx;
-}
-.msg-image {
-  width: 80%;
 }
 </style>

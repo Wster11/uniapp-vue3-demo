@@ -26,7 +26,7 @@
         v-if="isShowOperation"
       ></view>
 
-      <view class="msg-bubble" @longpress="showMsgOperation">
+      <view :class="bubbleClass" @longpress="showMsgOperation">
         <MessageOperation
           v-if="isShowOperation && isSelf"
           @onFinished="isShowOperation = false"
@@ -64,7 +64,7 @@ import defaultAvatar from "@/static/images/defaultAvatar.png";
 import { useConnStore } from "@/store/conn";
 import { useAppUserStore } from "@/store/appUser";
 import type { MixedMessageBody } from "@/types/index";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const isShowOperation = ref(false);
 
@@ -85,6 +85,13 @@ const showMsgOperation = () => {
 };
 
 const extUserInfo = props.msg.ext?.ease_chat_uikit_user_info || {};
+
+const bubbleClass = computed(() => {
+  if (props.msg.type !== "img" && props.msg.type !== "video") {
+    return "msg-bubble msg-bubble-bg";
+  }
+  return "msg-bubble";
+});
 </script>
 
 <style lang="scss" scoped>
@@ -96,11 +103,14 @@ const extUserInfo = props.msg.ext?.ease_chat_uikit_user_info || {};
   align-items: center;
   color: #333;
 
+  .msg-bubble-bg {
+    background: #f5f5f5;
+  }
+
   .msg-bubble {
     font-size: 28rpx;
     display: inline-block;
     word-break: break-all;
-    background: #f5f5f5;
     border-radius: 20rpx;
     padding: 14rpx;
     max-width: calc(100vw - 200rpx);

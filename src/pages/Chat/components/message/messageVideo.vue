@@ -1,7 +1,14 @@
 <template>
   <view class="msg-video">
     <view class="video-poster">
-      <image @error="onError" class="image" :src="msg.thumb" mode="aspectFit" />
+      <image
+        mode="widthFix"
+        :style="{ height: imgHeight + 'px' }"
+        @error="onError"
+        @load="onImgLoad"
+        class="image"
+        :src="msg.thumb"
+      />
       <view v-if="!isError" @tap="toVideoPreview" class="video-play-btn">
         <image class="video-play-btn-image" :src="VideoPlayBtn"></image>
       </view>
@@ -21,9 +28,16 @@ const props = defineProps<Props>();
 
 const isError = ref(false);
 
+const imgHeight = ref(0);
+
 const onError = () => {
   props.msg.thumb = ImageNotFound;
   isError.value = true;
+};
+
+const onImgLoad = (e: any) => {
+  const { width, height } = e.detail;
+  imgHeight.value = (height / width) * 100;
 };
 
 const toVideoPreview = () => {
