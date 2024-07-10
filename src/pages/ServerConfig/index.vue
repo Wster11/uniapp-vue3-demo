@@ -55,6 +55,13 @@ const setting = () => {
     // #ifdef WEB
     window.location.reload();
     // #endif
+
+    // #ifdef MP-WEIXIN
+    uni.showToast({
+      title: "设置成功, 请重新打开小程序",
+      icon: "none"
+    });
+    // #endif
   } catch (error) {
     console.log(error);
   }

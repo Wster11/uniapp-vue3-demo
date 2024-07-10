@@ -134,5 +134,6 @@ export default {
   audioDurationIsShort: "说话时间太短",
   leaveGroup: "离开群组",
   leaveGroupSuccess: "离开群组成功",
-  group: "群组"
+  group: "群组",
+  wxConfigTip: "设置成功, 请重新打开小程序"
 };

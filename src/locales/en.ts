@@ -134,5 +134,6 @@ export default {
   audioDurationIsShort: "The audio duration is too short",
   leaveGroup: "Leave Group",
   leaveGroupSuccess: "Left the group successfully",
-  group: "the group"
+  group: "the group",
+  wxConfigTip: "Setting successful, please reopen the mini program"
 };
