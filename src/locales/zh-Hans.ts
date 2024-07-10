@@ -45,7 +45,7 @@ export default {
   agreedFriend: "同意了您的好友申请",
   refusedFriend: "拒绝了您的好友申请",
   addedFriend: "已添加您为好友",
-  deletedFriend: "已解除您的好友关系",
+  deletedFriend: "已解除好友关系",
   emptyNoticeTip: "暂时没有新的通知",
   contactNotice: "好友通知",
   createGroup: "创建群聊",

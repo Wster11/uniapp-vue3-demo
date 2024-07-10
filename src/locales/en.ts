@@ -45,7 +45,7 @@ export default {
   agreedFriend: "Accepted your friend request",
   refusedFriend: "Declined your friend request",
   addedFriend: "Added you as a friend",
-  deletedFriend: "Removed you as a friend",
+  deletedFriend: "Unfriended",
   emptyNoticeTip: "No new notifications",
   contactNotice: "Friend Notifications",
   createGroup: "Create Group Chat",

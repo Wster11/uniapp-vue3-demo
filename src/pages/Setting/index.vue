@@ -40,11 +40,11 @@ const update = () => {
     sign: sign.value,
     nickname: nickName.value
   }).then(() => {
+    uni.navigateBack();
     uni.showToast({
       title: t("requestSended"),
       icon: "success"
     });
-    uni.navigateBack();
   });
 };
 </script>

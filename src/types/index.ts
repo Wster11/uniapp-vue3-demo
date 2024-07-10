@@ -8,6 +8,7 @@ type InputToolbarEvent = {
 type ContactNotice = EasemobChat.ContactMsgBody & {
   ext: "invited" | "agreed" | "refused" | "deleted" | "added";
   time: number;
+  showOperation?: boolean;
 };
 
 type GroupNotice = EasemobChat.GroupEvent & {

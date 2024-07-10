@@ -24,14 +24,7 @@
           >
         </view>
       </view>
-      <!-- <view class="notice-btn-wrap" v-if="notice.type === 'subscribe'">
-        <view class="notice-btn" @tap="acceptContactInvite(notice.from)">{{
-          $t("acceptFriend")
-        }}</view>
-        <view class="notice-btn" @tap="declineContactInvite(notice.from)">{{
-          $t("refuseFriend")
-        }}</view>
-      </view> -->
+      <!-- TODO: 群组操作 -->
     </view>
   </view>
 </template>
@@ -39,7 +32,12 @@
 <script setup lang="ts">
 import { useGroupStore } from "@/store/group";
 import { getTimeStringAutoShort } from "@/utils/index";
+import { onUnmounted } from "vue";
 const groupStore = useGroupStore();
+
+onUnmounted(() => {
+  groupStore.clearGroupNoticeUnReadCount();
+});
 </script>
 <style lang="scss" scoped>
 @import url("./style.scss");

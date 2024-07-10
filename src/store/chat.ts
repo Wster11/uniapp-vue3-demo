@@ -153,8 +153,12 @@ export const useChatStore = defineStore("chat", () => {
         const notice: ContactNotice = {
           ...msg,
           ext: "invited",
-          time: new Date().getTime()
+          time: new Date().getTime(),
+          showOperation: true
         };
+        getUsersInfo({
+          userIdList: [msg.from]
+        });
         addContactNotice(notice);
       },
       onContactAgreed: (msg) => {
@@ -163,10 +167,14 @@ export const useChatStore = defineStore("chat", () => {
           ext: "agreed",
           time: new Date().getTime()
         };
+        getUsersInfo({
+          userIdList: [msg.from]
+        });
         addStoreContact({
           userId: msg.from,
           remark: ""
         });
+        addContactNotice(notice);
       },
       onContactRefuse: (msg) => {
         const notice: ContactNotice = {
@@ -174,6 +182,9 @@ export const useChatStore = defineStore("chat", () => {
           ext: "refused",
           time: new Date().getTime()
         };
+        getUsersInfo({
+          userIdList: [msg.from]
+        });
         addContactNotice(notice);
       },
       onContactDeleted: (msg) => {
@@ -182,6 +193,9 @@ export const useChatStore = defineStore("chat", () => {
           ext: "deleted",
           time: new Date().getTime()
         };
+        getUsersInfo({
+          userIdList: [msg.from]
+        });
         deleteStoreContact(msg.from);
         addContactNotice(notice);
       },
@@ -191,6 +205,9 @@ export const useChatStore = defineStore("chat", () => {
           ext: "added",
           time: new Date().getTime()
         };
+        getUsersInfo({
+          userIdList: [msg.from]
+        });
         addStoreContact({
           userId: msg.from,
           remark: ""
