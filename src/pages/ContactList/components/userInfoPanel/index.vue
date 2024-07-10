@@ -16,8 +16,13 @@
         :placeholder="defaultAvatar"
       />
       <view>
-        <view class="remark">{{ userInfo.name }}</view>
-        <view class="user-id">{{ contactStore.viewedUserInfo.userId }}</view>
+        <view class="remark" @tap="copy">
+          {{ userInfo.name }} （{{ contactStore.viewedUserInfo.userId }}）
+        </view>
+        <view class="user-sign">{{
+          appUserStore.getUserInfoFromStore(contactStore.viewedUserInfo.userId)
+            .sign
+        }}</view>
       </view>
     </view>
 
@@ -121,6 +126,12 @@ const userInfo = computed(() => {
   return appUserStore.getUserInfoFromStore(contactStore.viewedUserInfo.userId);
 });
 
+const copy = () => {
+  uni.setClipboardData({
+    data: contactStore.viewedUserInfo.userId
+  });
+};
+
 const deleteContact = () => {
   contactStore.deleteContact(contactStore.viewedUserInfo.userId).then(() => {
     uni.showToast({
@@ -194,7 +205,7 @@ const deleteContact = () => {
   word-break: break-all;
 }
 
-.user-id {
+.user-sign {
   color: #999;
   font-size: 28rpx;
 }

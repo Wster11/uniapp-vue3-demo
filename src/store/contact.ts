@@ -146,6 +146,7 @@ export const useContactStore = defineStore("contact", () => {
     declineContactInvite,
     acceptContactInvite,
     addStoreContact,
+    deleteStoreContact,
     setViewedUserInfo,
     setContactRemark,
     deepGetUserInfo,

@@ -41,7 +41,7 @@ const audioContext = uni.createInnerAudioContext();
 const playing = ref(false);
 const isSelf = conn.user === props.msg.from || props.msg.from === "";
 const messageStore = useMessageStore();
-const { setAudioInstance } = messageStore;
+const { setAudioInstance, setPlayingAudioMessageId } = messageStore;
 
 audioContext.onPlay(() => {
   setAudioInstance(audioContext);
@@ -54,16 +54,33 @@ audioContext.onStop(() => {
 
 audioContext.onPause(() => {
   playing.value = false;
+  setPlayingAudioMessageId("");
 });
 
 audioContext.onError(() => {
   playing.value = false;
+  setPlayingAudioMessageId("");
+});
+
+audioContext.onEnded(() => {
+  playing.value = false;
+  setPlayingAudioMessageId("");
 });
 
 const play = () => {
+  if (messageStore.playingAudioMsgId === props.msg.id) {
+    // 点击当前播放语音，停止播放
+    if (playing.value) {
+      messageStore.audioInstance.stop();
+      setPlayingAudioMessageId("");
+    }
+    return;
+  }
   if (messageStore.audioInstance) {
     messageStore.audioInstance.stop();
+    setPlayingAudioMessageId("");
   }
+  setPlayingAudioMessageId(props.msg.id);
   audioContext.src = props.msg.url || "";
   audioContext.play();
 };

@@ -28,6 +28,7 @@ export const useChatStore = defineStore("chat", () => {
     addContactNotice,
     addStoreContact,
     getContacts,
+    deleteStoreContact,
     clear: clearContacts
   } = contactStore;
   const {
@@ -181,6 +182,7 @@ export const useChatStore = defineStore("chat", () => {
           ext: "deleted",
           time: new Date().getTime()
         };
+        deleteStoreContact(msg.from);
         addContactNotice(notice);
       },
       onContactAdded: (msg) => {
