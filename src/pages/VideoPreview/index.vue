@@ -11,7 +11,8 @@ import { onLoad } from "@dcloudio/uni-app";
 const videoUrl = ref("");
 
 onLoad((option) => {
-  videoUrl.value = option?.url;
+  // 支持safari浏览器播放
+  videoUrl.value = `${option?.url}&origin-file=true`;
 });
 </script>
 
