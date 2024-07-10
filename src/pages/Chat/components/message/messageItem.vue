@@ -21,6 +21,7 @@
       </view>
       <view
         class="mask"
+        @longpress.stop="() => {}"
         @tap="isShowOperation = !isShowOperation"
         v-if="isShowOperation"
       ></view>
@@ -28,6 +29,7 @@
       <view class="msg-bubble" @longpress="showMsgOperation">
         <MessageOperation
           v-if="isShowOperation && isSelf"
+          @onFinished="isShowOperation = false"
           :msg="msg"
           :isSelf="isSelf"
         />
@@ -119,6 +121,7 @@ const extUserInfo = props.msg.ext?.ease_chat_uikit_user_info || {};
     width: 100vw;
     height: 100vh;
     position: fixed;
+    z-index: 98;
     top: 0;
     right: 0;
     bottom: 0;

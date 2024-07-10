@@ -21,6 +21,7 @@ interface Props {
 }
 const { recallMessage } = useMessageStore();
 const { getCvsIdFromMessage } = useConversationStore();
+const emits = defineEmits(["onFinished"]);
 const { t } = useI18n();
 
 const props = defineProps<Props>();
@@ -31,12 +32,16 @@ const emitRecall = () => {
     mid: msg.id,
     to: getCvsIdFromMessage(msg),
     chatType: msg.chatType
-  }).catch((e) => {
-    uni.showToast({
-      title: `${t("recallFailed")} ${e.message}`,
-      icon: "none"
+  })
+    .catch((e) => {
+      uni.showToast({
+        title: `${t("recallFailed")} ${e.message}`,
+        icon: "none"
+      });
+    })
+    .finally(() => {
+      emits("onFinished");
     });
-  });
 };
 </script>
 
