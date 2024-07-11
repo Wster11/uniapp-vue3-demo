@@ -45,7 +45,7 @@
     </view>
     <view class="private-wrap">
       <checkbox-group @change="checkboxChange">
-        <label>
+        <label class="label">
           <checkbox value="true" :checked="privacyChecked" />
           {{ $t("agreeTo") }}
           <a @tap="toPrivacy">《{{ $t("privacyPolicy") }}》</a>
