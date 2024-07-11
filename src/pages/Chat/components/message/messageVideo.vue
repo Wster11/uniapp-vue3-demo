@@ -9,7 +9,11 @@
         class="image"
         :src="msg.thumb"
       />
-      <view v-if="!isError" @tap="toVideoPreview" class="video-play-btn">
+      <view
+        v-if="!isError && isLoaded"
+        @tap="toVideoPreview"
+        class="video-play-btn"
+      >
         <image class="video-play-btn-image" :src="VideoPlayBtn"></image>
       </view>
     </view>
@@ -28,6 +32,8 @@ const props = defineProps<Props>();
 
 const isError = ref(false);
 
+const isLoaded = ref(false);
+
 const imgHeight = ref(0);
 
 const onError = () => {
@@ -36,6 +42,7 @@ const onError = () => {
 };
 
 const onImgLoad = (e: any) => {
+  isLoaded.value = true;
   const { width, height } = e.detail;
   imgHeight.value = (height / width) * 100;
 };
