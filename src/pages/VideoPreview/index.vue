@@ -13,6 +13,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
+import { isSafari } from "@/utils/index";
 
 const videoUrl = ref("");
 const height =
@@ -27,7 +28,11 @@ uni.setStorage({
 
 onLoad((option) => {
   // 支持safari浏览器播放
-  videoUrl.value = `${option?.url}&origin-file=true`;
+  if (isSafari()) {
+    videoUrl.value = `${option?.url}&origin-file=true`;
+    return;
+  }
+  videoUrl.value = option?.url;
 });
 </script>
 

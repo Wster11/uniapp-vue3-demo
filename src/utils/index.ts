@@ -115,3 +115,7 @@ export const getTimeStringAutoShort = function (
 
   return ret;
 };
+
+export const isSafari = () => {
+  return navigator?.userAgent?.toLowerCase().indexOf("safari") > -1;
+};
