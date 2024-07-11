@@ -3,11 +3,19 @@
     <view class="content">
       <view class="input-wrap">
         <view class="label">{{ $t("nickname") }}</view>
-        <input v-model="nickName" :placeholder="$t('nickNamePlaceholder')" />
+        <input
+          v-model="nickName"
+          maxlength="15"
+          :placeholder="$t('nickNamePlaceholder')"
+        />
       </view>
       <view class="input-wrap">
         <view class="label">{{ $t("sign") }}</view>
-        <input v-model="sign" :placeholder="$t('signPlaceholder')" />
+        <input
+          v-model="sign"
+          maxlength="50"
+          :placeholder="$t('signPlaceholder')"
+        />
       </view>
       <button class="update-btn" @tap="update">
         {{ $t("updateUserInfo") }}
