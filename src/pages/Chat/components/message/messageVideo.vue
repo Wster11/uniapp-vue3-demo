@@ -3,7 +3,7 @@
     <view class="video-poster">
       <image
         mode="widthFix"
-        :style="{ height: imgHeight + 'px' }"
+        :style="styles"
         @error="onError"
         @load="onImgLoad"
         class="image"
@@ -30,21 +30,40 @@ interface Props {
 }
 const props = defineProps<Props>();
 
+const IMAGE_MAX_SIZE = 200;
+
+const styles = ref({ width: "auto", height: `${IMAGE_MAX_SIZE}px` });
+
 const isError = ref(false);
 
 const isLoaded = ref(false);
-
-const imgHeight = ref(0);
 
 const onError = () => {
   props.msg.thumb = ImageNotFound;
   isError.value = true;
 };
 
+const genImageStyles = (value: { width?: any; height?: any }) => {
+  const { width, height } = value;
+  if (width === 0 || height === 0) {
+    return;
+  }
+  let imageWidth = 0;
+  let imageHeight = 0;
+  if (width > height) {
+    imageWidth = IMAGE_MAX_SIZE;
+    imageHeight = (IMAGE_MAX_SIZE * height) / width;
+  } else {
+    imageWidth = (IMAGE_MAX_SIZE * width) / height;
+    imageHeight = IMAGE_MAX_SIZE;
+  }
+  styles.value.width = imageWidth + "px";
+  styles.value.height = imageHeight + "px";
+};
+
 const onImgLoad = (e: any) => {
   isLoaded.value = true;
-  const { width, height } = e.detail;
-  imgHeight.value = (height / width) * 100;
+  genImageStyles(e.detail);
 };
 
 const toVideoPreview = () => {
@@ -59,8 +78,7 @@ const toVideoPreview = () => {
   position: relative;
 }
 .image {
-  max-width: 400rpx;
-  max-height: 550rpx;
+  border-radius: 20rpx;
 }
 
 .video-poster {
