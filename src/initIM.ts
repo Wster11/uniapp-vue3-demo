@@ -17,6 +17,41 @@ initChatSDK({
 // 获取IM实例
 const conn = getChatConn();
 
+/** 连接状态事件 */
+conn.addEventHandler("CONNECTION_STATE", {
+  onConnected: () => {
+    uni.showToast({
+      icon: "none",
+      title: "onConnected"
+    });
+  },
+  onDisconnected: () => {
+    uni.showToast({
+      icon: "none",
+      title: "onDisconnected"
+    });
+  },
+  //@ts-ignore
+  onReconnecting: () => {
+    uni.showToast({
+      icon: "none",
+      title: "onReconnecting"
+    });
+  },
+  onOnline: () => {
+    uni.showToast({
+      icon: "none",
+      title: "onOnline"
+    });
+  },
+  onOffline: () => {
+    uni.showToast({
+      icon: "none",
+      title: "onOffline"
+    });
+  }
+});
+
 // 绑定demo的事件监听
 conn.addEventHandler("GROUP_EVENT", {
   onGroupEvent: (event) => {

@@ -111,42 +111,7 @@ export const useChatStore = defineStore("chat", () => {
         onRecallMessage(msg.mid, msg.from);
       }
     });
-
-    /** 连接状态事件 */
-    conn.addEventHandler("STORE_CONNECTION_STATE", {
-      onConnected: () => {
-        uni.showToast({
-          icon: "none",
-          title: "onConnected"
-        });
-      },
-      onDisconnected: () => {
-        uni.showToast({
-          icon: "none",
-          title: "onDisconnected"
-        });
-      },
-      //@ts-ignore
-      onReconnecting: () => {
-        uni.showToast({
-          icon: "none",
-          title: "onReconnecting"
-        });
-      },
-      onOnline: () => {
-        uni.showToast({
-          icon: "none",
-          title: "onOnline"
-        });
-      },
-      onOffline: () => {
-        uni.showToast({
-          icon: "none",
-          title: "onOffline"
-        });
-      }
-    });
-
+    
     /** 联系人事件 */
     conn.addEventHandler("STORE_CONTACT", {
       onContactInvited: (msg) => {
