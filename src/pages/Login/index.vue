@@ -31,7 +31,11 @@
         />
       </view>
       <view class="item-wrap">
-        <input v-model="code" :placeholder="$t('loginCodePlaceholder')" />
+        <input
+          v-model="code"
+          maxlength="6"
+          :placeholder="$t('loginCodePlaceholder')"
+        />
         <button
           size="mini"
           type="primary"
@@ -54,9 +58,12 @@
     </view>
     <button type="primary" @tap="loginIM">{{ $t("login") }}</button>
 
-    <view v-if="times > 5 || IS_USE_CUSTOM_SERVER" class="server-config" @tap="toServerConfig">{{
-      $t("serverConfig")
-    }}</view>
+    <view
+      v-if="times > 5 || IS_USE_CUSTOM_SERVER"
+      class="server-config"
+      @tap="toServerConfig"
+      >{{ $t("serverConfig") }}</view
+    >
   </view>
 </template>
 

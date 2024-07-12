@@ -27,8 +27,8 @@ const imageSrc = computed(() => {
   }
   return props.src || props.placeholder;
 });
-const size = props.size ?? 100; // 默认大小为100rpx
-const shape = props.shape ?? "circle"; // 默认形状为圆形
+const size = props.size || 100; // 默认大小为100rpx
+const shape = props.shape || "circle"; // 默认形状为圆形
 
 const onError = () => {
   isError.value = true;
