@@ -3,7 +3,7 @@
     <view class="video-poster">
       <image
         mode="widthFix"
-        :style="styles"
+        :style="{ width: styles.width, height: styles.height }"
         @error="onError"
         @load="onImgLoad"
         class="image"

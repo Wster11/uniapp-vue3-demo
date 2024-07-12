@@ -2,7 +2,7 @@
   <view class="msg-image">
     <image
       mode="aspectFit"
-      :style="styles"
+      :style="{ width: styles.width, height: styles.height }"
       @error="onError"
       @tap="previewImage"
       @load="onImgLoad"

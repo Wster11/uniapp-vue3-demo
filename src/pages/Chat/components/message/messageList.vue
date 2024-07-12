@@ -91,7 +91,9 @@ const loadMore = async () => {
 };
 
 const toBottomMsg = () => {
-  scrollHeight.value += 300;
+  nextTick(() => {
+    scrollHeight.value = props.msgs.length * 300;
+  });
 };
 
 onMounted(() => {
