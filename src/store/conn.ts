@@ -7,7 +7,7 @@ import type {
 import websdk from "easemob-websdk/uniApp/Easemob-chat";
 
 websdk.logger.onLog = (log: any) => {
-  console.log(log.time, log.logs);
+  console.log(log.time, ...log.logs);
 };
 
 // 关闭控制台日志
