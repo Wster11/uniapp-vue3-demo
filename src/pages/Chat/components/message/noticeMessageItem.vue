@@ -4,10 +4,20 @@
       <view class="notice-content">
         <view class="notice-text">
           <view v-if="noticeType === 'recall'">
-            {{ `"${from}" ${$t("recallNotice")}` }}
+            {{
+              `"${
+                appUserStore.getUserInfoFromStore(msg?.noticeInfo?.ext?.from)
+                  .name
+              }" ${$t("recallNotice")}`
+            }}
           </view>
           <view v-else-if="noticeType === 'group'">
-            {{ `"${from}" ${noticeExt.operation} ${$t("group")}` }}
+            {{
+              `"${
+                appUserStore.getUserInfoFromStore(msg?.noticeInfo?.ext?.from)
+                  .name
+              }" ${noticeExt.operation} ${$t("group")}`
+            }}
           </view>
         </view>
       </view>
@@ -24,7 +34,6 @@ interface Props {
 const appUserStore = useAppUserStore();
 const props = defineProps<Props>();
 const { msg } = props;
-const from = appUserStore.getUserInfoFromStore(msg?.noticeInfo?.ext?.from).name;
 const noticeExt = msg.noticeInfo?.ext || {};
 const noticeType = msg.noticeInfo?.noticeType;
 </script>

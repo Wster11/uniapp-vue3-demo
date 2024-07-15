@@ -44,5 +44,6 @@ onLoad((option) => {
 }
 .video-box {
   width: 100%;
+  margin-top: 20px;
 }
 </style>

@@ -7,7 +7,11 @@ import { useGroupStore } from "./group";
 import { useBlockStore } from "./block";
 import { useAppUserStore } from "./appUser";
 import type { ContactNotice, MixedMessageBody } from "@/types/index";
+import { GroupEventFromIds } from "@/const/index";
+import { throttle } from "@/utils/index";
 import { ref } from "vue";
+//@ts-ignore
+window.throttle = throttle;
 
 export const useChatStore = defineStore("chat", () => {
   const { getChatConn, getChatSDK } = useConnStore();
@@ -29,6 +33,7 @@ export const useChatStore = defineStore("chat", () => {
     addStoreContact,
     getContacts,
     deleteStoreContact,
+    deepGetUserInfo,
     clear: clearContacts
   } = contactStore;
   const {
@@ -111,7 +116,7 @@ export const useChatStore = defineStore("chat", () => {
         onRecallMessage(msg.mid, msg.from);
       }
     });
-    
+
     /** 联系人事件 */
     conn.addEventHandler("STORE_CONTACT", {
       onContactInvited: (msg) => {
@@ -183,6 +188,8 @@ export const useChatStore = defineStore("chat", () => {
     /** 群组事件 */
     conn.addEventHandler("STORE_GROUP", {
       onGroupEvent: async (event) => {
+        // 存入事件fromId，用来批量获取成员信息
+        GroupEventFromIds.push(event.from);
         switch (event.operation) {
           case "directJoined":
           case "create":
@@ -210,6 +217,10 @@ export const useChatStore = defineStore("chat", () => {
           default:
             break;
         }
+        throttle(function () {
+          deepGetUserInfo([...GroupEventFromIds]);
+          GroupEventFromIds.length = 0;
+        }, 1000);
         addGroupNotice({
           ...event,
           time: new Date().getTime()

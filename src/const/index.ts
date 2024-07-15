@@ -12,6 +12,8 @@ const DEFAULT_GROUP_MEMBER_COUNT = 3; // 群组详情默认获取群成员详情
 
 const GET_GROUP_MEMBERS_PAGESIZE = 100; // 获取群组成员列表的每页数量
 
+const GroupEventFromIds: Array<string> = [];
+
 // Demo内部上传头像地址 (仅支持官方 easemob#easeim appkey使用)
 const getInsideUploadUrl = (userId: string) => {
   return `https://a1-appserver.easemob.com/inside/app/user/${userId}/avatar/upload`;
@@ -26,5 +28,6 @@ export {
   DEFAULT_GROUP_MEMBER_COUNT,
   GET_GROUP_MEMBERS_PAGESIZE,
   IS_USE_CUSTOM_SERVER,
+  GroupEventFromIds,
   getInsideUploadUrl
 };

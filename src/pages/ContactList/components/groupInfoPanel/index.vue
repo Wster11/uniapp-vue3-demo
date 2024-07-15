@@ -114,6 +114,7 @@ const leaveGroup = async () => {
   align-items: center;
   background: #fff;
   margin: 20rpx 0;
+  padding: 10rpx;
 }
 
 .arrow-back {

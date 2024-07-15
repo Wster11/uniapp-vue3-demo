@@ -119,3 +119,16 @@ export const getTimeStringAutoShort = function (
 export const isSafari = () => {
   return navigator?.userAgent?.toLowerCase().indexOf("safari") > -1;
 };
+
+type CallbackFunction = (...args: any[]) => void;
+
+let timer: any = null;
+export function throttle(fn: CallbackFunction, delay = 300) {
+  if (timer == null) {
+    timer = setTimeout(() => {
+      fn();
+      clearTimeout(timer);
+      timer = null;
+    }, delay);
+  }
+}

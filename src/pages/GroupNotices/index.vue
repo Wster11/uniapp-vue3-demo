@@ -12,7 +12,9 @@
       :key="notice.time"
     >
       <view class="notice-info-wrap">
-        <view class="item-id">{{ notice.from }}</view>
+        <view class="item-id">{{
+          getUserInfoFromStore(notice.from).name
+        }}</view>
         <view class="notice-info">
           <view class="notice-msg">
             <view class="item-opt">
@@ -32,8 +34,12 @@
 <script setup lang="ts">
 import { useGroupStore } from "@/store/group";
 import { getTimeStringAutoShort } from "@/utils/index";
+import { useAppUserStore } from "@/store/appUser";
 import { onUnmounted } from "vue";
 const groupStore = useGroupStore();
+const appUserStore = useAppUserStore();
+
+const { getUserInfoFromStore } = appUserStore;
 
 onUnmounted(() => {
   groupStore.clearGroupNoticeUnReadCount();
