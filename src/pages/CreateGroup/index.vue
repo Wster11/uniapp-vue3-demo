@@ -80,7 +80,14 @@ const switchChange = (e: any) => {
 
 const newGroup = () => {
   if (groupName.value === "") {
-    groupName.value = checkedUserIdList.value.join(",");
+    groupName.value = contactStore.contacts
+      .filter((item) => {
+        return checkedUserIdList.value.includes(item.userId);
+      })
+      .map((item) => {
+        return getUserInfoFromStore(item.userId).name;
+      })
+      .join(",");
   }
 
   if (groupDesc.value === "") {
