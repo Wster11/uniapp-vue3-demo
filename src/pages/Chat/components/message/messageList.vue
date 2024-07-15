@@ -45,7 +45,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const scrollHeight = ref(props.msgs.length * 300);
+const scrollHeight = ref(0);
 
 const isLoading = ref(false);
 
@@ -92,7 +92,10 @@ const loadMore = async () => {
 
 const toBottomMsg = () => {
   nextTick(() => {
-    scrollHeight.value = props.msgs.length * 300;
+    const timer = setTimeout(() => {
+      scrollHeight.value = props.msgs.length * 300;
+      clearTimeout(timer);
+    }, 0);
   });
 };
 
