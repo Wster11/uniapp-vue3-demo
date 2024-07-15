@@ -19,7 +19,7 @@ const videoUrl = ref("");
 const height =
   uni.getStorageSync("screenHeight") || uni.getSystemInfoSync().screenHeight;
 // TODO: video 100vh显示总有黑边偏移，暂时的解决方案
-const videoHeight = height - 100;
+const videoHeight = height - 150;
 
 uni.setStorage({
   key: "screenHeight",
