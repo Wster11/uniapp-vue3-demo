@@ -63,7 +63,7 @@ const toolbarInject = inject<InputToolbarEvent>("InputToolbarEvent");
 const SDK = connStore.getChatSDK();
 const convStore = useConversationStore();
 const { getSelfUserInfo } = useAppUserStore();
-const { sendMessage } = useMessageStore();
+const { sendMessage, setPlayingAudioMessageId } = useMessageStore();
 const { t } = useI18n();
 
 const isTalking = ref(false); // 是否正在讲话
@@ -78,6 +78,8 @@ const duration = ref<number>(0);
  */
 const onStart = () => {
   console.log("start");
+  // 录音时清空播放中的音频
+  setPlayingAudioMessageId("");
   const option = {
     format: "mp3"
   };

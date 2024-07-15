@@ -29,14 +29,8 @@ export const useMessageStore = defineStore("message", () => {
   );
 
   const conn = getChatConn();
-  // 当前播放的音频实例
 
-  const audioInstance = ref<any>(null);
   const playingAudioMsgId = ref<string>("");
-
-  const setAudioInstance = (instance: any) => {
-    audioInstance.value = instance;
-  };
 
   const setPlayingAudioMessageId = (msgId: string) => {
     playingAudioMsgId.value = msgId;
@@ -249,20 +243,17 @@ export const useMessageStore = defineStore("message", () => {
   const clear = () => {
     messageMap.value.clear();
     conversationMessagesMap.value.clear();
-    audioInstance.value = null;
   };
 
   return {
     messageMap,
     conversationMessagesMap,
-    audioInstance,
     playingAudioMsgId,
     getHistoryMessages,
     insertMessage,
     sendMessage,
     onMessage,
     onRecallMessage,
-    setAudioInstance,
     recallMessage,
     insertNoticeMessage,
     setPlayingAudioMessageId,
