@@ -51,18 +51,49 @@ const isSelf = conn.user === props.msg.from || props.msg.from === "";
 const messageStore = useMessageStore();
 const { setPlayingAudioMessageId } = messageStore;
 
-const toggle = () => {
+const toggle = async () => {
   const audioContext = getAudioContext();
   if (!audioContext) {
-    audioContextMap.set("audio", uni.createInnerAudioContext());
+    const context = uni.createInnerAudioContext();
+    audioContextMap.set("audio", context);
     // #ifdef MP
     uni.setInnerAudioOption({
       obeyMuteSwitch: false
     });
     // #endif
     initAudio();
+    // 必须绑定完事件后再设置src， 否则会导致事件不触发
+    context.src = await formatAudioToMp3();
   }
   toggleAudio();
+};
+
+const formatAudioToMp3 = () => {
+  return new Promise<string>((resolve, reject) => {
+    const { url } = props.msg;
+    uni.downloadFile({
+      url: url || "",
+      header: {
+        "X-Requested-With": "XMLHttpRequest",
+        Accept: "audio/mp3",
+        Authorization: "Bearer " + conn.token
+      },
+
+      success: (res) => {
+        const tempFilePath = res.tempFilePath;
+        resolve(tempFilePath);
+      },
+
+      fail: (e) => {
+        console.warn("downloadFile failed", e);
+        reject(e);
+        uni.showToast({
+          title: "语音转mp3失败",
+          duration: 2000
+        });
+      }
+    });
+  });
 };
 
 const initAudio = () => {
@@ -70,7 +101,6 @@ const initAudio = () => {
   if (!audioContext) {
     return;
   }
-  audioContext.src = props.msg.url || "";
 
   playing.value = false;
   audioContext.onPlay(() => {
