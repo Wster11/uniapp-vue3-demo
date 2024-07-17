@@ -32,6 +32,7 @@ export const useChatStore = defineStore("chat", () => {
     getContacts,
     deleteStoreContact,
     deepGetUserInfo,
+    contactsNoticeInfo,
     clear: clearContacts
   } = contactStore;
   const {
@@ -129,9 +130,24 @@ export const useChatStore = defineStore("chat", () => {
           time: new Date().getTime(),
           showOperation: true
         };
+
         getUsersInfo({
           userIdList: [msg.from]
         });
+        // 添加好友通知去重
+        const isHasSameNotice = contactsNoticeInfo.list.find((item) => {
+          if (
+            item.type === "subscribe" &&
+            item.from === msg.from &&
+            item.showOperation === true
+          ) {
+            return true;
+          }
+          return false;
+        });
+        if (isHasSameNotice) {
+          return;
+        }
         addContactNotice(notice);
       },
       onContactAgreed: (msg) => {

@@ -12,7 +12,7 @@
       :key="notice.time"
     >
       <view class="notice-info-wrap">
-        <view class="item-id">{{
+        <view class="item-id ellipsis">{{
           getUserInfoFromStore(notice.from).name
         }}</view>
         <view class="notice-info">
