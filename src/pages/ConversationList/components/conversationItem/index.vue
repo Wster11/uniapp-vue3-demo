@@ -50,9 +50,7 @@ const groupStore = useGroupStore();
 const conversationInfo = computed(() => {
   const convId = props.conversation.conversationId;
   if (props.conversation.conversationType === "groupChat") {
-    const groupInfo = groupStore.joinedGroupList.find(
-      (group) => group.groupId === convId
-    );
+    const groupInfo = groupStore.getGroupInfoFromStore(convId);
     return {
       name: groupInfo?.groupName,
       avatar: ""

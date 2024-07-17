@@ -62,9 +62,14 @@ const { getUserInfoFromStore } = appUserStore;
 
 const filteredConversationList = computed(() => {
   return convStore.conversationList.filter((conv) => {
-    return getUserInfoFromStore(conv.conversationId).name.includes(
-      filter.value
-    );
+    if (conv.conversationType === "groupChat") {
+      const groupInfo = groupStore.getGroupInfoFromStore(conv.conversationId);
+      return groupInfo?.groupName.includes(filter.value);
+    } else {
+      return getUserInfoFromStore(conv.conversationId).name.includes(
+        filter.value
+      );
+    }
   });
 });
 

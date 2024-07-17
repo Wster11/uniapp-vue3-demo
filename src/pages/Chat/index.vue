@@ -103,9 +103,7 @@ onLoad((option) => {
       title = appUserStore.getUserInfoFromStore(conversationId.value).name;
     } else {
       title =
-        groupStore.joinedGroupList.find(
-          (item) => item.groupId === conversationId.value
-        )?.groupName || "";
+        groupStore.getGroupInfoFromStore(conversationId.value)?.groupName || "";
     }
     uni.setNavigationBarTitle({
       title: title

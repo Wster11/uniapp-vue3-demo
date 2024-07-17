@@ -221,6 +221,11 @@ export const useGroupStore = defineStore("group", () => {
       });
   };
 
+  /** 从Store获取群组信息 */
+  const getGroupInfoFromStore = (groupId: string) => {
+    return joinedGroupList.value.find((group) => group.groupId === groupId);
+  };
+
   /** 清空群组通知未读数 */
   const clearGroupNoticeUnReadCount = () => {
     groupNoticeInfo.value.unReadCount = 0;
@@ -255,6 +260,7 @@ export const useGroupStore = defineStore("group", () => {
     removeUserFromGroup,
     getGroupMembers,
     clearGroupNoticeUnReadCount,
+    getGroupInfoFromStore,
     leaveGroup,
     clear
   };
