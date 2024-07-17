@@ -10,8 +10,6 @@ import type { ContactNotice, MixedMessageBody } from "@/types/index";
 import { GroupEventFromIds } from "@/const/index";
 import { throttle } from "@/utils/index";
 import { ref } from "vue";
-//@ts-ignore
-window.throttle = throttle;
 
 export const useChatStore = defineStore("chat", () => {
   const { getChatConn, getChatSDK } = useConnStore();
@@ -82,6 +80,11 @@ export const useChatStore = defineStore("chat", () => {
     clearStore();
     return conn.close();
   };
+
+  const _throttle = throttle(function () {
+    deepGetUserInfo([...GroupEventFromIds]);
+    GroupEventFromIds.length = 0;
+  }, 1000);
 
   const initSDKEvent = () => {
     if (isInitEvent.value) return;
@@ -217,10 +220,7 @@ export const useChatStore = defineStore("chat", () => {
           default:
             break;
         }
-        throttle(function () {
-          deepGetUserInfo([...GroupEventFromIds]);
-          GroupEventFromIds.length = 0;
-        }, 1000);
+        _throttle();
         addGroupNotice({
           ...event,
           time: new Date().getTime()

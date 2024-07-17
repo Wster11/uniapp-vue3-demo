@@ -122,13 +122,30 @@ export const isSafari = () => {
 
 type CallbackFunction = (...args: any[]) => void;
 
-let timer: any = null;
-export function throttle(fn: CallbackFunction, delay = 300) {
-  if (timer == null) {
-    timer = setTimeout(() => {
-      fn();
-      clearTimeout(timer);
-      timer = null;
-    }, delay);
-  }
+export function throttle(
+  func: CallbackFunction,
+  limit: number
+): CallbackFunction {
+  let lastFunc: ReturnType<typeof setTimeout>;
+  let lastRan: number | undefined;
+
+  return function (this: any, ...args: any[]) {
+    const context = this;
+
+    if (!lastRan) {
+      lastRan = Date.now();
+      lastFunc = setTimeout(function () {
+        func.apply(context, args);
+        lastRan = undefined;
+      }, limit);
+    } else {
+      clearTimeout(lastFunc);
+      lastFunc = setTimeout(function () {
+        if (Date.now() - lastRan! >= limit) {
+          func.apply(context, args);
+          lastRan = Date.now();
+        }
+      }, limit - (Date.now() - lastRan));
+    }
+  };
 }
