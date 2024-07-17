@@ -1,9 +1,9 @@
 <template>
   <view class="video-preview">
     <video
+      v-if="isShow"
       class="video-box"
       :src="videoUrl"
-      :style="{ height: videoHeight + 'px' }"
       controls
       autoplay
     ></video>
@@ -16,23 +16,20 @@ import { onLoad } from "@dcloudio/uni-app";
 import { isSafari } from "@/utils/index";
 
 const videoUrl = ref("");
-const height =
-  uni.getStorageSync("screenHeight") || uni.getSystemInfoSync().screenHeight;
-// TODO: video 100vh显示总有黑边偏移，暂时的解决方案
-const videoHeight = height - 150;
-
-uni.setStorage({
-  key: "screenHeight",
-  data: height
-});
+const isShow = ref(false);
 
 onLoad((option) => {
   // 支持safari浏览器播放
   if (isSafari()) {
     videoUrl.value = `${option?.url}&origin-file=true`;
-    return;
+  } else {
+    videoUrl.value = option?.url;
   }
-  videoUrl.value = option?.url;
+  const timer = setTimeout(() => {
+    // 延时显示视频，否则多次进入视频video发生偏移
+    isShow.value = true;
+    clearTimeout(timer);
+  }, 200);
 });
 </script>
 
@@ -44,6 +41,6 @@ onLoad((option) => {
 }
 .video-box {
   width: 100%;
-  margin-top: 20px;
+  height: 100%;
 }
 </style>
