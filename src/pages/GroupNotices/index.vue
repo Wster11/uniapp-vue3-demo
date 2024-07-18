@@ -16,7 +16,12 @@
           getUserInfoFromStore(notice.from).name
         }}</view>
         <view class="notice-info">
-          <view class="notice-msg">
+          <view v-if="notice.operation === 'inviteToJoin'" class="notice-msg">
+            <view class="item-opt">
+              <view>{{ `${$t("inviteToGroup")}, groupId: ${notice.id}` }}</view>
+            </view>
+          </view>
+          <view v-else class="notice-msg">
             <view class="item-opt">
               <view>{{ `${notice.operation}, groupId: ${notice.id}` }}</view>
             </view>
@@ -26,7 +31,33 @@
           >
         </view>
       </view>
-      <!-- TODO: 群组操作 -->
+      <view
+        class="notice-btn-wrap"
+        v-if="
+          notice.operation === 'inviteToJoin' && notice.showOperation === true
+        "
+      >
+        <view
+          class="notice-btn"
+          @tap="
+            () => {
+              notice.showOperation = false;
+              acceptInvite(notice.id);
+            }
+          "
+          >{{ $t("acceptFriend") }}</view
+        >
+        <view
+          class="notice-btn"
+          @tap="
+            () => {
+              notice.showOperation = false;
+              rejectInvite(notice.id);
+            }
+          "
+          >{{ $t("refuseFriend") }}</view
+        >
+      </view>
     </view>
   </view>
 </template>
@@ -40,6 +71,14 @@ const groupStore = useGroupStore();
 const appUserStore = useAppUserStore();
 
 const { getUserInfoFromStore } = appUserStore;
+
+const acceptInvite = (groupId: string) => {
+  groupStore.acceptGroupInvite(groupId);
+};
+
+const rejectInvite = (groupId: string) => {
+  groupStore.rejectGroupInvite(groupId);
+};
 
 onUnmounted(() => {
   groupStore.clearGroupNoticeUnReadCount();

@@ -231,6 +231,41 @@ export const useGroupStore = defineStore("group", () => {
     groupNoticeInfo.value.unReadCount = 0;
   };
 
+  /** 接收群组邀请 */
+  const acceptGroupInvite = (groupId: string) => {
+    return conn
+      .acceptGroupInvite({
+        invitee: conn.user,
+        groupId
+      })
+      .then(async () => {
+        let res = await getGroupInfo(groupId);
+        const info = res.data?.[0];
+        if (info) {
+          setJoinedGroupList([
+            {
+              groupId: info.id,
+              groupName: info.name,
+              public: info.public,
+              description: info.description,
+              disabled: true,
+              allowInvites: info.allowinvites,
+              maxUsers: info.maxusers,
+              approval: info.membersonly
+            }
+          ]);
+        }
+      });
+  };
+
+  /** 拒绝群组邀请 */
+  const rejectGroupInvite = (groupId: string) => {
+    return conn.rejectGroupInvite({
+      invitee: conn.user,
+      groupId
+    });
+  };
+
   const clear = () => {
     joinedGroupList.value = [];
     groupNoticeInfo.value = {
@@ -262,6 +297,8 @@ export const useGroupStore = defineStore("group", () => {
     clearGroupNoticeUnReadCount,
     getGroupInfoFromStore,
     leaveGroup,
+    acceptGroupInvite,
+    rejectGroupInvite,
     clear
   };
 });

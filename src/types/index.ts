@@ -13,6 +13,7 @@ type ContactNotice = EasemobChat.ContactMsgBody & {
 
 type GroupNotice = EasemobChat.GroupEvent & {
   time: number;
+  showOperation?: boolean;
 };
 
 interface ContactNoticeInfo {

@@ -127,7 +127,7 @@ const leaveGroup = async () => {
 .title {
   width: 100%;
   text-align: center;
-  padding-right: 40rpx;
+  padding-right: 80rpx;
   font-size: 28rpx;
 }
 .group-avatar {

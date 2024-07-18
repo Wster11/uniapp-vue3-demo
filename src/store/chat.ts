@@ -41,7 +41,8 @@ export const useChatStore = defineStore("chat", () => {
     addGroupNotice,
     getGroupInfo,
     setJoinedGroupList,
-    removeStoreGroup
+    removeStoreGroup,
+    groupNoticeInfo
   } = useGroupStore();
   const { getBlockList, clear: clearBlock } = useBlockStore();
   const conn = getChatConn();
@@ -237,9 +238,26 @@ export const useChatStore = defineStore("chat", () => {
             break;
         }
         _throttle();
+
+        // 群组邀请通知去重复
+        const isHasSameNotice = groupNoticeInfo.list.find((item) => {
+          if (
+            item.operation === "inviteToJoin" &&
+            item.id === event.id &&
+            item.showOperation === true
+          ) {
+            return true;
+          }
+          return false;
+        });
+        if (isHasSameNotice) {
+          return;
+        }
+
         addGroupNotice({
           ...event,
-          time: new Date().getTime()
+          time: new Date().getTime(),
+          showOperation: event.operation === "inviteToJoin" ? true : false
         });
         const msg = SDK.message.create({
           type: "txt",

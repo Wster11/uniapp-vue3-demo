@@ -135,5 +135,6 @@ export default {
   leaveGroup: "离开群组",
   leaveGroupSuccess: "离开群组成功",
   group: "群组",
-  wxConfigTip: "设置成功, 请重新打开小程序"
+  wxConfigTip: "设置成功, 请重新打开小程序",
+  inviteToGroup: "邀请您加入群组"
 };

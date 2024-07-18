@@ -135,5 +135,6 @@ export default {
   leaveGroup: "Leave Group",
   leaveGroupSuccess: "Left the group successfully",
   group: "the group",
-  wxConfigTip: "Setting successful, please reopen the mini program"
+  wxConfigTip: "Setting successful, please reopen the mini program",
+  inviteToGroup: "invited you to join the group",
 };
