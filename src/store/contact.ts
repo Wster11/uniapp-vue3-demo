@@ -125,7 +125,7 @@ export const useContactStore = defineStore("contact", () => {
   const clearContactNoticeUnReadCount = () => {
     contactsNoticeInfo.value.unReadCount = 0;
   };
-
+  /** 清空联系人Store */
   const clear = () => {
     contacts.value = [];
     contactsNoticeInfo.value = {
