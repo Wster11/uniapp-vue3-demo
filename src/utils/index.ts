@@ -120,6 +120,14 @@ export const isSafari = () => {
   return navigator?.userAgent?.toLowerCase().indexOf("safari") > -1;
 };
 
+export const isiOS = () => {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent);
+};
+
+export const isWechat = () => {
+ return navigator.userAgent.toLowerCase().indexOf("micromessenger") !== -1;
+};
+
 type CallbackFunction = (...args: any[]) => void;
 
 export function throttle(

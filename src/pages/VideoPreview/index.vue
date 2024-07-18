@@ -13,14 +13,14 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
-import { isSafari } from "@/utils/index";
+import { isSafari, isiOS, isWechat } from "@/utils/index";
 
 const videoUrl = ref("");
 const isShow = ref(false);
 
 onLoad((option) => {
   // 支持safari浏览器播放
-  if (isSafari()) {
+  if (isSafari() || (isWechat() && isiOS())) {
     videoUrl.value = `${option?.url}&origin-file=true`;
   } else {
     videoUrl.value = option?.url;
