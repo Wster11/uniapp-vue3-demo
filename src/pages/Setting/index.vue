@@ -48,11 +48,15 @@ const update = () => {
     sign: sign.value,
     nickname: nickName.value
   }).then(() => {
-    uni.navigateBack();
     uni.showToast({
       title: t("requestSended"),
-      icon: "success"
+      icon: "success",
+      duration: 2000
     });
+    const timer = setTimeout(() => {
+      uni.navigateBack();
+      clearTimeout(timer);
+    }, 1000);
   });
 };
 </script>

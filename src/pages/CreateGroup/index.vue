@@ -109,9 +109,13 @@ const newGroup = () => {
     .then(() => {
       uni.showToast({
         icon: "none",
-        title: t("createGroupSuccess")
+        title: t("createGroupSuccess"),
+        duration: 2000
       });
-      uni.navigateBack();
+      const timer = setTimeout(() => {
+        uni.navigateBack();
+        clearTimeout(timer);
+      }, 1000);
     })
     .catch((e) => {
       uni.showToast({

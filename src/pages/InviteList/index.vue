@@ -112,11 +112,15 @@ const isDisabled = (userId: string) => {
 const inviteUser = async () => {
   try {
     await inviteJoinGroup(groupId.value, checkedUserIdList.value);
-    uni.navigateBack();
     uni.showToast({
       title: t("requestSended"),
-      icon: "success"
+      icon: "success",
+      duration: 2000
     });
+    const timer = setTimeout(() => {
+      uni.navigateBack();
+      clearTimeout(timer);
+    }, 1000);
   } catch (error) {
     console.error(error);
   }
@@ -125,11 +129,15 @@ const inviteUser = async () => {
 const removeUser = async () => {
   try {
     await removeUserFromGroup(groupId.value, checkedUserIdList.value);
-    uni.navigateBack();
     uni.showToast({
       title: t("requestSended"),
-      icon: "success"
+      icon: "success",
+      duration: 2000
     });
+    const timer = setTimeout(() => {
+      uni.navigateBack();
+      clearTimeout(timer);
+    }, 1000);
   } catch (error) {
     console.error(error);
   }
