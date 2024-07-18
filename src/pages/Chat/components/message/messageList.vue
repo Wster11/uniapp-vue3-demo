@@ -135,7 +135,7 @@ defineExpose({
 
 .tip {
   position: fixed;
-  top: 200px;
+  top: 100px;
   left: 40px;
   right: 40px;
   color: #bbb;

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
-import { useConnStore } from "@/store/conn";
 import { useChatStore } from "@/store/chat";
 import { CHAT_STORE } from "@/const/index";
+// 引入conn文件，初始化IM，不可删除
 import conn from "./initIM";
 
 const autoLogin = async () => {
@@ -32,7 +32,6 @@ const autoLogin = async () => {
 
 onLaunch(() => {
   console.log("App Launch");
-  useConnStore().setChatConn(conn);
   autoLogin();
 });
 

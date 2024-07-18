@@ -50,7 +50,6 @@ export const useConnStore = defineStore("conn", () => {
 
   return {
     conn,
-    setChatConn,
     getChatConn,
     initChatSDK,
     getChatSDK
