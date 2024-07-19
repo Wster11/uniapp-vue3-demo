@@ -98,7 +98,7 @@ const toBottomMsg = () => {
     const timer = setTimeout(() => {
       scrollHeight.value = props.msgs.length * 300;
       clearTimeout(timer);
-    }, 0);
+    }, 100);
   });
 };
 
